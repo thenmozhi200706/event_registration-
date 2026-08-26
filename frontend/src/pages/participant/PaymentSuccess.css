@@ -1,0 +1,1149 @@
+/* ============================================================
+   EVENTSPHERE — PAYMENT SUCCESS PAGE
+   ============================================================ */
+
+.payment-success-page {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8f7fc 0%,
+            #ffffff 70%
+        );
+
+    color: #101828;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.payment-success-header {
+    width: 100%;
+
+    padding: 18px 24px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eaecf0;
+
+    box-sizing: border-box;
+}
+
+.payment-success-header-inner {
+    width: 100%;
+    max-width: 1050px;
+
+    margin: 0 auto;
+}
+
+.payment-success-home-link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #667085;
+
+    font-size: 13px;
+    font-weight: 650;
+
+    text-decoration: none;
+
+    transition:
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.payment-success-home-link:hover {
+    color: #6246d8;
+
+    transform: translateX(-2px);
+}
+
+
+/* ============================================================
+   CONTENT
+   ============================================================ */
+
+.payment-success-content {
+    width: 100%;
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+    padding: 42px 24px 70px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   SUCCESS HERO
+   ============================================================ */
+
+.payment-success-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.payment-success-hero-icon {
+    width: 78px;
+    height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 19px;
+
+    color: #027a48;
+
+    background: #ecfdf3;
+
+    border: 7px solid #f4fdf7;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 8px 25px rgba(
+            2,
+            122,
+            72,
+            0.10
+        );
+}
+
+.payment-success-hero > span {
+    margin-bottom: 8px;
+
+    color: #027a48;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.4px;
+}
+
+.payment-success-hero h1 {
+    margin: 0 0 9px;
+
+    color: #101828;
+
+    font-size: 32px;
+    font-weight: 850;
+
+    line-height: 1.2;
+}
+
+.payment-success-hero p {
+    max-width: 570px;
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+
+/* ============================================================
+   TICKET CARD
+   ============================================================ */
+
+.payment-success-ticket-card {
+    position: relative;
+
+    overflow: hidden;
+
+    margin-bottom: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2dfef;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 12px 35px rgba(
+            25,
+            20,
+            60,
+            0.055
+        );
+}
+
+.payment-success-ticket-card::before {
+    content: "";
+
+    display: block;
+
+    height: 4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6246d8,
+            #8972e8
+        );
+}
+
+
+/* ============================================================
+   TICKET TOP
+   ============================================================ */
+
+.payment-success-ticket-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    padding: 25px 27px;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+.payment-success-ticket-top > div:first-child > span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #6246d8;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1.1px;
+}
+
+.payment-success-ticket-top h2 {
+    margin: 0;
+
+    color: #101828;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.payment-success-ticket-icon {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #6246d8;
+
+    background: #f3f0ff;
+
+    border-radius: 11px;
+}
+
+
+/* ============================================================
+   TICKET ID
+   ============================================================ */
+
+.payment-success-ticket-id {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    margin: 20px 27px;
+
+    padding: 17px;
+
+    background: #faf9ff;
+
+    border: 1px dashed #c9c0ee;
+
+    border-radius: 12px;
+}
+
+.payment-success-ticket-id > div {
+    min-width: 0;
+}
+
+.payment-success-ticket-id span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #98a2b3;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.payment-success-ticket-id strong {
+    display: block;
+
+    color: #344054;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    letter-spacing: 0.3px;
+
+    word-break: break-all;
+}
+
+
+/* ============================================================
+   COPY BUTTON
+   ============================================================ */
+
+.payment-success-copy-button {
+    flex-shrink: 0;
+
+    min-height: 35px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 0 11px;
+
+    color: #6246d8;
+
+    background: #ffffff;
+
+    border: 1px solid #d8d1f1;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.payment-success-copy-button:hover {
+    background: #f8f6ff;
+
+    border-color: #b9ade8;
+}
+
+
+/* ============================================================
+   EVENT DETAILS
+   ============================================================ */
+
+.payment-success-event {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    padding: 0 27px 24px;
+}
+
+.payment-success-event > div {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 9px;
+
+    padding: 13px;
+
+    background: #fafbfc;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 11px;
+}
+
+.payment-success-event svg {
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    color: #6246d8;
+}
+
+.payment-success-event > div > div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.payment-success-event span {
+    color: #98a2b3;
+
+    font-size: 9px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.payment-success-event strong {
+    color: #344054;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   PARTICIPANT
+   ============================================================ */
+
+.payment-success-participant {
+    padding: 19px 27px 24px;
+
+    border-top: 1px solid #eaecf0;
+}
+
+.payment-success-participant > span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #98a2b3;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+}
+
+.payment-success-participant strong {
+    display: block;
+
+    color: #344054;
+
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.payment-success-participant p {
+    margin: 4px 0 0;
+
+    color: #667085;
+
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   PAYMENT CARD
+   ============================================================ */
+
+.payment-success-payment-card {
+    margin-bottom: 23px;
+
+    padding: 25px 27px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2dfef;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(
+            25,
+            20,
+            60,
+            0.04
+        );
+}
+
+.payment-success-payment-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 21px;
+}
+
+.payment-success-payment-header > div:first-child > span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #6246d8;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.payment-success-payment-header h2 {
+    margin: 0;
+
+    color: #101828;
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.payment-success-paid-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 6px 9px;
+
+    color: #027a48;
+
+    background: #ecfdf3;
+
+    border: 1px solid #abefc6;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 750;
+}
+
+
+/* ============================================================
+   PAYMENT GRID
+   ============================================================ */
+
+.payment-success-payment-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.payment-success-payment-grid > div {
+    min-width: 0;
+
+    padding: 14px;
+
+    background: #fafbfc;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 11px;
+}
+
+.payment-success-payment-grid span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #98a2b3;
+
+    font-size: 9px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+}
+
+.payment-success-payment-grid strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: #344054;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1.45;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.payment-success-payment-grid .payment-success-amount {
+    display: flex;
+    align-items: center;
+
+    gap: 1px;
+
+    color: #101828;
+
+    font-size: 17px;
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.payment-success-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-bottom: 24px;
+}
+
+.payment-success-dashboard-button,
+.payment-success-secondary-action {
+    min-height: 45px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 17px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.payment-success-dashboard-button {
+    color: #ffffff;
+
+    background: #6246d8;
+
+    border: 1px solid #6246d8;
+}
+
+.payment-success-dashboard-button:hover {
+    background: #5638ca;
+
+    border-color: #5638ca;
+
+    transform: translateY(-1px);
+}
+
+.payment-success-secondary-action {
+    color: #344054;
+
+    background: #ffffff;
+
+    border: 1px solid #d0d5dd;
+}
+
+.payment-success-secondary-action:hover {
+    color: #6246d8;
+
+    background: #faf9ff;
+
+    border-color: #b8ace9;
+}
+
+
+/* ============================================================
+   FOOTER NOTE
+   ============================================================ */
+
+.payment-success-footer-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #98a2b3;
+
+    text-align: center;
+}
+
+.payment-success-footer-note svg {
+    flex-shrink: 0;
+
+    color: #027a48;
+}
+
+.payment-success-footer-note p {
+    margin: 0;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.payment-success-loading {
+    width: min(
+        calc(100% - 48px),
+        600px
+    );
+
+    min-height: 400px;
+
+    margin: 60px auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e7e5f2;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 35px rgba(
+            25,
+            20,
+            60,
+            0.05
+        );
+}
+
+.payment-success-loading h2 {
+    margin: 17px 0 6px;
+
+    color: #101828;
+
+    font-size: 20px;
+    font-weight: 750;
+}
+
+.payment-success-loading p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+.payment-success-spinner {
+    color: #6246d8;
+
+    animation:
+        payment-success-spin
+        0.8s linear infinite;
+}
+
+@keyframes payment-success-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.payment-success-error {
+    width: min(
+        calc(100% - 48px),
+        620px
+    );
+
+    margin: 70px auto;
+
+    padding: 40px 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e2dfef;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 35px rgba(
+            25,
+            20,
+            60,
+            0.05
+        );
+}
+
+.payment-success-error-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 17px;
+
+    color: #027a48;
+
+    background: #ecfdf3;
+
+    border-radius: 50%;
+}
+
+.payment-success-error h2 {
+    margin: 0 0 8px;
+
+    color: #101828;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.payment-success-error p {
+    max-width: 470px;
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.payment-success-error > span {
+    margin-top: 10px;
+
+    color: #98a2b3;
+
+    font-size: 11px;
+}
+
+.payment-success-error-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.payment-success-primary-button,
+.payment-success-secondary-button {
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 17px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.payment-success-primary-button {
+    color: #ffffff;
+
+    background: #6246d8;
+
+    border: 1px solid #6246d8;
+}
+
+.payment-success-secondary-button {
+    color: #344054;
+
+    background: #ffffff;
+
+    border: 1px solid #d0d5dd;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 850px) {
+
+    .payment-success-payment-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .payment-success-event {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .payment-success-header {
+        padding: 16px;
+    }
+
+    .payment-success-content {
+        padding:
+            30px 16px 50px;
+    }
+
+    .payment-success-hero {
+        margin-bottom: 25px;
+    }
+
+    .payment-success-hero-icon {
+        width: 68px;
+        height: 68px;
+
+        border-width: 5px;
+    }
+
+    .payment-success-hero h1 {
+        font-size: 26px;
+    }
+
+    .payment-success-hero p {
+        font-size: 12px;
+    }
+
+
+    /* Ticket */
+
+    .payment-success-ticket-top {
+        padding: 21px 19px;
+    }
+
+    .payment-success-ticket-top h2 {
+        font-size: 18px;
+    }
+
+    .payment-success-ticket-id {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        margin:
+            17px 19px;
+    }
+
+    .payment-success-copy-button {
+        width: 100%;
+    }
+
+    .payment-success-event {
+        grid-template-columns: 1fr;
+
+        padding:
+            0 19px 20px;
+    }
+
+    .payment-success-participant {
+        padding:
+            17px 19px 21px;
+    }
+
+
+    /* Payment */
+
+    .payment-success-payment-card {
+        padding: 21px 19px;
+    }
+
+    .payment-success-payment-header {
+        align-items: flex-start;
+    }
+
+    .payment-success-payment-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Actions */
+
+    .payment-success-actions {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .payment-success-dashboard-button,
+    .payment-success-secondary-action {
+        width: 100%;
+    }
+
+
+    /* Error */
+
+    .payment-success-error {
+        width: calc(100% - 32px);
+
+        margin: 45px auto;
+
+        padding: 32px 20px;
+    }
+
+    .payment-success-error-actions {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .payment-success-primary-button,
+    .payment-success-secondary-button {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+    .payment-success-hero h1 {
+        font-size: 23px;
+    }
+
+    .payment-success-ticket-card,
+    .payment-success-payment-card {
+        border-radius: 16px;
+    }
+
+    .payment-success-ticket-top {
+        padding: 18px 16px;
+    }
+
+    .payment-success-ticket-id {
+        margin:
+            15px 16px;
+    }
+
+    .payment-success-event {
+        padding:
+            0 16px 18px;
+    }
+
+    .payment-success-participant {
+        padding:
+            16px;
+    }
+
+    .payment-success-payment-card {
+        padding: 18px 16px;
+    }
+}
+
+
+/* ============================================================
+   PRINT — DIGITAL TICKET
+   ============================================================ */
+
+@media print {
+
+    .payment-success-page {
+        background: #ffffff;
+    }
+
+    .payment-success-header,
+    .payment-success-actions,
+    .payment-success-footer-note {
+        display: none;
+    }
+
+    .payment-success-content {
+        max-width: 850px;
+
+        padding: 20px;
+    }
+
+    .payment-success-hero {
+        margin-bottom: 20px;
+    }
+
+    .payment-success-ticket-card,
+    .payment-success-payment-card {
+        box-shadow: none;
+
+        break-inside: avoid;
+    }
+
+    .payment-success-ticket-card {
+        border: 1px solid #d0d5dd;
+    }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .payment-success-home-link,
+    .payment-success-copy-button,
+    .payment-success-dashboard-button,
+    .payment-success-secondary-action {
+        transition: none;
+    }
+
+    .payment-success-spinner {
+        animation: none;
+    }
+}

@@ -1,0 +1,1027 @@
+/* =====================================================
+   EVENTSPHERE - EDIT EVENT PAGE
+   ===================================================== */
+
+.edit-event-page {
+  min-height: 100vh;
+
+  padding: 35px 25px 60px;
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(91, 63, 209, 0.07),
+      transparent 28%
+    ),
+    #f7f8fc;
+
+  color: #172033;
+}
+
+
+/* =====================================================
+   CONTAINER
+   ===================================================== */
+
+.edit-event-container {
+  width: min(1000px, 100%);
+
+  margin: 0 auto;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.edit-event-header {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 18px;
+
+  margin-bottom: 25px;
+}
+
+.edit-event-header > div {
+  flex: 1;
+}
+
+.edit-event-back-button {
+  flex-shrink: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 3px;
+
+  padding: 8px 11px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #667085;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.edit-event-back-button:hover {
+  background: #eeeaff;
+
+  color: #5b3fd1;
+
+  transform: translateX(-2px);
+}
+
+.edit-event-back-button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(91, 63, 209, 0.12);
+}
+
+.edit-event-back-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.55;
+
+  transform: none;
+}
+
+.edit-event-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #6d4ce6;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+.edit-event-header h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: clamp(28px, 4vw, 38px);
+
+  font-weight: 850;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.8px;
+}
+
+.edit-event-header p {
+  margin: 9px 0 0;
+
+  color: #7a8190;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   MESSAGES
+   ===================================================== */
+
+.edit-event-message {
+  margin-bottom: 18px;
+
+  padding: 13px 15px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  line-height: 1.5;
+}
+
+.edit-event-message.error {
+  background: #fff1f2;
+
+  border: 1px solid #fecdd3;
+
+  color: #b42318;
+}
+
+.edit-event-message.success {
+  background: #ecfdf3;
+
+  border: 1px solid #a7f3d0;
+
+  color: #047857;
+}
+
+
+/* =====================================================
+   FORM
+   ===================================================== */
+
+.edit-event-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+
+/* =====================================================
+   FORM SECTION
+   ===================================================== */
+
+.edit-event-section {
+  padding: 25px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 4px 14px rgba(17, 24, 39, 0.04);
+}
+
+.edit-event-section-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 23px;
+
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid #eef0f4;
+}
+
+.edit-event-section-icon {
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #eee9ff;
+
+  color: #5b3fd1;
+}
+
+.edit-event-section-header h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 16px;
+
+  font-weight: 750;
+}
+
+.edit-event-section-header p {
+  margin: 4px 0 0;
+
+  color: #98a2b3;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   FIELDS
+   ===================================================== */
+
+.edit-event-fields {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 19px;
+}
+
+.edit-event-field {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.edit-event-field.full {
+  grid-column: 1 / -1;
+}
+
+
+/* =====================================================
+   LABEL
+   ===================================================== */
+
+.edit-event-field label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #344054;
+
+  font-size: 11.5px;
+
+  font-weight: 700;
+}
+
+.edit-event-field label svg {
+  color: #5b3fd1;
+}
+
+
+/* =====================================================
+   INPUTS
+   ===================================================== */
+
+.edit-event-field input,
+.edit-event-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dfe2e8;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #172033;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.edit-event-field input {
+  height: 45px;
+
+  padding: 0 13px;
+}
+
+.edit-event-field textarea {
+  min-height: 135px;
+
+  padding: 12px 13px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+.edit-event-field input::placeholder,
+.edit-event-field textarea::placeholder {
+  color: #a0a7b4;
+
+  font-weight: 400;
+}
+
+.edit-event-field input:hover,
+.edit-event-field textarea:hover {
+  border-color: #c8c1e8;
+}
+
+.edit-event-field input:focus,
+.edit-event-field textarea:focus {
+  border-color: #6d4ce6;
+
+  box-shadow:
+    0 0 0 4px rgba(109, 76, 230, 0.1);
+}
+
+.edit-event-field input:disabled,
+.edit-event-field textarea:disabled {
+  background: #f7f8fa;
+
+  cursor: not-allowed;
+
+  opacity: 0.7;
+}
+
+.edit-event-field small {
+  color: #98a2b3;
+
+  font-size: 10.5px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   HASHTAG INPUT
+   ===================================================== */
+
+.edit-event-hashtag-input {
+  display: flex;
+
+  align-items: stretch;
+
+  gap: 7px;
+}
+
+.edit-event-hashtag-input input {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.edit-event-hashtag-input button {
+  flex-shrink: 0;
+
+  min-width: 62px;
+
+  padding: 0 13px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #eee9ff;
+
+  color: #5b3fd1;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.edit-event-hashtag-input button:hover {
+  background: #5b3fd1;
+
+  color: #ffffff;
+}
+
+.edit-event-hashtag-input button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(91, 63, 209, 0.12);
+}
+
+.edit-event-hashtag-input button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.55;
+}
+
+
+/* =====================================================
+   TAGS
+   ===================================================== */
+
+.edit-event-tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-top: 3px;
+}
+
+.edit-event-tag {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 8px 6px 10px;
+
+  border-radius: 999px;
+
+  background: #f2efff;
+
+  color: #5b3fd1;
+
+  font-size: 10.5px;
+
+  font-weight: 700;
+}
+
+.edit-event-tag button {
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(91, 63, 209, 0.1);
+
+  color: #5b3fd1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.edit-event-tag button:hover {
+  background: #5b3fd1;
+
+  color: #ffffff;
+}
+
+.edit-event-tag button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(91, 63, 209, 0.13);
+}
+
+.edit-event-tag button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.5;
+}
+
+
+/* =====================================================
+   IMAGE PREVIEW
+   ===================================================== */
+
+.edit-event-preview {
+  width: 100%;
+
+  height: 260px;
+
+  margin-top: 18px;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+
+  background: #f4f5f8;
+
+  border: 1px solid #e5e7eb;
+}
+
+.edit-event-preview img {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+/* =====================================================
+   STATUS OPTIONS
+   ===================================================== */
+
+.edit-event-status-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 13px;
+}
+
+.edit-event-status-options label {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  padding: 17px;
+
+  border: 1px solid #e2e5eb;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.edit-event-status-options label:hover {
+  border-color: #c9c1e8;
+
+  background: #fcfbff;
+}
+
+.edit-event-status-options label.selected {
+  border-color: #8d7adf;
+
+  background: #f8f6ff;
+
+  box-shadow:
+    0 0 0 3px rgba(91, 63, 209, 0.07);
+}
+
+.edit-event-status-options input {
+  position: absolute;
+
+  top: 16px;
+  right: 16px;
+
+  width: 16px;
+  height: 16px;
+
+  margin: 0;
+
+  accent-color: #5b3fd1;
+
+  cursor: pointer;
+}
+
+.edit-event-status-options label > span {
+  color: #172033;
+
+  font-size: 13px;
+
+  font-weight: 750;
+}
+
+.edit-event-status-options small {
+  max-width: 230px;
+
+  color: #8a92a1;
+
+  font-size: 10.5px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   ACTIONS
+   ===================================================== */
+
+.edit-event-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding-top: 3px;
+}
+
+.edit-event-cancel,
+.edit-event-submit {
+  min-height: 45px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 18px;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.edit-event-cancel {
+  border: 1px solid #dfe2e8;
+
+  background: #ffffff;
+
+  color: #667085;
+}
+
+.edit-event-cancel:hover {
+  background: #f8f9fb;
+
+  border-color: #cfd3dc;
+
+  color: #344054;
+}
+
+.edit-event-submit {
+  border: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5b3fd1,
+      #7655df
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 16px rgba(91, 63, 209, 0.2);
+}
+
+.edit-event-submit:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 21px rgba(91, 63, 209, 0.27);
+}
+
+.edit-event-cancel:active,
+.edit-event-submit:active {
+  transform: translateY(0);
+}
+
+.edit-event-cancel:focus-visible,
+.edit-event-submit:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(91, 63, 209, 0.12);
+}
+
+.edit-event-cancel:disabled,
+.edit-event-submit:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* =====================================================
+   SPINNER
+   ===================================================== */
+
+.edit-event-spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation:
+    edit-event-spin 0.7s linear infinite;
+}
+
+@keyframes edit-event-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =====================================================
+   PAGE STATES
+   ===================================================== */
+
+.edit-event-state {
+  width: min(600px, 100%);
+
+  min-height: 450px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  margin: 0 auto;
+
+  text-align: center;
+}
+
+.edit-event-state p {
+  margin: 0;
+
+  color: #667085;
+
+  font-size: 13px;
+}
+
+.edit-event-state-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-top: 5px;
+}
+
+.edit-event-retry,
+.edit-event-back {
+  min-height: 40px;
+
+  padding: 0 16px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.edit-event-retry {
+  border: none;
+
+  background: #5b3fd1;
+
+  color: #ffffff;
+}
+
+.edit-event-retry:hover {
+  background: #4d32b8;
+
+  transform: translateY(-1px);
+}
+
+.edit-event-back {
+  border: 1px solid #ddd6fe;
+
+  background: #ffffff;
+
+  color: #5b3fd1;
+}
+
+.edit-event-back:hover {
+  background: #f7f4ff;
+
+  transform: translateY(-1px);
+}
+
+.edit-event-retry:focus-visible,
+.edit-event-back:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(91, 63, 209, 0.12);
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 800px) {
+  .edit-event-page {
+    padding-left: 18px;
+
+    padding-right: 18px;
+  }
+
+  .edit-event-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-event-field.full {
+    grid-column: auto;
+  }
+
+  .edit-event-status-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 600px) {
+  .edit-event-page {
+    padding: 22px 13px 45px;
+  }
+
+  .edit-event-header {
+    gap: 10px;
+
+    margin-bottom: 20px;
+  }
+
+  .edit-event-header h1 {
+    font-size: 28px;
+  }
+
+  .edit-event-header p {
+    font-size: 12px;
+  }
+
+  .edit-event-section {
+    padding: 19px;
+
+    border-radius: 14px;
+  }
+
+  .edit-event-section-header {
+    margin-bottom: 19px;
+
+    padding-bottom: 15px;
+  }
+
+  .edit-event-section-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .edit-event-fields {
+    gap: 16px;
+  }
+
+  .edit-event-actions {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .edit-event-cancel,
+  .edit-event-submit {
+    width: 100%;
+  }
+
+  .edit-event-preview {
+    height: 210px;
+  }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 380px) {
+  .edit-event-page {
+    padding-left: 10px;
+
+    padding-right: 10px;
+  }
+
+  .edit-event-section {
+    padding: 16px;
+  }
+
+  .edit-event-section-header h2 {
+    font-size: 15px;
+  }
+
+  .edit-event-section-header p {
+    font-size: 10px;
+  }
+
+  .edit-event-hashtag-input button {
+    min-width: 55px;
+
+    padding: 0 10px;
+  }
+
+  .edit-event-state-actions {
+    flex-direction: column;
+  }
+
+  .edit-event-retry,
+  .edit-event-back {
+    width: 100%;
+  }
+}

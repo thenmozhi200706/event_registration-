@@ -1,0 +1,651 @@
+/* ============================================================
+   EVENTSPHERE — REGISTRATION FORM
+   ============================================================ */
+
+.registration-form {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 32px;
+
+    background: #ffffff;
+    border: 1px solid #e7e5f2;
+    border-radius: 24px;
+
+    box-shadow:
+        0 12px 40px rgba(25, 20, 60, 0.06);
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   FORM HEADER
+   ============================================================ */
+
+.registration-form-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+
+    padding-bottom: 26px;
+    margin-bottom: 28px;
+
+    border-bottom: 1px solid #eeeef5;
+}
+
+.registration-form-eyebrow {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #6246d8;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+.registration-form-header h2 {
+    margin: 0 0 8px;
+
+    color: #101828;
+
+    font-size: 28px;
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+.registration-form-header p {
+    max-width: 650px;
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.registration-form-status-icon {
+    flex-shrink: 0;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #6246d8;
+
+    background: #f1edff;
+
+    border-radius: 14px;
+}
+
+
+/* ============================================================
+   SERVER ERROR
+   ============================================================ */
+
+.registration-form-server-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    margin-bottom: 20px;
+    padding: 14px 16px;
+
+    color: #b42318;
+
+    background: #fff1f0;
+
+    border: 1px solid #fecdca;
+    border-radius: 12px;
+}
+
+.registration-form-server-error > svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.registration-form-server-error div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.registration-form-server-error strong {
+    font-size: 14px;
+}
+
+.registration-form-server-error span {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   VALIDATION ERROR
+   ============================================================ */
+
+.registration-form-validation-error {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 20px;
+    padding: 12px 15px;
+
+    color: #b54708;
+
+    background: #fffaeb;
+
+    border: 1px solid #fedf89;
+    border-radius: 10px;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.registration-form-validation-error svg {
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   FORM SECTION
+   ============================================================ */
+
+.registration-form-section {
+    margin-bottom: 32px;
+}
+
+.registration-section-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.registration-section-heading > svg {
+    flex-shrink: 0;
+
+    margin-top: 2px;
+
+    color: #6246d8;
+}
+
+.registration-section-heading h3 {
+    margin: 0 0 4px;
+
+    color: #101828;
+
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.registration-section-heading p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   FORM GRID
+   ============================================================ */
+
+.registration-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* ============================================================
+   FIELD
+   ============================================================ */
+
+.registration-field {
+    min-width: 0;
+}
+
+.registration-field.full-width {
+    grid-column: 1 / -1;
+}
+
+.registration-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #344054;
+
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.registration-field label span {
+    margin-left: 3px;
+
+    color: #d92d20;
+}
+
+
+/* ============================================================
+   INPUT WRAPPER
+   ============================================================ */
+
+.registration-input-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+.registration-input-wrapper > svg {
+    position: absolute;
+    left: 14px;
+
+    z-index: 1;
+
+    color: #98a2b3;
+
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+
+.registration-input {
+    width: 100%;
+    min-height: 48px;
+
+    padding: 0 14px 0 43px;
+
+    box-sizing: border-box;
+
+    color: #101828;
+
+    background: #ffffff;
+
+    border: 1px solid #d0d5dd;
+    border-radius: 11px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+.registration-input::placeholder {
+    color: #98a2b3;
+}
+
+.registration-input:hover {
+    border-color: #b7b2ca;
+}
+
+.registration-input:focus {
+    border-color: #6246d8;
+
+    box-shadow:
+        0 0 0 3px rgba(98, 70, 216, 0.12);
+}
+
+.registration-input.has-error {
+    border-color: #f04438;
+
+    background: #fffafa;
+}
+
+.registration-input.has-error:focus {
+    border-color: #f04438;
+
+    box-shadow:
+        0 0 0 3px rgba(240, 68, 56, 0.1);
+}
+
+
+/* ============================================================
+   NUMBER INPUT
+   ============================================================ */
+
+.registration-input[type="number"] {
+    padding-right: 14px;
+}
+
+
+/* ============================================================
+   SELECT
+   ============================================================ */
+
+select.registration-input {
+    appearance: none;
+
+    cursor: pointer;
+
+    padding-right: 42px;
+
+    background-image:
+        linear-gradient(
+            45deg,
+            transparent 50%,
+            #667085 50%
+        ),
+        linear-gradient(
+            135deg,
+            #667085 50%,
+            transparent 50%
+        );
+
+    background-position:
+        calc(100% - 18px) 20px,
+        calc(100% - 13px) 20px;
+
+    background-size:
+        5px 5px,
+        5px 5px;
+
+    background-repeat: no-repeat;
+}
+
+
+/*
+ * Because the select contains an icon from the wrapper,
+ * keep the left padding consistent.
+ */
+
+.registration-input-wrapper select.registration-input {
+    padding-left: 43px;
+}
+
+
+/* ============================================================
+   FIELD ERROR
+   ============================================================ */
+
+.registration-field-error {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #d92d20;
+
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   INFORMATION NOTE
+   ============================================================ */
+
+.registration-form-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    margin-top: 4px;
+    margin-bottom: 26px;
+    padding: 14px 16px;
+
+    color: #475467;
+
+    background: #f8f9fc;
+
+    border: 1px solid #eaecf0;
+    border-radius: 11px;
+}
+
+.registration-form-note > svg {
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    color: #667085;
+}
+
+.registration-form-note p {
+    margin: 0;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   FORM ACTIONS
+   ============================================================ */
+
+.registration-form-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    padding-top: 4px;
+}
+
+.registration-submit-button {
+    min-width: 170px;
+    min-height: 48px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 0 22px;
+
+    color: #ffffff;
+
+    background: #6246d8;
+
+    border: 0;
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    box-shadow:
+        0 6px 16px rgba(98, 70, 216, 0.2);
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.registration-submit-button:hover:not(:disabled) {
+    background: #5638ca;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(98, 70, 216, 0.25);
+}
+
+.registration-submit-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.registration-submit-button:focus-visible {
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(98, 70, 216, 0.18),
+        0 6px 16px rgba(98, 70, 216, 0.2);
+}
+
+.registration-submit-button:disabled {
+    opacity: 0.65;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   LOADING SPINNER
+   ============================================================ */
+
+.registration-spinner {
+    width: 16px;
+    height: 16px;
+
+    display: inline-block;
+
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+
+    border-radius: 50%;
+
+    animation:
+        registration-spin 0.7s linear infinite;
+}
+
+@keyframes registration-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .registration-form {
+        padding: 24px;
+
+        border-radius: 18px;
+    }
+
+    .registration-form-header h2 {
+        font-size: 24px;
+    }
+
+    .registration-form-grid {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+    .registration-field.full-width {
+        grid-column: auto;
+    }
+
+    .registration-form-actions {
+        justify-content: stretch;
+    }
+
+    .registration-submit-button {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    .registration-form {
+        padding: 18px;
+
+        border-radius: 15px;
+    }
+
+    .registration-form-header {
+        gap: 12px;
+
+        padding-bottom: 20px;
+        margin-bottom: 22px;
+    }
+
+    .registration-form-header h2 {
+        font-size: 21px;
+    }
+
+    .registration-form-header p {
+        font-size: 12px;
+    }
+
+    .registration-form-status-icon {
+        width: 40px;
+        height: 40px;
+
+        border-radius: 11px;
+    }
+
+    .registration-form-status-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    .registration-section-heading {
+        gap: 9px;
+    }
+
+    .registration-section-heading h3 {
+        font-size: 15px;
+    }
+
+    .registration-section-heading p {
+        font-size: 12px;
+    }
+
+    .registration-input {
+        min-height: 46px;
+
+        font-size: 13px;
+    }
+
+    .registration-submit-button {
+        min-height: 46px;
+
+        font-size: 13px;
+    }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .registration-input,
+    .registration-submit-button {
+        transition: none;
+    }
+
+    .registration-spinner {
+        animation: none;
+    }
+}

@@ -1,0 +1,242 @@
+.organizer-dashboard {
+  min-height: 100vh;
+
+  padding: 42px 50px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(20, 184, 166, 0.07),
+      transparent 28%
+    ),
+    #f7f8fc;
+}
+
+.organizer-dashboard .dashboard-header {
+  max-width: 1200px;
+
+  margin: 0 auto 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.organizer-dashboard .dashboard-header h1 {
+  font-size: 30px;
+
+  font-weight: 800;
+
+  color: var(--dark);
+}
+
+.organizer-dashboard .dashboard-header p {
+  color: var(--muted);
+
+  font-size: 14px;
+}
+
+.organizer-dashboard .dashboard-content {
+  max-width: 1200px;
+
+  margin: auto;
+}
+
+.organizer-dashboard .welcome-card {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 34px;
+
+  margin-bottom: 24px;
+
+  border-radius: 20px;
+
+  color: white;
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(255,255,255,0.2),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #0d9f8e,
+      #14b8a6
+    );
+
+  box-shadow:
+    0 15px 35px rgba(20, 184, 166, 0.22);
+}
+
+.organizer-dashboard .welcome-card h2 {
+  font-size: 24px;
+
+  margin-bottom: 8px;
+}
+
+.organizer-dashboard .welcome-card p {
+  color: rgba(255,255,255,0.9);
+
+  font-size: 14px;
+
+  max-width: 650px;
+}
+
+.organizer-dashboard .dashboard-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 18px;
+}
+
+.organizer-dashboard .dashboard-action-card {
+  min-height: 205px;
+
+  padding: 24px;
+
+  background: white;
+
+  border: 1px solid var(--border);
+
+  border-radius: 16px;
+
+  box-shadow: var(--shadow-sm);
+
+  transition: 0.25s ease;
+}
+
+.organizer-dashboard .dashboard-action-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: var(--shadow);
+}
+
+.organizer-dashboard
+.dashboard-action-card:nth-child(1) {
+  border-top: 3px solid var(--secondary);
+}
+
+.organizer-dashboard
+.dashboard-action-card:nth-child(2) {
+  border-top: 3px solid var(--primary);
+}
+
+.organizer-dashboard
+.dashboard-action-card:nth-child(3) {
+  border-top: 3px solid var(--blue);
+}
+
+.organizer-dashboard
+.dashboard-action-card:nth-child(4) {
+  border-top: 3px solid var(--orange);
+}
+
+.organizer-dashboard .dashboard-action-card h3 {
+  font-size: 16px;
+
+  margin-bottom: 8px;
+}
+
+.organizer-dashboard .dashboard-action-card p {
+  color: var(--muted);
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+@media (max-width: 1050px) {
+  .organizer-dashboard {
+    padding: 30px 25px;
+  }
+
+  .organizer-dashboard .dashboard-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .organizer-dashboard {
+    padding: 24px 16px;
+  }
+
+  .organizer-dashboard .dashboard-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .organizer-dashboard .dashboard-actions {
+    grid-template-columns: 1fr;
+  }
+}
+/* =====================================================
+   ORGANIZER LOGOUT BUTTON
+   ===================================================== */
+
+.organizer-dashboard .logout-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 92px;
+  height: 42px;
+
+  padding: 0 18px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #dc2626;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  box-shadow:
+    0 2px 6px rgba(220, 38, 38, 0.06);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.organizer-dashboard .logout-button:hover {
+  background: #fff5f5;
+
+  border-color: #fca5a5;
+
+  color: #b91c1c;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(220, 38, 38, 0.1);
+}
+
+.organizer-dashboard .logout-button:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 2px 5px rgba(220, 38, 38, 0.08);
+}
+
+.organizer-dashboard .logout-button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(239, 68, 68, 0.12);
+}

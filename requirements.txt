@@ -1,0 +1,55 @@
+# EventSphere - System Requirements
+
+# =================================
+
+# Runtime
+
+Node.js >= 18.0.0
+npm >= 9.0.0
+
+# Database
+
+MongoDB >= 6.0
+MongoDB Atlas (recommended for cloud deployment)
+
+# Frontend
+
+React.js
+Vite
+Axios
+React Router
+CSS / Tailwind CSS
+
+# Backend
+
+Node.js
+Express.js
+Mongoose
+REST API
+
+# Authentication
+
+JWT Authentication
+Google OAuth / Gmail Authentication (if configured)
+
+# Email
+
+Nodemailer
+SMTP / Gmail App Password
+
+# Payment
+
+Razorpay
+
+# Development Tools
+
+Git
+Visual Studio Code
+Google Chrome / Microsoft Edge
+
+# Optional Services
+
+Cloudinary / AWS S3 - Event image storage
+MongoDB Atlas - Cloud database
+Vercel / Netlify - Frontend deployment
+Render / Railway - Backend deployment

@@ -1,0 +1,208 @@
+.otp-verification {
+  width: 100%;
+
+  padding: 40px;
+
+  background: white;
+
+  border: 1px solid var(--border);
+
+  border-radius: 22px;
+
+  box-shadow: var(--shadow-lg);
+
+  animation: fadeUp 0.5s ease;
+}
+
+.otp-header {
+  text-align: center;
+
+  margin-bottom: 30px;
+}
+
+.otp-header h2 {
+  font-size: 26px;
+
+  font-weight: 800;
+
+  color: var(--dark);
+
+  margin-bottom: 7px;
+}
+
+.otp-header p {
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+.otp-input-container {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 24px;
+}
+
+.otp-input {
+  width: 54px;
+  height: 58px;
+
+  text-align: center;
+
+  font-size: 21px;
+
+  font-weight: 700;
+
+  color: var(--dark);
+
+  background: #fafbfc;
+
+  border: 1px solid #d9dde7;
+
+  border-radius: 11px;
+
+  outline: none;
+
+  transition: 0.2s ease;
+}
+
+.otp-input:hover {
+  border-color: #c9c0f4;
+}
+
+.otp-input:focus {
+  background: white;
+
+  border-color: var(--primary);
+
+  box-shadow:
+    0 0 0 4px rgba(91, 63, 209, 0.1);
+}
+
+.otp-error {
+  margin-bottom: 18px;
+
+  padding: 11px 13px;
+
+  color: #b42318;
+
+  background: var(--red-light);
+
+  border: 1px solid #fecdca;
+
+  border-radius: 10px;
+
+  text-align: center;
+
+  font-size: 13px;
+}
+
+.otp-success {
+  margin-bottom: 18px;
+
+  padding: 11px 13px;
+
+  color: #047857;
+
+  background: var(--green-light);
+
+  border: 1px solid #b7ead6;
+
+  border-radius: 10px;
+
+  text-align: center;
+
+  font-size: 13px;
+}
+
+.otp-verify-button {
+  width: 100%;
+
+  height: 50px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      #7655df
+    );
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 20px rgba(91, 63, 209, 0.2);
+
+  transition: 0.2s ease;
+}
+
+.otp-verify-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(91, 63, 209, 0.28);
+}
+
+.otp-verify-button:disabled {
+  opacity: 0.55;
+}
+
+.otp-resend-button {
+  display: block;
+
+  margin: 18px auto 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--primary);
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.otp-resend-button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.otp-resend-button:disabled {
+  color: #98a2b3;
+}
+
+@media (max-width: 600px) {
+  .otp-verification {
+    padding: 30px 18px;
+  }
+
+  .otp-input-container {
+    gap: 6px;
+  }
+
+  .otp-input {
+    width: 45px;
+    height: 52px;
+  }
+}
+
+@media (max-width: 390px) {
+  .otp-input {
+    width: 40px;
+    height: 48px;
+  }
+
+  .otp-input-container {
+    gap: 5px;
+  }
+}

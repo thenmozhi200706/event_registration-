@@ -1,0 +1,9 @@
+.organizer-layout {
+  min-height: 100vh;
+
+  background: var(--background);
+}
+
+.organizer-layout-content {
+  min-height: 100vh;
+}

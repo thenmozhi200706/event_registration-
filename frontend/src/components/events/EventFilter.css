@@ -1,0 +1,316 @@
+/* =====================================================
+   EVENTSPHERE - EVENT FILTER
+   ===================================================== */
+
+.event-filter {
+  width: 100%;
+
+  padding: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 4px 14px rgba(17, 24, 39, 0.04);
+}
+
+
+/* =====================================================
+   FILTER HEADER
+   ===================================================== */
+
+.event-filter-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 16px;
+}
+
+.event-filter-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #172033;
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.event-filter-title svg {
+  color: #5b3fd1;
+}
+
+
+/* =====================================================
+   CLEAR BUTTON
+   ===================================================== */
+
+.event-filter-clear {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  padding: 5px 8px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #6d4ce6;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.event-filter-clear:hover {
+  background: #f2efff;
+
+  color: #4d32b8;
+}
+
+.event-filter-clear:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(91, 63, 209, 0.14);
+}
+
+
+/* =====================================================
+   FILTER GROUP
+   ===================================================== */
+
+.event-filter-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.event-filter-label {
+  color: #667085;
+
+  font-size: 11px;
+
+  font-weight: 650;
+
+  letter-spacing: 0.1px;
+}
+
+
+/* =====================================================
+   SELECT
+   ===================================================== */
+
+.event-filter-select {
+  width: 100%;
+
+  min-height: 44px;
+
+  padding: 0 38px 0 12px;
+
+  border: 1px solid #e1e4ea;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background-color: #ffffff;
+
+  color: #172033;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.event-filter-select:hover {
+  border-color: #c9c1ef;
+}
+
+.event-filter-select:focus {
+  border-color: #6d4ce6;
+
+  box-shadow:
+    0 0 0 4px rgba(109, 76, 230, 0.1);
+}
+
+.event-filter-select option {
+  color: #172033;
+
+  background: #ffffff;
+}
+
+
+/* =====================================================
+   SELECTED FILTER
+   ===================================================== */
+
+.event-filter-selected {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 15px;
+
+  padding-top: 14px;
+
+  border-top: 1px solid #f0f1f4;
+}
+
+.event-filter-selected-label {
+  color: #7a8190;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+.event-filter-tag {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  padding: 5px 8px 5px 9px;
+
+  border-radius: 999px;
+
+  background: #f2efff;
+
+  color: #5b3fd1;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.event-filter-tag button {
+  width: 17px;
+  height: 17px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(91, 63, 209, 0.1);
+
+  color: #5b3fd1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.event-filter-tag button:hover {
+  background: #5b3fd1;
+
+  color: #ffffff;
+}
+
+.event-filter-tag button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(91, 63, 209, 0.14);
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .event-filter {
+    padding: 16px;
+  }
+
+  .event-filter-select {
+    min-height: 42px;
+
+    font-size: 12.5px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 480px) {
+  .event-filter {
+    padding: 15px;
+
+    border-radius: 12px;
+  }
+
+  .event-filter-header {
+    margin-bottom: 14px;
+  }
+
+  .event-filter-title {
+    font-size: 13px;
+  }
+
+  .event-filter-select {
+    min-height: 43px;
+
+    border-radius: 9px;
+  }
+
+  .event-filter-selected {
+    margin-top: 13px;
+
+    padding-top: 12px;
+  }
+}

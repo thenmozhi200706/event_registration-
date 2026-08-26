@@ -1,0 +1,454 @@
+/* =====================================================
+   EVENTSPHERE - PARTICIPANT DASHBOARD
+   ===================================================== */
+
+.participant-dashboard {
+  min-height: 100vh;
+  padding: 42px 50px;
+
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(91, 63, 209, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(20, 184, 166, 0.06),
+      transparent 30%
+    ),
+    #f7f8fc;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.participant-dashboard .dashboard-header {
+  max-width: 1200px;
+
+  margin: 0 auto 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.participant-dashboard .dashboard-header h1 {
+  font-size: 31px;
+
+  font-weight: 800;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.8px;
+
+  color: #111827;
+}
+
+.participant-dashboard .dashboard-header p {
+  margin-top: 5px;
+
+  color: #667085;
+
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   LOGOUT BUTTON
+   ===================================================== */
+
+.participant-dashboard .logout-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 92px;
+  height: 42px;
+
+  padding: 0 18px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #dc2626;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  box-shadow:
+    0 2px 6px rgba(220, 38, 38, 0.06);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.participant-dashboard .logout-button:hover {
+  background: #fff5f5;
+
+  border-color: #fca5a5;
+
+  color: #b91c1c;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 15px rgba(220, 38, 38, 0.1);
+}
+
+.participant-dashboard .logout-button:active {
+  transform: translateY(0);
+}
+
+.participant-dashboard .logout-button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(239, 68, 68, 0.12);
+}
+
+
+/* =====================================================
+   MAIN CONTENT
+   ===================================================== */
+
+.participant-dashboard .dashboard-content {
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+
+/* =====================================================
+   WELCOME CARD
+   ===================================================== */
+
+.participant-dashboard .welcome-card {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 34px;
+
+  margin-bottom: 24px;
+
+  border-radius: 20px;
+
+  color: #ffffff;
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(255, 255, 255, 0.22),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 10% 100%,
+      rgba(255, 255, 255, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #5b3fd1 0%,
+      #7049dc 55%,
+      #8663e8 100%
+    );
+
+  box-shadow:
+    0 16px 35px rgba(91, 63, 209, 0.22);
+}
+
+.participant-dashboard .welcome-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 170px;
+  height: 170px;
+
+  right: -45px;
+  bottom: -70px;
+
+  border-radius: 50%;
+
+  border: 30px solid rgba(255, 255, 255, 0.07);
+}
+
+.participant-dashboard .welcome-card::after {
+  content: "✦";
+
+  position: absolute;
+
+  right: 40px;
+  top: 22px;
+
+  font-size: 72px;
+
+  color: rgba(255, 255, 255, 0.16);
+}
+
+.participant-dashboard .welcome-card h2 {
+  position: relative;
+
+  z-index: 2;
+
+  font-size: 25px;
+
+  font-weight: 750;
+
+  margin-bottom: 8px;
+}
+
+.participant-dashboard .welcome-card p {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 700px;
+
+  color: rgba(255, 255, 255, 0.9);
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   ACTION CARDS
+   ===================================================== */
+
+.participant-dashboard .dashboard-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.participant-dashboard .dashboard-action-card {
+  position: relative;
+
+  overflow: hidden;
+
+  min-height: 210px;
+
+  padding: 26px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 3px 10px rgba(17, 24, 39, 0.05);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.participant-dashboard .dashboard-action-card::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: #e5e7eb;
+
+  transition: 0.25s ease;
+}
+
+.participant-dashboard
+.dashboard-action-card:nth-child(1)::before {
+  background: #5b3fd1;
+}
+
+.participant-dashboard
+.dashboard-action-card:nth-child(2)::before {
+  background: #14b8a6;
+}
+
+.participant-dashboard
+.dashboard-action-card:nth-child(3)::before {
+  background: #3b82f6;
+}
+
+.participant-dashboard .dashboard-action-card:hover {
+  transform: translateY(-6px);
+
+  border-color: #d9d0ff;
+
+  box-shadow:
+    0 14px 30px rgba(17, 24, 39, 0.09);
+}
+
+.participant-dashboard .dashboard-action-card h3 {
+  position: relative;
+
+  z-index: 1;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  color: #111827;
+
+  margin-bottom: 9px;
+}
+
+.participant-dashboard .dashboard-action-card p {
+  position: relative;
+
+  z-index: 1;
+
+  color: #667085;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   CARD HOVER DECORATION
+   ===================================================== */
+
+.participant-dashboard
+.dashboard-action-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 90px;
+  height: 90px;
+
+  right: -45px;
+  bottom: -45px;
+
+  border-radius: 50%;
+
+  background: rgba(91, 63, 209, 0.04);
+
+  transition: 0.25s ease;
+}
+
+.participant-dashboard
+.dashboard-action-card:hover::after {
+  transform: scale(1.5);
+
+  background: rgba(91, 63, 209, 0.07);
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 1000px) {
+  .participant-dashboard {
+    padding: 35px 28px;
+  }
+
+  .participant-dashboard .dashboard-actions {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 650px) {
+  .participant-dashboard {
+    padding: 25px 16px;
+  }
+
+  .participant-dashboard .dashboard-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    margin-bottom: 25px;
+  }
+
+  .participant-dashboard .dashboard-header h1 {
+    font-size: 25px;
+  }
+
+  .participant-dashboard .logout-button {
+    min-width: 88px;
+
+    height: 40px;
+  }
+
+  .participant-dashboard .welcome-card {
+    padding: 27px 22px;
+
+    border-radius: 17px;
+  }
+
+  .participant-dashboard .welcome-card h2 {
+    font-size: 21px;
+  }
+
+  .participant-dashboard .welcome-card p {
+    font-size: 13px;
+  }
+
+  .participant-dashboard .dashboard-actions {
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+  }
+
+  .participant-dashboard .dashboard-action-card {
+    min-height: 160px;
+
+    padding: 23px;
+  }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 390px) {
+  .participant-dashboard {
+    padding: 20px 13px;
+  }
+
+  .participant-dashboard .welcome-card {
+    padding: 23px 18px;
+  }
+
+  .participant-dashboard .dashboard-action-card {
+    padding: 20px;
+  }
+}

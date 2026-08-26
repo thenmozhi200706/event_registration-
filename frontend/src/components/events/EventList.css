@@ -1,0 +1,259 @@
+/* =====================================================
+   EVENTSPHERE - EVENT LIST
+   ===================================================== */
+
+.event-list {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 22px;
+
+  align-items: stretch;
+}
+
+
+/* =====================================================
+   EVENT LIST STATES
+   ===================================================== */
+
+.event-list-state {
+  width: 100%;
+
+  min-height: 300px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  padding: 30px;
+
+  text-align: center;
+}
+
+.event-list-state p {
+  margin: 0;
+
+  color: #667085;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   RETRY BUTTON
+   ===================================================== */
+
+.event-list-retry {
+  min-height: 40px;
+
+  padding: 0 18px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5b3fd1,
+      #7655df
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 14px rgba(91, 63, 209, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.event-list-retry:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(91, 63, 209, 0.25);
+}
+
+.event-list-retry:active {
+  transform: translateY(0);
+}
+
+.event-list-retry:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(91, 63, 209, 0.14);
+}
+
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
+
+.event-list-empty {
+  width: 100%;
+
+  min-height: 320px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 35px 20px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px dashed #d9dce5;
+
+  border-radius: 16px;
+}
+
+.event-list-empty-icon {
+  width: 62px;
+
+  height: 62px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 15px;
+
+  border-radius: 50%;
+
+  background: #f2efff;
+
+  font-size: 27px;
+}
+
+.event-list-empty h3 {
+  margin: 0 0 7px;
+
+  color: #172033;
+
+  font-size: 17px;
+
+  font-weight: 750;
+}
+
+.event-list-empty p {
+  max-width: 360px;
+
+  margin: 0;
+
+  color: #7a8190;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   LARGE DESKTOP
+   ===================================================== */
+
+@media (min-width: 1400px) {
+  .event-list {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    gap: 24px;
+  }
+}
+
+
+/* =====================================================
+   TABLET / SMALL DESKTOP
+   ===================================================== */
+
+@media (max-width: 1100px) {
+  .event-list {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 650px) {
+  .event-list {
+    grid-template-columns: 1fr;
+
+    gap: 17px;
+  }
+
+  .event-list-state {
+    min-height: 250px;
+
+    padding: 25px 15px;
+  }
+
+  .event-list-empty {
+    min-height: 270px;
+
+    padding: 30px 16px;
+  }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 380px) {
+  .event-list {
+    gap: 14px;
+  }
+
+  .event-list-empty-icon {
+    width: 56px;
+
+    height: 56px;
+
+    font-size: 24px;
+  }
+
+  .event-list-empty h3 {
+    font-size: 16px;
+  }
+
+  .event-list-empty p {
+    font-size: 12px;
+  }
+}

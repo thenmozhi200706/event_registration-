@@ -1,0 +1,194 @@
+/* =====================================================
+   EVENTSPHERE - EVENT SEARCH
+   ===================================================== */
+
+.event-search {
+  width: 100%;
+}
+
+.event-search-input-wrapper {
+  position: relative;
+
+  width: 100%;
+  min-height: 52px;
+
+  display: flex;
+  align-items: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e5ec;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 4px 14px rgba(17, 24, 39, 0.04);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.event-search-input-wrapper:focus-within {
+  border-color: #6d4ce6;
+
+  box-shadow:
+    0 0 0 4px rgba(109, 76, 230, 0.1);
+}
+
+
+/* =====================================================
+   SEARCH ICON
+   ===================================================== */
+
+.event-search-icon {
+  flex-shrink: 0;
+
+  margin-left: 17px;
+
+  color: #7a8190;
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   INPUT
+   ===================================================== */
+
+.event-search-input {
+  width: 100%;
+  height: 50px;
+
+  min-width: 0;
+
+  padding: 0 48px 0 13px;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #172033;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+.event-search-input::placeholder {
+  color: #98a0af;
+
+  font-weight: 400;
+}
+
+.event-search-input:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+
+/* =====================================================
+   CLEAR BUTTON
+   ===================================================== */
+
+.event-search-clear {
+  position: absolute;
+
+  right: 12px;
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #7b8190;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.event-search-clear:hover {
+  background: #f2efff;
+
+  color: #5b3fd1;
+}
+
+.event-search-clear:active {
+  transform: scale(0.95);
+}
+
+.event-search-clear:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(91, 63, 209, 0.15);
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .event-search-input-wrapper {
+    min-height: 50px;
+
+    border-radius: 12px;
+  }
+
+  .event-search-input {
+    height: 48px;
+
+    font-size: 13.5px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 480px) {
+  .event-search-input-wrapper {
+    min-height: 48px;
+  }
+
+  .event-search-icon {
+    margin-left: 14px;
+  }
+
+  .event-search-input {
+    height: 46px;
+
+    padding-left: 11px;
+    padding-right: 44px;
+
+    font-size: 13px;
+  }
+
+  .event-search-clear {
+    right: 9px;
+
+    width: 30px;
+    height: 30px;
+  }
+}

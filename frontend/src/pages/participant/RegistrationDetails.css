@@ -1,0 +1,780 @@
+/* ============================================================
+   EVENTSPHERE — REGISTRATION DETAILS
+   ============================================================ */
+
+.registration-details-page {
+    min-height: 100vh;
+
+    padding: 40px 5% 70px;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(109, 76, 255, 0.08),
+            transparent 34%
+        ),
+        #f8f9fd;
+
+    color: #111827;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.registration-details-header {
+    max-width: 1200px;
+
+    margin: 0 auto 28px;
+}
+
+.registration-details-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-bottom: 24px;
+
+    color: #6546dc;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.registration-details-back:hover {
+    color: #4f32bd;
+
+    transform: translateX(-2px);
+}
+
+.registration-details-eyebrow {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color: #6845dc;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+.registration-details-header h1 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.08;
+
+    font-weight: 800;
+
+    letter-spacing: -0.04em;
+}
+
+.registration-details-header p {
+    margin: 11px 0 0;
+
+    color: #64748b;
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   ALERT
+   ============================================================ */
+
+.registration-details-alert {
+    max-width: 1200px;
+
+    margin: 0 auto 22px;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 14px 17px;
+
+    border: 1px solid #fecaca;
+    border-radius: 13px;
+
+    background: #fff5f5;
+
+    color: #b91c1c;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.registration-details-alert svg {
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+
+.registration-details-container {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 22px;
+}
+
+
+/* ============================================================
+   EVENT CARD
+   ============================================================ */
+
+.registration-details-event-card {
+    overflow: hidden;
+
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr);
+
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 14px 40px rgba(15, 23, 42, 0.055);
+}
+
+
+/* ============================================================
+   EVENT IMAGE
+   ============================================================ */
+
+.registration-details-event-image {
+    position: relative;
+
+    min-height: 260px;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ede9fe,
+            #e0e7ff
+        );
+
+    color: #6845dc;
+}
+
+.registration-details-event-image img {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    inset: 0;
+
+    object-fit: cover;
+}
+
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+
+.registration-details-status {
+    position: absolute;
+
+    top: 16px;
+    right: 16px;
+
+    min-height: 31px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 0 11px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    backdrop-filter: blur(8px);
+}
+
+.registration-details-status.confirmed {
+    background: rgba(220, 252, 231, 0.95);
+    color: #15803d;
+}
+
+.registration-details-status.pending {
+    background: rgba(254, 249, 195, 0.96);
+    color: #a16207;
+}
+
+.registration-details-status.cancelled {
+    background: rgba(254, 226, 226, 0.96);
+    color: #b91c1c;
+}
+
+
+/* ============================================================
+   EVENT CONTENT
+   ============================================================ */
+
+.registration-details-event-content {
+    padding: 30px;
+}
+
+.registration-details-label {
+    color: #6845dc;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.14em;
+}
+
+.registration-details-event-content h2 {
+    margin: 8px 0 23px;
+
+    color: #111827;
+
+    font-size: 28px;
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: -0.025em;
+}
+
+
+/* ============================================================
+   EVENT INFORMATION
+   ============================================================ */
+
+.registration-details-event-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+.registration-details-event-info div {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    color: #64748b;
+
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.registration-details-event-info svg {
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    color: #6845dc;
+}
+
+
+/* ============================================================
+   PRICE
+   ============================================================ */
+
+.registration-details-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 25px;
+    padding-top: 20px;
+
+    border-top: 1px solid #edf0f4;
+}
+
+.registration-details-price span {
+    color: #64748b;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.registration-details-price strong {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 2px;
+
+    color: #111827;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   INFORMATION CARD
+   ============================================================ */
+
+.registration-details-card {
+    padding: 27px 29px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 19px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+
+/* ============================================================
+   CARD HEADER
+   ============================================================ */
+
+.registration-details-card-header {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding-bottom: 21px;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+.registration-details-card-icon {
+    width: 45px;
+    height: 45px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #ede9fe;
+    color: #6845dc;
+}
+
+.registration-details-card-header h2 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.registration-details-card-header p {
+    margin: 4px 0 0;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   DETAILS GRID
+   ============================================================ */
+
+.registration-details-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 0;
+
+    margin-top: 5px;
+}
+
+.registration-details-item {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    padding: 18px 20px;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+.registration-details-item:nth-child(odd) {
+    border-right: 1px solid #edf0f4;
+}
+
+.registration-details-item span {
+    color: #94a3b8;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+}
+
+.registration-details-item strong {
+    overflow: hidden;
+
+    color: #1f2937;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   STATUS VALUES
+   ============================================================ */
+
+.registration-details-value-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    width: fit-content;
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    font-size: 11px !important;
+    font-weight: 800 !important;
+
+    white-space: normal !important;
+}
+
+.registration-details-value-status.confirmed {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.registration-details-value-status.pending {
+    background: #fef9c3;
+    color: #a16207;
+}
+
+.registration-details-value-status.cancelled {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.registration-details-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    padding-top: 3px;
+}
+
+.registration-details-secondary-button,
+.registration-details-primary-button,
+.registration-details-back-button {
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 18px;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.registration-details-secondary-button {
+    border: 1px solid #dfe3ea;
+
+    background: #ffffff;
+    color: #475569;
+}
+
+.registration-details-secondary-button:hover {
+    background: #f8fafc;
+
+    border-color: #cbd5e1;
+
+    transform: translateY(-1px);
+}
+
+.registration-details-primary-button {
+    border: none;
+
+    background: #6845dc;
+    color: #ffffff;
+
+    box-shadow:
+        0 7px 18px rgba(104, 69, 220, 0.2);
+}
+
+.registration-details-primary-button:hover:not(:disabled) {
+    background: #5734ca;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 24px rgba(104, 69, 220, 0.25);
+}
+
+.registration-details-primary-button:disabled {
+    opacity: 0.65;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   ERROR / LOADING STATE
+   ============================================================ */
+
+.registration-details-state {
+    min-height: 75vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    padding: 40px;
+
+    background: #f8f9fd;
+
+    text-align: center;
+}
+
+.registration-details-state h2 {
+    margin: 18px 0 7px;
+
+    color: #111827;
+
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.registration-details-state p {
+    max-width: 480px;
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+.registration-details-state-icon {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+}
+
+.registration-details-state-icon.error {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.registration-details-back-button {
+    margin-top: 21px;
+
+    border: none;
+
+    background: #6845dc;
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   SPINNER
+   ============================================================ */
+
+.registration-details-spinner {
+    animation:
+        registration-details-spin
+        0.9s
+        linear
+        infinite;
+}
+
+@keyframes registration-details-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .registration-details-page {
+        padding: 32px 4% 55px;
+    }
+
+    .registration-details-event-card {
+        grid-template-columns: 1fr;
+    }
+
+    .registration-details-event-image {
+        min-height: 270px;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+    .registration-details-page {
+        padding: 25px 16px 45px;
+    }
+
+    .registration-details-header h1 {
+        font-size: 32px;
+    }
+
+    .registration-details-header p {
+        font-size: 14px;
+    }
+
+    .registration-details-event-card {
+        border-radius: 17px;
+    }
+
+    .registration-details-event-image {
+        min-height: 210px;
+    }
+
+    .registration-details-event-content {
+        padding: 21px;
+    }
+
+    .registration-details-event-content h2 {
+        font-size: 23px;
+    }
+
+    .registration-details-card {
+        padding: 20px 17px;
+
+        border-radius: 17px;
+    }
+
+    .registration-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .registration-details-item {
+        padding: 15px 5px;
+    }
+
+    .registration-details-item:nth-child(odd) {
+        border-right: none;
+    }
+
+    .registration-details-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .registration-details-secondary-button,
+    .registration-details-primary-button {
+        width: 100%;
+    }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 400px) {
+
+    .registration-details-header h1 {
+        font-size: 29px;
+    }
+
+    .registration-details-card-header h2 {
+        font-size: 18px;
+    }
+
+    .registration-details-price strong {
+        font-size: 19px;
+    }
+
+}

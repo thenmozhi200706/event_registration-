@@ -1,0 +1,9 @@
+.participant-layout {
+  min-height: 100vh;
+
+  background: var(--background);
+}
+
+.participant-layout-content {
+  min-height: 100vh;
+}

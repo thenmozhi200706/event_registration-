@@ -1,0 +1,1443 @@
+/* =====================================================
+   EVENTSPHERE - CREATE EVENT PAGE
+   ===================================================== */
+
+.create-event-page {
+  min-height: 100vh;
+  padding: 35px 25px 60px;
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(91, 63, 209, 0.07),
+      transparent 28%
+    ),
+    #f7f8fc;
+
+  color: #172033;
+}
+
+
+/* =====================================================
+   CONTAINER
+   ===================================================== */
+
+.create-event-container {
+  width: min(1000px, 100%);
+  margin: 0 auto;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.create-event-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.create-event-header > div {
+  flex: 1;
+}
+
+.create-event-back {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-top: 3px;
+  padding: 8px 11px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #667085;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.create-event-back:hover {
+  background: #eeeaff;
+  color: #5b3fd1;
+  transform: translateX(-2px);
+}
+
+.create-event-back:focus-visible {
+  outline: none;
+
+  box-shadow:
+    0 0 0 4px rgba(91, 63, 209, 0.12);
+}
+
+.create-event-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+
+  color: #6d4ce6;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.create-event-header h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 850;
+  line-height: 1.15;
+
+  letter-spacing: -0.8px;
+}
+
+.create-event-header p {
+  margin: 9px 0 0;
+
+  color: #7a8190;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   MESSAGES
+   ===================================================== */
+
+.create-event-message {
+  margin-bottom: 18px;
+  padding: 13px 15px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.create-event-message.error {
+  background: #fff1f2;
+
+  border: 1px solid #fecdd3;
+
+  color: #b42318;
+}
+
+.create-event-message.success {
+  background: #ecfdf3;
+
+  border: 1px solid #a7f3d0;
+
+  color: #047857;
+}
+
+
+/* =====================================================
+   FORM
+   ===================================================== */
+
+.create-event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+
+/* =====================================================
+   FORM SECTION
+   ===================================================== */
+
+.create-event-section {
+  padding: 25px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  box-shadow:
+    0 4px 14px rgba(17, 24, 39, 0.04);
+}
+
+.create-event-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 23px;
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid #eef0f4;
+}
+
+.create-event-section-icon {
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #eee9ff;
+
+  color: #5b3fd1;
+}
+
+.create-event-section-header h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.create-event-section-header p {
+  margin: 4px 0 0;
+
+  color: #98a2b3;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   FIELDS GRID
+   ===================================================== */
+
+.create-event-fields {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 19px;
+}
+
+.create-event-field {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.create-event-field.full {
+  grid-column: 1 / -1;
+}
+
+
+/* =====================================================
+   LABELS
+   ===================================================== */
+
+.create-event-field label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #344054;
+
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.create-event-field label svg {
+  color: #5b3fd1;
+}
+
+
+/* =====================================================
+   INPUTS
+   ===================================================== */
+
+.create-event-field input,
+.create-event-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dfe2e8;
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #ffffff;
+  color: #172033;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.create-event-field input {
+  height: 45px;
+  padding: 0 13px;
+}
+
+.create-event-field textarea {
+  min-height: 135px;
+
+  padding: 12px 13px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+.create-event-field input::placeholder,
+.create-event-field textarea::placeholder {
+  color: #a0a7b4;
+
+  font-weight: 400;
+}
+
+.create-event-field input:hover,
+.create-event-field textarea:hover {
+  border-color: #c8c1e8;
+}
+
+.create-event-field input:focus,
+.create-event-field textarea:focus {
+  border-color: #6d4ce6;
+
+  box-shadow:
+    0 0 0 4px rgba(109, 76, 230, 0.1);
+}
+
+.create-event-field input:disabled,
+.create-event-field textarea:disabled {
+  background: #f7f8fa;
+
+  cursor: not-allowed;
+
+  opacity: 0.7;
+}
+
+
+/* =====================================================
+   SMALL HELP TEXT
+   ===================================================== */
+
+.create-event-field small {
+  color: #98a2b3;
+
+  font-size: 10.5px;
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   HASHTAG INPUT
+   ===================================================== */
+
+.create-event-hashtag-input {
+  display: flex;
+  align-items: stretch;
+
+  gap: 7px;
+}
+
+.create-event-hashtag-input input {
+  flex: 1;
+  min-width: 0;
+}
+
+.create-event-hashtag-input button {
+  flex-shrink: 0;
+
+  min-width: 62px;
+
+  padding: 0 13px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #eee9ff;
+  color: #5b3fd1;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.create-event-hashtag-input button:hover {
+  background: #5b3fd1;
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   TAGS
+   ===================================================== */
+
+.create-event-tags {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-top: 3px;
+}
+
+.create-event-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 8px 6px 10px;
+
+  border-radius: 999px;
+
+  background: #f2efff;
+  color: #5b3fd1;
+
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.create-event-tag button {
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(91, 63, 209, 0.1);
+  color: #5b3fd1;
+
+  cursor: pointer;
+}
+
+.create-event-tag button:hover {
+  background: #5b3fd1;
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   PAYMENT SECTION
+   ===================================================== */
+
+.create-event-payment {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+
+/* =====================================================
+   PAYMENT OPTION
+   ===================================================== */
+
+.create-event-payment-option {
+  min-height: 105px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 16px;
+
+  border: 1px solid #e2e4ea;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  color: #172033;
+
+  text-align: left;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.create-event-payment-option:hover:not(:disabled) {
+  border-color: #bdb2f4;
+
+  background: #fbfaff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(91, 63, 209, 0.08);
+}
+
+.create-event-payment-option.selected {
+  border-color: #6d4ce6;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7f4ff,
+      #ffffff
+    );
+
+  box-shadow:
+    0 0 0 3px rgba(109, 76, 230, 0.09);
+}
+
+.create-event-payment-option:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.48;
+
+  transform: none;
+}
+
+.create-event-payment-option-icon {
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #eee9ff;
+
+  color: #5b3fd1;
+}
+
+.create-event-payment-option.selected
+.create-event-payment-option-icon {
+  background: #6d4ce6;
+
+  color: #ffffff;
+}
+
+.create-event-payment-option strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #182039;
+
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.create-event-payment-option span {
+  display: block;
+
+  color: #8991a3;
+
+  font-size: 10.5px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   PAYMENT DETAILS
+   ===================================================== */
+
+.create-event-payment-details {
+  margin-top: 18px;
+
+  padding: 18px;
+
+  border: 1px solid #e8e5f5;
+
+  border-radius: 13px;
+
+  background: #faf9ff;
+}
+
+
+/* =====================================================
+   PAYMENT INSTRUCTIONS
+   ===================================================== */
+
+.create-event-payment-details
+.create-event-field.full {
+  margin-top: 2px;
+}
+
+.create-event-payment-details
+textarea {
+  min-height: 105px;
+}
+
+
+/* =====================================================
+   PAYMENT QR UPLOAD
+   ===================================================== */
+
+.create-event-payment-qr-upload {
+  width: 100%;
+  min-height: 175px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 20px;
+
+  border: 2px dashed #cfc7f4;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  color: #6844e8;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.create-event-payment-qr-upload:hover {
+  border-color: #6844e8;
+
+  background: #f8f6ff;
+
+  transform: translateY(-1px);
+}
+
+.create-event-payment-qr-upload strong {
+  color: #242b3d;
+
+  font-size: 13px;
+}
+
+.create-event-payment-qr-upload span {
+  color: #858da0;
+
+  font-size: 10.5px;
+}
+
+.create-event-payment-qr-upload small {
+  color: #a0a7b4;
+
+  font-size: 9.5px;
+}
+
+
+/* =====================================================
+   PAYMENT QR PREVIEW
+   ===================================================== */
+
+.create-event-payment-qr-preview {
+  display: flex;
+
+  gap: 15px;
+
+  padding: 12px;
+
+  border: 1px solid #e1e3eb;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+}
+
+.create-event-payment-qr-image {
+  position: relative;
+
+  flex-shrink: 0;
+
+  width: 150px;
+  height: 150px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  border: 1px solid #e3e5eb;
+
+  background: #f8f8fa;
+}
+
+.create-event-payment-qr-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  padding: 6px;
+
+  box-sizing: border-box;
+}
+
+.create-event-payment-qr-image > button {
+  position: absolute;
+
+  top: 7px;
+  right: 7px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  color: #d92929;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.14);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.create-event-payment-qr-image > button:hover {
+  background: #ffffff;
+
+  transform: scale(1.06);
+}
+
+
+/* =====================================================
+   QR INFORMATION
+   ===================================================== */
+
+.create-event-payment-qr-info {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: flex-start;
+
+  gap: 6px;
+}
+
+.create-event-payment-qr-info strong {
+  max-width: 100%;
+
+  color: #182039;
+
+  font-size: 13px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.create-event-payment-qr-info span {
+  color: #8c94a6;
+
+  font-size: 11px;
+}
+
+.create-event-payment-qr-info button {
+  margin-top: 7px;
+
+  padding: 8px 12px;
+
+  border: 1px solid #dcd6ff;
+
+  border-radius: 8px;
+
+  background: #f7f5ff;
+
+  color: #6844e8;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.create-event-payment-qr-info button:hover {
+  background: #eeeaff;
+}
+
+
+/* =====================================================
+   RAZORPAY INFORMATION
+   ===================================================== */
+
+.create-event-payment-info {
+  margin-top: 18px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 13px;
+
+  padding: 16px 18px;
+
+  border: 1px solid #ddd8f6;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8f6ff,
+      #ffffff
+    );
+
+  color: #6844e8;
+}
+
+.create-event-payment-info svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+}
+
+.create-event-payment-info strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #242b3d;
+
+  font-size: 13px;
+}
+
+.create-event-payment-info p {
+  margin: 0;
+
+  color: #7f8799;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   FILE INPUT
+   ===================================================== */
+
+.create-event-file-input {
+  display: none;
+}
+
+
+/* =====================================================
+   EVENT BANNER UPLOAD
+   ===================================================== */
+
+.create-event-upload-box {
+  width: 100%;
+  min-height: 240px;
+
+  box-sizing: border-box;
+
+  border: 2px dashed #d8d2f7;
+
+  border-radius: 18px;
+
+  background: #faf9ff;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+
+  color: inherit;
+
+  padding: 30px;
+}
+
+.create-event-upload-box:hover {
+  border-color: #6844e8;
+
+  background: #f6f3ff;
+
+  transform: translateY(-1px);
+}
+
+.create-event-upload-box:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+}
+
+.create-event-upload-icon {
+  width: 62px;
+  height: 62px;
+
+  border-radius: 16px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #ece8ff;
+
+  color: #6844e8;
+
+  margin-bottom: 8px;
+}
+
+.create-event-upload-box strong {
+  color: #182039;
+
+  font-size: 16px;
+}
+
+.create-event-upload-box span:not(
+  .create-event-upload-icon
+) {
+  color: #7d879f;
+
+  font-size: 13px;
+}
+
+.create-event-upload-box small {
+  color: #9aa2b5;
+
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   BANNER IMAGE PREVIEW
+   ===================================================== */
+
+.create-event-image-preview {
+  width: 100%;
+
+  overflow: hidden;
+
+  border: 1px solid #e1e3eb;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+}
+
+.create-event-image-wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+.create-event-image-wrapper img {
+  display: block;
+
+  width: 100%;
+  height: 320px;
+
+  object-fit: cover;
+
+  background: #f5f5f7;
+}
+
+
+/* =====================================================
+   REMOVE BANNER
+   ===================================================== */
+
+.create-event-remove-image {
+  position: absolute;
+
+  top: 14px;
+  right: 14px;
+
+  width: 40px;
+  height: 40px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  color: #d92929;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.create-event-remove-image:hover {
+  background: #ffffff;
+
+  transform: scale(1.05);
+}
+
+.create-event-remove-image:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.5;
+}
+
+
+/* =====================================================
+   BANNER INFORMATION
+   ===================================================== */
+
+.create-event-image-info {
+  min-height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 14px 18px;
+}
+
+.create-event-image-info > div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.create-event-image-info strong {
+  color: #182039;
+
+  font-size: 14px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.create-event-image-info span {
+  color: #8b93a7;
+
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   CHANGE IMAGE
+   ===================================================== */
+
+.create-event-change-image {
+  flex-shrink: 0;
+
+  border: 1px solid #dcd6ff;
+
+  background: #f7f5ff;
+
+  color: #6844e8;
+
+  border-radius: 9px;
+
+  padding: 9px 14px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.create-event-change-image:hover {
+  background: #eeeaff;
+}
+
+.create-event-change-image:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.5;
+}
+
+
+/* =====================================================
+   ACTIONS
+   ===================================================== */
+
+.create-event-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding-top: 3px;
+}
+
+.create-event-cancel,
+.create-event-submit {
+  min-height: 45px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 18px;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.create-event-cancel {
+  border: 1px solid #dfe2e8;
+
+  background: #ffffff;
+
+  color: #667085;
+}
+
+.create-event-cancel:hover {
+  background: #f8f9fb;
+
+  border-color: #cfd3dc;
+
+  color: #344054;
+}
+
+.create-event-submit {
+  border: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5b3fd1,
+      #7655df
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 16px rgba(91, 63, 209, 0.2);
+}
+
+.create-event-submit:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 21px rgba(91, 63, 209, 0.27);
+}
+
+.create-event-cancel:disabled,
+.create-event-submit:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* =====================================================
+   LOADING SPINNER
+   ===================================================== */
+
+.create-event-spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation:
+    create-event-spin 0.7s linear infinite;
+}
+
+@keyframes create-event-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+  .create-event-page {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .create-event-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .create-event-field.full {
+    grid-column: auto;
+  }
+
+  .create-event-payment {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .create-event-page {
+    padding: 22px 13px 45px;
+  }
+
+  .create-event-header {
+    gap: 10px;
+
+    margin-bottom: 20px;
+  }
+
+  .create-event-header h1 {
+    font-size: 28px;
+  }
+
+  .create-event-header p {
+    font-size: 12px;
+  }
+
+  .create-event-section {
+    padding: 19px;
+
+    border-radius: 14px;
+  }
+
+  .create-event-section-header {
+    margin-bottom: 19px;
+
+    padding-bottom: 15px;
+  }
+
+  .create-event-section-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .create-event-fields {
+    gap: 16px;
+  }
+
+  .create-event-payment {
+    grid-template-columns: 1fr;
+  }
+
+  .create-event-payment-option {
+    min-height: 90px;
+  }
+
+  .create-event-payment-qr-preview {
+    flex-direction: column;
+  }
+
+  .create-event-payment-qr-image {
+    width: 100%;
+    height: 230px;
+  }
+
+  .create-event-payment-qr-info {
+    width: 100%;
+  }
+
+  .create-event-payment-qr-info button {
+    width: 100%;
+  }
+
+  .create-event-actions {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .create-event-cancel,
+  .create-event-submit {
+    width: 100%;
+  }
+
+  .create-event-image-wrapper img {
+    height: 220px;
+  }
+
+  .create-event-image-info {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .create-event-change-image {
+    width: 100%;
+  }
+
+  .create-event-upload-box {
+    min-height: 200px;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 380px) {
+
+  .create-event-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .create-event-section {
+    padding: 16px;
+  }
+
+  .create-event-section-header h2 {
+    font-size: 15px;
+  }
+
+  .create-event-section-header p {
+    font-size: 10px;
+  }
+
+  .create-event-hashtag-input button {
+    min-width: 55px;
+
+    padding: 0 10px;
+  }
+
+  .create-event-payment-option {
+    padding: 13px;
+  }
+
+}

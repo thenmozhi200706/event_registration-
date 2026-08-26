@@ -1,0 +1,1144 @@
+/* ============================================================
+   EVENTSPHERE — PAYMENT PAGE
+   ============================================================ */
+
+.payment-page {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8f7fc 0%,
+            #ffffff 65%
+        );
+
+    color: #101828;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.payment-page-header {
+    width: 100%;
+
+    padding: 28px 24px 34px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eaecf0;
+
+    box-sizing: border-box;
+}
+
+.payment-page-header-inner {
+    width: 100%;
+    max-width: 1180px;
+
+    margin: 0 auto;
+}
+
+.payment-page-back-link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 22px;
+
+    color: #667085;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 650;
+
+    transition:
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.payment-page-back-link:hover {
+    color: #6246d8;
+
+    transform: translateX(-2px);
+}
+
+.payment-page-eyebrow {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #6246d8;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.4px;
+}
+
+.payment-page-header h1 {
+    margin: 0 0 8px;
+
+    color: #101828;
+
+    font-size: 32px;
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+.payment-page-header p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+
+.payment-page-content {
+    width: 100%;
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    padding: 32px 24px 70px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   PAYMENT GRID
+   ============================================================ */
+
+.payment-page-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(340px, 0.75fr);
+
+    align-items: start;
+
+    gap: 24px;
+}
+
+
+/* ============================================================
+   COMMON CARD
+   ============================================================ */
+
+.payment-details-card,
+.payment-checkout-card {
+    background: #ffffff;
+
+    border: 1px solid #e7e5f2;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 35px rgba(
+            25,
+            20,
+            60,
+            0.05
+        );
+}
+
+
+/* ============================================================
+   DETAILS CARD
+   ============================================================ */
+
+.payment-details-card {
+    padding: 28px;
+}
+
+.payment-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+.payment-card-heading > div:first-child {
+    min-width: 0;
+}
+
+.payment-card-heading > div:first-child > span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #6246d8;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+.payment-card-heading h2 {
+    margin: 0;
+
+    color: #101828;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    line-height: 1.35;
+}
+
+.payment-card-check {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #027a48;
+
+    background: #ecfdf3;
+
+    border-radius: 12px;
+}
+
+
+/* ============================================================
+   EVENT DETAILS
+   ============================================================ */
+
+.payment-event-details {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    padding: 24px 0;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+.payment-event-details > div {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    min-width: 0;
+
+    padding: 14px;
+
+    background: #faf9ff;
+
+    border: 1px solid #eeeafc;
+
+    border-radius: 12px;
+}
+
+.payment-event-details svg {
+    flex-shrink: 0;
+
+    margin-top: 2px;
+
+    color: #6246d8;
+}
+
+.payment-event-details > div > div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.payment-event-details span {
+    color: #98a2b3;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.payment-event-details strong {
+    color: #344054;
+
+    font-size: 12px;
+    font-weight: 650;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   PARTICIPANT
+   ============================================================ */
+
+.payment-participant {
+    padding: 23px 0;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+.payment-participant > span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #98a2b3;
+
+    font-size: 10px;
+    font-weight: 750;
+
+    letter-spacing: 0.7px;
+}
+
+.payment-participant strong {
+    display: block;
+
+    color: #101828;
+
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.payment-participant p {
+    margin: 5px 0 0;
+
+    color: #667085;
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   REGISTRATION ID
+   ============================================================ */
+
+.payment-registration-id {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-top: 20px;
+}
+
+.payment-registration-id span {
+    color: #98a2b3;
+
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.payment-registration-id strong {
+    max-width: 60%;
+
+    overflow: hidden;
+
+    color: #475467;
+
+    font-size: 11px;
+    font-weight: 650;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   CHECKOUT CARD
+   ============================================================ */
+
+.payment-checkout-card {
+    padding: 26px;
+
+    position: sticky;
+
+    top: 24px;
+}
+
+.payment-checkout-heading {
+    margin-bottom: 20px;
+}
+
+.payment-checkout-heading > span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #6246d8;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+.payment-checkout-heading h2 {
+    margin: 0;
+
+    color: #101828;
+
+    font-size: 20px;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   AMOUNT
+   ============================================================ */
+
+.payment-amount-box {
+    margin-bottom: 17px;
+
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8f6ff,
+            #fcfbff
+        );
+
+    border: 1px solid #ddd5f8;
+
+    border-radius: 15px;
+}
+
+.payment-amount-box > span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #667085;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.payment-amount-box > div {
+    display: flex;
+    align-items: center;
+
+    gap: 2px;
+
+    color: #101828;
+}
+
+.payment-amount-box svg {
+    color: #6246d8;
+}
+
+.payment-amount-box strong {
+    font-size: 29px;
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   PAYMENT METHOD
+   ============================================================ */
+
+.payment-method-box {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 18px;
+
+    padding: 13px;
+
+    background: #f8f9fc;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 11px;
+}
+
+.payment-method-icon {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #027a48;
+
+    background: #ecfdf3;
+
+    border-radius: 9px;
+}
+
+.payment-method-box > div:last-child {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.payment-method-box strong {
+    color: #344054;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.payment-method-box span {
+    color: #98a2b3;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   SECURE NOTE
+   ============================================================ */
+
+.payment-secure-note {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin: 13px 0 0;
+
+    color: #98a2b3;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+.payment-secure-note svg {
+    flex-shrink: 0;
+
+    color: #027a48;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.payment-page-loading {
+    width: min(
+        calc(100% - 48px),
+        600px
+    );
+
+    min-height: 420px;
+
+    margin: 60px auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e7e5f2;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 35px rgba(
+            25,
+            20,
+            60,
+            0.05
+        );
+}
+
+.payment-page-loading h2 {
+    margin: 18px 0 6px;
+
+    color: #101828;
+
+    font-size: 20px;
+    font-weight: 750;
+}
+
+.payment-page-loading p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+.payment-page-spinner {
+    color: #6246d8;
+
+    animation:
+        payment-page-spin
+        0.8s linear infinite;
+}
+
+@keyframes payment-page-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.payment-page-error {
+    width: min(
+        calc(100% - 48px),
+        620px
+    );
+
+    margin: 70px auto;
+
+    padding: 42px 32px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e7e5f2;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 10px 35px rgba(
+            25,
+            20,
+            60,
+            0.06
+        );
+}
+
+.payment-page-error-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    color: #b42318;
+
+    background: #fff1f0;
+
+    border-radius: 50%;
+}
+
+.payment-page-error h2 {
+    margin: 0 0 8px;
+
+    color: #101828;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.payment-page-error p {
+    max-width: 480px;
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+.payment-page-error-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+
+/* ============================================================
+   ERROR BUTTONS
+   ============================================================ */
+
+.payment-page-primary-button,
+.payment-page-secondary-button {
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 17px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.payment-page-primary-button {
+    color: #ffffff;
+
+    background: #6246d8;
+
+    border: 1px solid #6246d8;
+}
+
+.payment-page-primary-button:hover {
+    background: #5638ca;
+
+    border-color: #5638ca;
+
+    transform: translateY(-1px);
+}
+
+.payment-page-secondary-button {
+    color: #344054;
+
+    background: #ffffff;
+
+    border: 1px solid #d0d5dd;
+}
+
+.payment-page-secondary-button:hover {
+    color: #6246d8;
+
+    background: #faf9ff;
+
+    border-color: #b8ace9;
+}
+
+
+/* ============================================================
+   PAYMENT SUCCESS
+   ============================================================ */
+
+.payment-success-card {
+    width: min(
+        100%,
+        680px
+    );
+
+    margin: 40px auto;
+
+    padding: 48px 36px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #d9f0e2;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 14px 45px rgba(
+            25,
+            80,
+            50,
+            0.07
+        );
+}
+
+.payment-success-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    color: #027a48;
+
+    background: #ecfdf3;
+
+    border-radius: 50%;
+}
+
+.payment-success-eyebrow {
+    margin-bottom: 8px;
+
+    color: #027a48;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+.payment-success-card h1 {
+    margin: 0 0 10px;
+
+    color: #101828;
+
+    font-size: 29px;
+    font-weight: 800;
+}
+
+.payment-success-card > p {
+    max-width: 510px;
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+
+/* ============================================================
+   TICKET
+   ============================================================ */
+
+.payment-ticket-box {
+    width: min(
+        100%,
+        400px
+    );
+
+    margin-top: 24px;
+
+    padding: 16px;
+
+    background: #f8f9fc;
+
+    border: 1px dashed #cfd4dc;
+
+    border-radius: 12px;
+}
+
+.payment-ticket-box span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #98a2b3;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.payment-ticket-box strong {
+    color: #344054;
+
+    font-size: 14px;
+
+    word-break: break-all;
+}
+
+
+/* ============================================================
+   SUCCESS PAYMENT INFO
+   ============================================================ */
+
+.payment-success-payment-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    margin-top: 16px;
+}
+
+.payment-success-payment-info span {
+    color: #98a2b3;
+
+    font-size: 10px;
+}
+
+.payment-success-payment-info strong {
+    color: #475467;
+
+    font-size: 11px;
+
+    word-break: break-all;
+}
+
+
+/* ============================================================
+   SUCCESS BUTTON
+   ============================================================ */
+
+.payment-success-button {
+    min-height: 47px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 27px;
+
+    padding: 0 21px;
+
+    color: #ffffff;
+
+    background: #6246d8;
+
+    border: 1px solid #6246d8;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+}
+
+.payment-success-button:hover {
+    background: #5638ca;
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .payment-page-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-checkout-card {
+        position: static;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .payment-page-header {
+        padding: 22px 16px 28px;
+    }
+
+    .payment-page-content {
+        padding:
+            22px 16px 50px;
+    }
+
+    .payment-page-header h1 {
+        font-size: 25px;
+    }
+
+    .payment-page-header p {
+        font-size: 12px;
+    }
+
+    .payment-details-card,
+    .payment-checkout-card {
+        padding: 20px;
+
+        border-radius: 16px;
+    }
+
+    .payment-card-heading h2 {
+        font-size: 19px;
+    }
+
+    .payment-card-check {
+        width: 38px;
+        height: 38px;
+    }
+
+    .payment-event-details {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-registration-id {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .payment-registration-id strong {
+        max-width: 100%;
+    }
+
+
+    /* Error */
+
+    .payment-page-error {
+        width: calc(100% - 32px);
+
+        margin: 45px auto;
+
+        padding: 32px 20px;
+
+        border-radius: 17px;
+    }
+
+    .payment-page-error-actions {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .payment-page-primary-button,
+    .payment-page-secondary-button {
+        width: 100%;
+    }
+
+
+    /* Success */
+
+    .payment-success-card {
+        margin: 20px auto;
+
+        padding: 36px 20px;
+
+        border-radius: 18px;
+    }
+
+    .payment-success-card h1 {
+        font-size: 23px;
+    }
+
+    .payment-success-card > p {
+        font-size: 13px;
+    }
+
+    .payment-success-button {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+    .payment-page-header h1 {
+        font-size: 22px;
+    }
+
+    .payment-details-card,
+    .payment-checkout-card {
+        padding: 17px;
+    }
+
+    .payment-amount-box {
+        padding: 16px;
+    }
+
+    .payment-amount-box strong {
+        font-size: 25px;
+    }
+
+    .payment-success-icon {
+        width: 62px;
+        height: 62px;
+    }
+
+    .payment-success-card h1 {
+        font-size: 21px;
+    }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .payment-page-back-link,
+    .payment-page-primary-button,
+    .payment-page-secondary-button,
+    .payment-success-button {
+        transition: none;
+    }
+
+    .payment-page-spinner {
+        animation: none;
+    }
+}

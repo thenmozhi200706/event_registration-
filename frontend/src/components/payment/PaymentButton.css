@@ -1,0 +1,259 @@
+/* ============================================================
+   EVENTSPHERE — PAYMENT BUTTON
+   ============================================================ */
+
+.payment-button-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* ============================================================
+   PAYMENT BUTTON
+   ============================================================ */
+
+.payment-button {
+    width: 100%;
+    min-height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 0 20px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6246d8 0%,
+            #7659e6 100%
+        );
+
+    border: 1px solid #6246d8;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 18px rgba(
+            98,
+            70,
+            216,
+            0.20
+        );
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease,
+        opacity 0.18s ease;
+}
+
+.payment-button:hover:not(:disabled) {
+    background:
+        linear-gradient(
+            135deg,
+            #5638ca 0%,
+            #694bd8 100%
+        );
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 24px rgba(
+            98,
+            70,
+            216,
+            0.26
+        );
+}
+
+.payment-button:active:not(:disabled) {
+    transform: translateY(0);
+
+    box-shadow:
+        0 5px 13px rgba(
+            98,
+            70,
+            216,
+            0.18
+        );
+}
+
+.payment-button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   BUTTON ICONS
+   ============================================================ */
+
+.payment-button > svg {
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   LOADING SPINNER
+   ============================================================ */
+
+.payment-button-spinner {
+    animation:
+        payment-button-spin
+        0.75s linear infinite;
+}
+
+@keyframes payment-button-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.payment-button-error {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    color: #b42318;
+
+    background: #fff1f0;
+
+    border: 1px solid #fecdca;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 550;
+
+    line-height: 1.5;
+}
+
+.payment-button-error span {
+    display: block;
+}
+
+
+/* ============================================================
+   SECURITY INFORMATION
+   ============================================================ */
+
+.payment-button-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    color: #98a2b3;
+
+    font-size: 11px;
+    font-weight: 550;
+
+    text-align: center;
+}
+
+.payment-button-security svg {
+    flex-shrink: 0;
+
+    color: #027a48;
+}
+
+
+/* ============================================================
+   FOCUS
+   ============================================================ */
+
+.payment-button:focus-visible {
+    outline: 3px solid rgba(
+        98,
+        70,
+        216,
+        0.20
+    );
+
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .payment-button {
+        min-height: 48px;
+
+        font-size: 13px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    .payment-button {
+        min-height: 48px;
+
+        padding: 0 16px;
+
+        border-radius: 10px;
+
+        font-size: 13px;
+    }
+
+    .payment-button-security {
+        font-size: 10px;
+    }
+
+    .payment-button-error {
+        font-size: 11px;
+    }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .payment-button {
+        transition: none;
+    }
+
+    .payment-button-spinner {
+        animation: none;
+    }
+}

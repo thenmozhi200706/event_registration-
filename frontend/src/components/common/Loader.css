@@ -1,0 +1,93 @@
+/* =====================================================
+   EVENTSPHERE LOADER
+   ===================================================== */
+
+.app-loader {
+    width: 100%;
+
+    min-height: 180px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   FULL SCREEN
+   ===================================================== */
+
+.app-loader-fullscreen {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 80% 10%,
+            rgba(91, 63, 209, 0.08),
+            transparent 30%
+        ),
+        #f8f9fc;
+}
+
+
+/* =====================================================
+   SPINNER
+   ===================================================== */
+
+.app-loader-spinner {
+    width: 34px;
+
+    height: 34px;
+
+    border: 3px solid #e6e2f7;
+
+    border-top-color: #5b3fd1;
+
+    border-right-color: #7a5ce5;
+
+    border-radius: 50%;
+
+    animation:
+        eventsphere-loader-spin
+        0.8s linear infinite;
+}
+
+
+@keyframes eventsphere-loader-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =====================================================
+   MESSAGE
+   ===================================================== */
+
+.app-loader-message {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
