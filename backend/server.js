@@ -10,15 +10,34 @@ const passport = require("passport");
 const connectDB = require("./config/db");
 const configurePassport = require("./config/passport");
 
+// ==========================================
+// ROUTES
+// ==========================================
+
 const authRoutes = require("./routes/authRoutes");
+
 const adminRoutes = require("./routes/adminRoutes");
+const adminDashboardRoutes = require("./routes/adminDashboardRoutes");
+
 const organizerRoutes = require("./routes/organizerRoutes");
+const organizerDashboardRoutes = require("./routes/organizerDashboardRoutes");
+
 const eventRoutes = require("./routes/eventRoutes");
+
 const paymentRoutes = require("./routes/paymentRoutes");
 const qrPaymentRoutes = require("./routes/qrPaymentRoutes");
+
 const registrationRoutes = require("./routes/registrationRoutes");
 
+// ==========================================
+// SERVICES
+// ==========================================
+
 const emailService = require("./utils/sendEmail");
+
+// ==========================================
+// APP
+// ==========================================
 
 const app = express();
 
@@ -27,8 +46,10 @@ const PORT = process.env.PORT || 5000;
 // ==========================================
 // JSON BODY PARSER
 // ==========================================
-// Keep the raw body for Razorpay webhook
+//
+// Keep raw body for Razorpay webhook
 // signature verification.
+//
 
 app.use(
     express.json({
@@ -57,6 +78,7 @@ app.use(
         origin:
             process.env.CLIENT_URL ||
             "http://localhost:5173",
+
         credentials: true,
     })
 );
@@ -81,8 +103,7 @@ connectDB();
 
 if (
     emailService &&
-    typeof emailService.verifyEmailConnection ===
-        "function"
+    typeof emailService.verifyEmailConnection === "function"
 ) {
     emailService
         .verifyEmailConnection()
@@ -95,6 +116,7 @@ if (
             console.error(
                 "Gmail SMTP connection failed:"
             );
+
             console.error(error.message);
         });
 } else {
@@ -110,9 +132,11 @@ if (
 console.log(
     "=========================================="
 );
+
 console.log(
     "Cloudinary Configuration"
 );
+
 console.log(
     "=========================================="
 );
@@ -147,9 +171,11 @@ console.log(
 console.log(
     "=========================================="
 );
+
 console.log(
     "Razorpay Configuration"
 );
+
 console.log(
     "=========================================="
 );
@@ -185,24 +211,31 @@ console.log(
 app.get("/", (req, res) => {
     return res.status(200).json({
         success: true,
+
         message:
             "EventSphere Backend API is running",
+
         modules: [
             "Module 1 - Authentication & User Management",
             "Module 2 - Event Management",
-            "Module 3 - Payment System",
+            "Module 3 - Payment & Registration",
+            "Module 5 - Admin Dashboard & Analytics",
+            "Module 6 - Organizer Dashboard & Event Management",
         ],
+
         paymentMethods: [
             "Payment Gateway",
             "QR Code Payment",
             "Free Event",
         ],
+
         status: "OK",
     });
 });
 
 // ==========================================
-// MODULE 1 - AUTHENTICATION
+// MODULE 1
+// AUTHENTICATION
 // ==========================================
 
 app.use(
@@ -211,7 +244,8 @@ app.use(
 );
 
 // ==========================================
-// MODULE 1 - ADMIN
+// MODULE 1
+// ADMIN MANAGEMENT
 // ==========================================
 
 app.use(
@@ -220,7 +254,8 @@ app.use(
 );
 
 // ==========================================
-// MODULE 1 - ORGANIZER
+// MODULE 1
+// ORGANIZER MANAGEMENT
 // ==========================================
 
 app.use(
@@ -229,7 +264,8 @@ app.use(
 );
 
 // ==========================================
-// MODULE 2 - EVENTS
+// MODULE 2
+// PUBLIC EVENTS
 // ==========================================
 
 app.use(
@@ -238,7 +274,8 @@ app.use(
 );
 
 // ==========================================
-// MODULE 3 - PAYMENT GATEWAY
+// MODULE 3
+// PAYMENT GATEWAY
 // ==========================================
 //
 // POST /api/payments/create-order
@@ -253,7 +290,8 @@ app.use(
 );
 
 // ==========================================
-// MODULE 3 - QR PAYMENT
+// MODULE 3
+// QR PAYMENT
 // ==========================================
 //
 // POST  /api/payments/qr/submit
@@ -265,13 +303,55 @@ app.use(
     "/api/payments/qr",
     qrPaymentRoutes
 );
+
 // ==========================================
-// MODULE 3 - REGISTRATION ROUTES
+// MODULE 3
+// REGISTRATION
 // ==========================================
 
 app.use(
     "/api/registrations",
     registrationRoutes
+);
+
+// ==========================================
+// MODULE 5
+// ADMIN DASHBOARD & ANALYTICS
+// ==========================================
+//
+// GET /api/admin/dashboard
+// GET /api/admin/events
+// GET /api/admin/registrations
+// GET /api/admin/analytics
+//
+// Organizer management routes such as:
+// GET    /api/admin/organizers
+// POST   /api/admin/organizers
+// PUT    /api/admin/organizers/:id
+// DELETE /api/admin/organizers/:id
+//
+// remain inside adminRoutes.js.
+//
+
+app.use(
+    "/api/admin",
+    adminDashboardRoutes
+);
+
+// ==========================================
+// MODULE 6
+// ORGANIZER DASHBOARD & ANALYTICS
+// ==========================================
+//
+// GET /api/organizer/dashboard
+// GET /api/organizer/analytics
+// GET /api/organizer/dashboard/events
+// GET /api/organizer/dashboard/registrations
+//
+
+app.use(
+    "/api/organizer",
+    organizerDashboardRoutes
 );
 
 // ==========================================
@@ -281,6 +361,7 @@ app.use(
 app.use((req, res) => {
     return res.status(404).json({
         success: false,
+
         message:
             `Route not found: ${req.method} ${req.originalUrl}`,
     });
@@ -306,6 +387,7 @@ app.use(
             error.status || 500
         ).json({
             success: false,
+
             message:
                 error.message ||
                 "Internal server error",
@@ -344,6 +426,10 @@ app.listen(
         );
 
         console.log(
+            "=========================================="
+        );
+
+        console.log(
             "Authentication API: /api/auth"
         );
 
@@ -365,6 +451,58 @@ app.listen(
 
         console.log(
             "QR Payment API: /api/payments/qr"
+        );
+
+        console.log(
+            "Registration API: /api/registrations"
+        );
+
+        console.log(
+            "=========================================="
+        );
+
+        console.log(
+            "Module 5 Admin Dashboard:"
+        );
+
+        console.log(
+            "GET /api/admin/dashboard"
+        );
+
+        console.log(
+            "GET /api/admin/events"
+        );
+
+        console.log(
+            "GET /api/admin/registrations"
+        );
+
+        console.log(
+            "GET /api/admin/analytics"
+        );
+
+        console.log(
+            "=========================================="
+        );
+
+        console.log(
+            "Module 6 Organizer Dashboard:"
+        );
+
+        console.log(
+            "GET /api/organizer/dashboard"
+        );
+
+        console.log(
+            "GET /api/organizer/analytics"
+        );
+
+        console.log(
+            "GET /api/organizer/dashboard/events"
+        );
+
+        console.log(
+            "GET /api/organizer/dashboard/registrations"
         );
 
         console.log(

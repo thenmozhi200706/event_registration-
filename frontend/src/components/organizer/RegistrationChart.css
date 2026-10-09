@@ -1,0 +1,671 @@
+/* =========================================================
+   EventSphere
+   RegistrationChart.css
+   ========================================================= */
+
+.registration-chart-wrapper {
+    width: 100%;
+}
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.organizer-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 18px;
+}
+
+.organizer-section-header h2 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 19px;
+    font-weight: 800;
+
+    line-height: 1.3;
+}
+
+.organizer-section-header p {
+    margin: 5px 0 0;
+
+    color: #8a8e9c;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   CHART CONTROLS
+   ========================================================= */
+
+.registration-chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 4px;
+
+    border: 1px solid #e5e7ef;
+    border-radius: 9px;
+
+    background: #f8f8fb;
+}
+
+.registration-chart-controls button {
+    min-height: 31px;
+
+    padding: 0 11px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #7a7f8e;
+
+    font-family: inherit;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.registration-chart-controls button:hover {
+    color: #5b3fd1;
+    background: #f0ebff;
+}
+
+.registration-chart-controls button.active {
+    background: #ffffff;
+
+    color: #5b3fd1;
+
+    box-shadow:
+        0 2px 6px rgba(31, 35, 56, 0.08);
+}
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.registration-chart-summary {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+}
+
+.registration-chart-summary > div {
+    padding: 14px 16px;
+
+    border: 1px solid #e7e8ef;
+    border-radius: 11px;
+
+    background: #ffffff;
+}
+
+.registration-chart-summary span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #9296a5;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.registration-chart-summary strong {
+    display: block;
+
+    color: #172033;
+
+    font-size: 20px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   CHART CARD
+   ========================================================= */
+
+.registration-chart-card {
+    width: 100%;
+
+    min-height: 350px;
+
+    padding: 22px;
+
+    border: 1px solid #e7e8ef;
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 8px 24px rgba(31, 35, 56, 0.05);
+
+    overflow: hidden;
+}
+
+/* =========================================================
+   CHART
+   ========================================================= */
+
+.registration-chart {
+    width: 100%;
+
+    height: 285px;
+
+    display: flex;
+
+    position: relative;
+}
+
+/* =========================================================
+   Y AXIS
+   ========================================================= */
+
+.registration-chart-y-axis {
+    width: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: 4px 7px 25px 0;
+
+    color: #a0a4b0;
+
+    font-size: 9px;
+
+    text-align: right;
+}
+
+.registration-chart-y-axis span {
+    display: block;
+}
+
+/* =========================================================
+   MAIN GRAPH
+   ========================================================= */
+
+.registration-chart-main {
+    position: relative;
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 100%;
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.registration-chart-grid {
+    position: absolute;
+
+    inset: 0 0 26px 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    pointer-events: none;
+}
+
+.registration-chart-grid span {
+    width: 100%;
+
+    height: 1px;
+
+    background: #eef0f5;
+}
+
+/* =========================================================
+   BARS CONTAINER
+   ========================================================= */
+
+.registration-chart-bars {
+    position: absolute;
+
+    inset: 0 0 0 0;
+
+    display: flex;
+
+    align-items: stretch;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+
+    scrollbar-color: #d8d3f4 transparent;
+}
+
+.registration-chart-bars::-webkit-scrollbar {
+    height: 4px;
+}
+
+.registration-chart-bars::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.registration-chart-bars::-webkit-scrollbar-thumb {
+    background: #d8d3f4;
+
+    border-radius: 10px;
+}
+
+/* =========================================================
+   COLUMN
+   ========================================================= */
+
+.registration-chart-column {
+    position: relative;
+
+    flex: 1 1 0;
+
+    min-width: 38px;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: flex-end;
+}
+
+/* =========================================================
+   VALUE
+   ========================================================= */
+
+.registration-chart-value {
+    position: absolute;
+
+    bottom: 72px;
+
+    color: #5b3fd1;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    white-space: nowrap;
+
+    opacity: 0;
+
+    transform: translateY(4px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+
+    pointer-events: none;
+}
+
+.registration-chart-column:hover
+.registration-chart-value {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+/* =========================================================
+   BAR AREA
+   ========================================================= */
+
+.registration-bar-area {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 27px;
+
+    width: min(30px, 70%);
+
+    height: calc(100% - 60px);
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: center;
+
+    transform: translateX(-50%);
+}
+
+/* =========================================================
+   BAR
+   ========================================================= */
+
+.registration-chart-bar {
+    width: 100%;
+
+    min-height: 0;
+
+    border-radius: 7px 7px 3px 3px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #8062e8 0%,
+            #5b3fd1 100%
+        );
+
+    box-shadow:
+        0 6px 14px rgba(91, 63, 209, 0.18);
+
+    cursor: pointer;
+
+    transform-origin: bottom;
+
+    transition:
+        height 0.45s ease,
+        filter 0.2s ease,
+        transform 0.2s ease;
+}
+
+.registration-chart-bar:hover {
+    filter: brightness(1.06);
+
+    transform: scaleX(1.08);
+}
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.registration-chart-date {
+    position: absolute;
+
+    bottom: 0;
+
+    left: 50%;
+
+    width: 65px;
+
+    overflow: hidden;
+
+    transform: translateX(-50%);
+
+    color: #9296a5;
+
+    font-size: 8px;
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.registration-chart-loading {
+    min-height: 330px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    border: 1px solid #e7e8ef;
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    color: #858896;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.registration-chart-spinner {
+    width: 32px;
+    height: 32px;
+
+    border: 3px solid #e9e5fb;
+
+    border-top-color: #5b3fd1;
+
+    border-radius: 50%;
+
+    animation:
+        registrationChartSpin 0.8s linear infinite;
+}
+
+@keyframes registrationChartSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.registration-chart-empty {
+    min-height: 330px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    border: 1px dashed #dfe2e8;
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    text-align: center;
+}
+
+.registration-chart-empty > div {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 15px;
+
+    background: #f0ebff;
+
+    color: #5b3fd1;
+
+    font-size: 22px;
+}
+
+.registration-chart-empty strong {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #303442;
+
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.registration-chart-empty p {
+    max-width: 340px;
+
+    margin: 0;
+
+    color: #969aa8;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .organizer-section-header {
+        align-items: flex-start;
+    }
+
+    .registration-chart-controls {
+        flex-shrink: 0;
+    }
+
+    .registration-chart-card {
+        padding: 18px;
+    }
+
+    .registration-chart {
+        height: 270px;
+    }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .organizer-section-header {
+        flex-direction: column;
+
+        gap: 11px;
+    }
+
+    .registration-chart-controls {
+        width: 100%;
+    }
+
+    .registration-chart-controls button {
+        flex: 1;
+    }
+
+    .registration-chart-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .registration-chart-card {
+        padding: 14px;
+    }
+
+    .registration-chart {
+        height: 250px;
+    }
+
+    .registration-chart-y-axis {
+        width: 34px;
+
+        font-size: 8px;
+    }
+
+    .registration-chart-bars {
+        gap: 5px;
+    }
+
+    .registration-chart-column {
+        min-width: 31px;
+    }
+
+    .registration-bar-area {
+        width: 22px;
+    }
+
+    .registration-chart-date {
+        width: 50px;
+
+        font-size: 7px;
+    }
+
+    .registration-chart-value {
+        font-size: 8px;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+    .registration-chart-card {
+        padding: 10px;
+    }
+
+    .registration-chart {
+        height: 225px;
+    }
+
+    .registration-chart-y-axis {
+        width: 29px;
+        padding-right: 5px;
+    }
+
+    .registration-chart-column {
+        min-width: 27px;
+    }
+
+    .registration-bar-area {
+        width: 18px;
+    }
+
+    .registration-chart-date {
+        width: 42px;
+        font-size: 6px;
+    }
+
+    .registration-chart-summary > div {
+        padding: 12px;
+    }
+}

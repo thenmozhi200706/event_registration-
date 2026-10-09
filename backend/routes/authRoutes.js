@@ -7,65 +7,78 @@ const {
     googleLoginSuccess,
     getCurrentUser,
     logout,
-    devAdminToken
+    devAdminToken,
 } = require("../controllers/authController");
 
-const protect = require("../middleware/authMiddleware");
+const protect =
+    require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 
-// ==========================================
+// =====================================================
 // GOOGLE LOGIN
-// ==========================================
+// =====================================================
 //
 // GET /api/auth/google
 //
-// Starts Google OAuth authentication.
-//
+// =====================================================
 
 router.get(
     "/google",
-    passport.authenticate("google", {
-        scope: [
-            "profile",
-            "email"
-        ],
-        session: false
-    })
+    passport.authenticate(
+        "google",
+        {
+            scope: [
+                "profile",
+                "email",
+            ],
+
+            session: false,
+        }
+    )
 );
 
 
-// ==========================================
+// =====================================================
 // GOOGLE CALLBACK
-// ==========================================
+// =====================================================
 //
 // GET /api/auth/google/callback
 //
-// Google redirects here after login.
-//
+// =====================================================
 
 router.get(
     "/google/callback",
-    passport.authenticate("google", {
-        session: false,
 
-        failureRedirect:
-            `${process.env.CLIENT_URL}/login?error=google_auth_failed`
-    }),
+    passport.authenticate(
+        "google",
+        {
+            session: false,
+
+            failureRedirect:
+                `${(
+                    process.env.CLIENT_URL ||
+                    "http://localhost:5173"
+                ).replace(/\/+$/, "")}` +
+                "/login?error=google_auth_failed",
+        }
+    ),
+
     googleLoginSuccess
 );
 
 
-// ==========================================
-// GET CURRENT USER
-// ==========================================
+// =====================================================
+// CURRENT USER
+// =====================================================
 //
 // GET /api/auth/me
 //
-// Header:
-// Authorization: Bearer YOUR_TOKEN
+// Authorization:
+// Bearer JWT
 //
+// =====================================================
 
 router.get(
     "/me",
@@ -74,15 +87,13 @@ router.get(
 );
 
 
-// ==========================================
+// =====================================================
 // LOGOUT
-// ==========================================
+// =====================================================
 //
 // POST /api/auth/logout
 //
-// Header:
-// Authorization: Bearer YOUR_TOKEN
-//
+// =====================================================
 
 router.post(
     "/logout",
@@ -91,17 +102,13 @@ router.post(
 );
 
 
-// ==========================================
-// DEVELOPMENT ADMIN JWT
-// ==========================================
+// =====================================================
+// DEVELOPMENT ADMIN TOKEN
+// =====================================================
 //
 // POST /api/auth/dev/admin-token
 //
-// This is ONLY for local backend development
-// and Postman testing.
-//
-// Remove this route before production.
-//
+// =====================================================
 
 router.post(
     "/dev/admin-token",
@@ -109,8 +116,8 @@ router.post(
 );
 
 
-// ==========================================
-// EXPORT ROUTER
-// ==========================================
+// =====================================================
+// EXPORT
+// =====================================================
 
 module.exports = router;

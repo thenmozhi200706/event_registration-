@@ -1,945 +1,1096 @@
 // backend/controllers/organizerController.js
 
-const Organizer = require("../models/Organizer");
-const User = require("../models/User");
 const Event = require("../models/Event");
-
-const generateOTP =
-    require("../utils/generateOTP");
-
-const generateToken =
-    require("../utils/generateToken");
-
-const {
-    sendOTPEmail,
-    sendWelcomeEmail,
-} = require("../utils/sendEmail");
+const Registration = require("../models/Registration");
+const Payment = require("../models/Payment");
 
 
-// =====================================================
-// ORGANIZER — VERIFY OTP
-// =====================================================
-//
-// POST /api/organizer/verify-otp
-//
-// Body:
-//
-// {
-//     "email": "organizer@gmail.com",
-//     "otp": "123456"
-// }
-//
-// Public route
-//
-// =====================================================
+/*
+|--------------------------------------------------------------------------
+| CREATE EVENT
+|--------------------------------------------------------------------------
+| POST /api/organizer/events
+|
+| Access: Organizer
+|--------------------------------------------------------------------------
+*/
 
-const verifyOrganizerOTP = async (
-    req,
-    res
-) => {
-
+const createEvent = async (req, res) => {
     try {
-
         const {
-            email,
-            otp,
-        } = req.body || {};
+            title,
+            description,
+            hashtags,
+            venue,
+            eventDate,
+            registrationFee,
+            registrationDeadline,
+            status,
+        } = req.body;
 
+        // -------------------------------------------------
+        // VALIDATION
+        // -------------------------------------------------
 
-        // =================================================
-        // VALIDATE INPUT
-        // =================================================
-
-        if (!email || !otp) {
-
+        if (!title || !title.trim()) {
             return res.status(400).json({
-
                 success: false,
-
-                message:
-                    "Email and OTP are required",
-
+                message: "Event title is required",
             });
-
         }
 
-
-        const normalizedEmail =
-            String(email)
-                .trim()
-                .toLowerCase();
-
-        const normalizedOTP =
-            String(otp)
-                .trim();
-
-
-        if (!normalizedEmail) {
-
+        if (!description || !description.trim()) {
             return res.status(400).json({
-
                 success: false,
-
-                message:
-                    "Organizer email is required",
-
+                message: "Event description is required",
             });
-
         }
 
+        if (!venue || !venue.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Event venue is required",
+            });
+        }
+
+        if (!eventDate) {
+            return res.status(400).json({
+                success: false,
+                message: "Event date is required",
+            });
+        }
+
+        if (!registrationDeadline) {
+            return res.status(400).json({
+                success: false,
+                message: "Registration deadline is required",
+            });
+        }
+
+        // -------------------------------------------------
+        // DATE VALIDATION
+        // -------------------------------------------------
+
+        const eventDateValue = new Date(eventDate);
+        const registrationDeadlineValue =
+            new Date(registrationDeadline);
+
+        if (Number.isNaN(eventDateValue.getTime())) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid event date",
+            });
+        }
 
         if (
-            !/^\d{6}$/.test(
-                normalizedOTP
+            Number.isNaN(
+                registrationDeadlineValue.getTime()
             )
         ) {
-
             return res.status(400).json({
-
                 success: false,
-
-                message:
-                    "OTP must contain exactly 6 digits",
-
+                message: "Invalid registration deadline",
             });
-
         }
 
-
-        // =================================================
-        // FIND ORGANIZER
-        // =================================================
-
-        const organizer =
-            await Organizer.findOne({
-                email:
-                    normalizedEmail,
+        if (registrationDeadlineValue > eventDateValue) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Registration deadline cannot be after the event date",
             });
+        }
+
+        // -------------------------------------------------
+        // REGISTRATION FEE
+        // -------------------------------------------------
+
+        const fee = Number(registrationFee || 0);
+
+        if (Number.isNaN(fee) || fee < 0) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Registration fee must be a valid positive number",
+            });
+        }
+
+        // -------------------------------------------------
+        // HASHTAGS
+        // -------------------------------------------------
+
+        let normalizedHashtags = [];
+
+        if (Array.isArray(hashtags)) {
+            normalizedHashtags = hashtags
+                .map((tag) => String(tag).trim())
+                .filter(Boolean);
+        } else if (typeof hashtags === "string") {
+            normalizedHashtags = hashtags
+                .split(",")
+                .map((tag) =>
+                    tag.trim().replace(/^#/, "")
+                )
+                .filter(Boolean);
+        }
+
+        // -------------------------------------------------
+        // BANNER IMAGE
+        // -------------------------------------------------
+
+        let bannerImageUrl = "";
+
+        if (req.file) {
+            bannerImageUrl =
+                req.file.path ||
+                req.file.secure_url ||
+                req.file.url ||
+                "";
+        }
+
+        if (req.body.bannerImageUrl) {
+            bannerImageUrl =
+                req.body.bannerImageUrl;
+        }
+
+        // -------------------------------------------------
+        // ORGANIZER ID
+        // -------------------------------------------------
+
+        const organizerId =
+            req.user?._id ||
+            req.user?.id ||
+            req.userId;
+
+        if (!organizerId) {
+            return res.status(401).json({
+                success: false,
+                message:
+                    "Organizer authentication information not found",
+            });
+        }
+
+        // -------------------------------------------------
+        // CREATE EVENT
+        // -------------------------------------------------
+
+        const event = await Event.create({
+            title: title.trim(),
+            description: description.trim(),
+
+            hashtags: normalizedHashtags,
+
+            bannerImageUrl,
+
+            organizerId,
+
+            venue: venue.trim(),
+
+            eventDate: eventDateValue,
+
+            registrationFee: fee,
+
+            registrationDeadline:
+                registrationDeadlineValue,
+
+            status: status || "active",
+        });
+
+        // -------------------------------------------------
+        // RESPONSE
+        // -------------------------------------------------
+
+        return res.status(201).json({
+            success: true,
+            message: "Event created successfully",
+            event,
+        });
+
+    } catch (error) {
+        console.error(
+            "Create Event Error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to create event",
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : undefined,
+        });
+    }
+};
 
 
-        if (!organizer) {
+/*
+|--------------------------------------------------------------------------
+| GET ORGANIZER EVENTS
+|--------------------------------------------------------------------------
+| GET /api/organizer/events
+|
+| Returns only events created by the logged-in organizer.
+|--------------------------------------------------------------------------
+*/
 
+const getOrganizerEvents = async (req, res) => {
+    try {
+        const organizerId =
+            req.user?._id ||
+            req.user?.id ||
+            req.userId;
+
+        if (!organizerId) {
+            return res.status(401).json({
+                success: false,
+                message: "Organizer authentication required",
+            });
+        }
+
+        const events = await Event.find({
+            organizerId,
+        })
+            .sort({
+                createdAt: -1,
+            })
+            .lean();
+
+        return res.status(200).json({
+            success: true,
+            count: events.length,
+            events,
+        });
+
+    } catch (error) {
+        console.error(
+            "Get Organizer Events Error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch organizer events",
+        });
+    }
+};
+
+
+/*
+|--------------------------------------------------------------------------
+| GET EVENT BY ID
+|--------------------------------------------------------------------------
+| GET /api/organizer/events/:id
+|--------------------------------------------------------------------------
+*/
+
+const getEventById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const organizerId =
+            req.user?._id ||
+            req.user?.id ||
+            req.userId;
+
+        if (!organizerId) {
+            return res.status(401).json({
+                success: false,
+                message: "Organizer authentication required",
+            });
+        }
+
+        const event = await Event.findOne({
+            _id: id,
+            organizerId,
+        }).lean();
+
+        if (!event) {
             return res.status(404).json({
-
                 success: false,
-
                 message:
-                    "Organizer invitation not found",
-
+                    "Event not found or you do not have permission to access it",
             });
-
         }
 
+        return res.status(200).json({
+            success: true,
+            event,
+        });
 
-        // =================================================
-        // ALREADY VERIFIED
-        // =================================================
+    } catch (error) {
+        console.error(
+            "Get Organizer Event Error:",
+            error
+        );
 
-        if (
-            organizer.otpVerified === true &&
-            organizer.isActive === true
-        ) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch event",
+        });
+    }
+};
 
-            let existingUser =
-                await User.findOne({
-                    email:
-                        normalizedEmail,
+
+/*
+|--------------------------------------------------------------------------
+| UPDATE EVENT
+|--------------------------------------------------------------------------
+| PUT /api/organizer/events/:id
+|--------------------------------------------------------------------------
+*/
+
+const updateEvent = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const organizerId =
+            req.user?._id ||
+            req.user?.id ||
+            req.userId;
+
+        if (!organizerId) {
+            return res.status(401).json({
+                success: false,
+                message: "Organizer authentication required",
+            });
+        }
+
+        const event = await Event.findOne({
+            _id: id,
+            organizerId,
+        });
+
+        if (!event) {
+            return res.status(404).json({
+                success: false,
+                message:
+                    "Event not found or you do not have permission to update it",
+            });
+        }
+
+        const {
+            title,
+            description,
+            hashtags,
+            venue,
+            eventDate,
+            registrationFee,
+            registrationDeadline,
+            status,
+            bannerImageUrl,
+        } = req.body;
+
+        // -------------------------------------------------
+        // UPDATE BASIC FIELDS
+        // -------------------------------------------------
+
+        if (title !== undefined) {
+            if (!String(title).trim()) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Event title cannot be empty",
                 });
-
-
-            if (!existingUser) {
-
-                existingUser =
-                    await User.create({
-
-                        name:
-                            organizer.name,
-
-                        email:
-                            organizer.email,
-
-                        role:
-                            "organizer",
-
-                        isActive:
-                            true,
-
-                    });
-
-            } else {
-
-                if (
-                    existingUser.role ===
-                    "admin"
-                ) {
-
-                    return res.status(409).json({
-
-                        success: false,
-
-                        message:
-                            "This Gmail belongs to an admin account",
-
-                    });
-
-                }
-
-
-                existingUser.name =
-                    organizer.name;
-
-                existingUser.role =
-                    "organizer";
-
-                existingUser.isActive =
-                    true;
-
-
-                await existingUser.save();
-
             }
 
-
-            const token =
-                generateToken(
-                    existingUser
-                );
-
-
-            return res.status(200).json({
-
-                success: true,
-
-                message:
-                    "Organizer is already verified",
-
-                token,
-
-                user: {
-
-                    id:
-                        existingUser._id,
-
-                    name:
-                        existingUser.name,
-
-                    email:
-                        existingUser.email,
-
-                    role:
-                        existingUser.role,
-
-                    isActive:
-                        existingUser.isActive,
-
-                },
-
-            });
-
+            event.title = String(title).trim();
         }
 
-
-        // =================================================
-        // CHECK OTP
-        // =================================================
-
-        if (
-            !organizer.otpCode ||
-            !organizer.otpExpiresAt
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "No active OTP found. Please request a new OTP.",
-
-            });
-
+        if (description !== undefined) {
+            event.description =
+                String(description).trim();
         }
 
-
-        // =================================================
-        // CHECK EXPIRATION
-        // =================================================
-
-        if (
-            new Date(
-                organizer.otpExpiresAt
-            ).getTime() <=
-            Date.now()
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "OTP has expired. Please request a new OTP.",
-
-            });
-
+        if (venue !== undefined) {
+            event.venue = String(venue).trim();
         }
 
+        // -------------------------------------------------
+        // HASHTAGS
+        // -------------------------------------------------
 
-        // =================================================
-        // COMPARE OTP
-        // =================================================
+        if (hashtags !== undefined) {
 
-        if (
-            String(
-                organizer.otpCode
-            ).trim() !==
-            normalizedOTP
-        ) {
+            if (Array.isArray(hashtags)) {
 
-            return res.status(400).json({
+                event.hashtags = hashtags
+                    .map((tag) =>
+                        String(tag)
+                            .trim()
+                            .replace(/^#/, "")
+                    )
+                    .filter(Boolean);
 
-                success: false,
+            } else if (
+                typeof hashtags === "string"
+            ) {
 
-                message:
-                    "Invalid OTP",
-
-            });
-
+                event.hashtags = hashtags
+                    .split(",")
+                    .map((tag) =>
+                        tag
+                            .trim()
+                            .replace(/^#/, "")
+                    )
+                    .filter(Boolean);
+            }
         }
 
+        // -------------------------------------------------
+        // EVENT DATE
+        // -------------------------------------------------
 
-        // =================================================
-        // FIND USER
-        // =================================================
+        if (eventDate !== undefined) {
 
-        let user =
-            await User.findOne({
-                email:
-                    normalizedEmail,
-            });
+            const date = new Date(eventDate);
 
-
-        // =================================================
-        // NEVER CONVERT ADMIN
-        // =================================================
-
-        if (
-            user &&
-            user.role === "admin"
-        ) {
-
-            return res.status(409).json({
-
-                success: false,
-
-                message:
-                    "This Gmail belongs to an admin account",
-
-            });
-
-        }
-
-
-        // =================================================
-        // ACTIVATE ORGANIZER
-        // =================================================
-
-        organizer.otpVerified =
-            true;
-
-        organizer.isActive =
-            true;
-
-        organizer.verifiedAt =
-            new Date();
-
-        organizer.otpCode =
-            null;
-
-        organizer.otpExpiresAt =
-            null;
-
-
-        await organizer.save();
-
-
-        // =================================================
-        // CREATE / UPDATE USER
-        // =================================================
-
-        if (!user) {
-
-            user =
-                await User.create({
-
-                    name:
-                        organizer.name,
-
-                    email:
-                        organizer.email,
-
-                    role:
-                        "organizer",
-
-                    isActive:
-                        true,
-
+            if (Number.isNaN(date.getTime())) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid event date",
                 });
+            }
 
-        } else {
-
-            user.name =
-                organizer.name;
-
-            user.role =
-                "organizer";
-
-            user.isActive =
-                true;
-
-
-            await user.save();
-
+            event.eventDate = date;
         }
 
-
-        // =================================================
-        // WELCOME EMAIL
-        // =================================================
-
-        try {
-
-            await sendWelcomeEmail({
-
-                email:
-                    organizer.email,
-
-                name:
-                    organizer.name,
-
-            });
-
-        } catch (emailError) {
-
-            console.error(
-                "Welcome email failed:",
-                emailError
-            );
-
-        }
-
-
-        // =================================================
-        // GENERATE JWT
-        // =================================================
-
-        const token =
-            generateToken(
-                user
-            );
-
-
-        // =================================================
-        // SUCCESS RESPONSE
-        // =================================================
-
-        return res.status(200).json({
-
-            success: true,
-
-            message:
-                "Organizer verified and activated successfully",
-
-            token,
-
-            user: {
-
-                id:
-                    user._id,
-
-                name:
-                    user.name,
-
-                email:
-                    user.email,
-
-                role:
-                    user.role,
-
-                isActive:
-                    user.isActive,
-
-            },
-
-            organizer: {
-
-                id:
-                    organizer._id,
-
-                name:
-                    organizer.name,
-
-                email:
-                    organizer.email,
-
-                otpVerified:
-                    organizer.otpVerified,
-
-                isActive:
-                    organizer.isActive,
-
-                verifiedAt:
-                    organizer.verifiedAt,
-
-            },
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "========== Verify Organizer OTP Error =========="
-        );
-
-        console.error(error);
-
-        console.error(
-            "================================================="
-        );
-
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                error.message ||
-                "Organizer OTP verification failed",
-
-        });
-
-    }
-
-};
-
-
-// =====================================================
-// ORGANIZER — RESEND OTP
-// =====================================================
-//
-// POST /api/organizer/resend-otp
-//
-// Body:
-//
-// {
-//     "email": "organizer@gmail.com"
-// }
-//
-// =====================================================
-
-const resendOrganizerOTP = async (
-    req,
-    res
-) => {
-
-    try {
-
-        const {
-            email,
-        } = req.body || {};
-
-
-        if (!email) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Email is required",
-
-            });
-
-        }
-
-
-        const normalizedEmail =
-            String(email)
-                .trim()
-                .toLowerCase();
-
-
-        const organizer =
-            await Organizer.findOne({
-                email:
-                    normalizedEmail,
-            });
-
-
-        if (!organizer) {
-
-            return res.status(404).json({
-
-                success: false,
-
-                message:
-                    "Organizer invitation not found",
-
-            });
-
-        }
-
-
-        // =================================================
-        // ALREADY ACTIVE
-        // =================================================
+        // -------------------------------------------------
+        // REGISTRATION DEADLINE
+        // -------------------------------------------------
 
         if (
-            organizer.isActive ||
-            organizer.otpVerified
+            registrationDeadline !==
+            undefined
         ) {
 
-            return res.status(400).json({
+            const deadline =
+                new Date(registrationDeadline);
 
-                success: false,
+            if (
+                Number.isNaN(
+                    deadline.getTime()
+                )
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Invalid registration deadline",
+                });
+            }
 
-                message:
-                    "Organizer account is already active",
-
-            });
-
+            event.registrationDeadline =
+                deadline;
         }
 
+        // -------------------------------------------------
+        // DATE RELATIONSHIP
+        // -------------------------------------------------
 
-        // =================================================
-        // GENERATE NEW OTP
-        // =================================================
+        if (
+            event.registrationDeadline &&
+            event.eventDate &&
+            event.registrationDeadline >
+                event.eventDate
+        ) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Registration deadline cannot be after the event date",
+            });
+        }
 
-        const otp =
-            String(
-                generateOTP()
-            ).trim();
+        // -------------------------------------------------
+        // REGISTRATION FEE
+        // -------------------------------------------------
 
+        if (
+            registrationFee !== undefined
+        ) {
 
-        organizer.otpCode =
-            otp;
+            const fee =
+                Number(registrationFee);
 
-        organizer.otpExpiresAt =
-            new Date(
-                Date.now() +
-                10 * 60 * 1000
-            );
+            if (
+                Number.isNaN(fee) ||
+                fee < 0
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Registration fee must be a valid positive number",
+                });
+            }
 
-        organizer.otpVerified =
-            false;
+            event.registrationFee = fee;
+        }
 
+        // -------------------------------------------------
+        // STATUS
+        // -------------------------------------------------
 
-        await organizer.save();
+        if (status !== undefined) {
 
+            const allowedStatuses = [
+                "active",
+                "closed",
+            ];
 
-        // =================================================
-        // SEND OTP
-        // =================================================
+            if (
+                !allowedStatuses.includes(
+                    String(status)
+                )
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Invalid event status",
+                });
+            }
 
-        await sendOTPEmail({
+            event.status = String(status);
+        }
 
-            email:
-                organizer.email,
+        // -------------------------------------------------
+        // BANNER
+        // -------------------------------------------------
 
-            name:
-                organizer.name,
+        if (req.file) {
+            event.bannerImageUrl =
+                req.file.path ||
+                req.file.secure_url ||
+                req.file.url ||
+                event.bannerImageUrl;
+        } else if (
+            bannerImageUrl !== undefined
+        ) {
+            event.bannerImageUrl =
+                bannerImageUrl;
+        }
 
-            otp:
-                otp,
+        // -------------------------------------------------
+        // SAVE
+        // -------------------------------------------------
 
-        });
-
+        await event.save();
 
         return res.status(200).json({
-
             success: true,
-
-            message:
-                "New OTP sent successfully",
-
+            message: "Event updated successfully",
+            event,
         });
 
     } catch (error) {
-
         console.error(
-            "========== Resend Organizer OTP Error =========="
+            "Update Event Error:",
+            error
         );
 
-        console.error(error);
-
-
         return res.status(500).json({
-
             success: false,
-
-            message:
-                error.message ||
-                "Failed to resend OTP",
-
+            message: "Failed to update event",
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : undefined,
         });
-
     }
-
 };
 
 
-// =====================================================
-// ORGANIZER — GET PROFILE
-// =====================================================
+/*
+|--------------------------------------------------------------------------
+| DELETE EVENT
+|--------------------------------------------------------------------------
+| DELETE /api/organizer/events/:id
+|--------------------------------------------------------------------------
+*/
 
-const getOrganizerProfile = async (
-    req,
-    res
-) => {
-
+const deleteEvent = async (req, res) => {
     try {
+        const { id } = req.params;
 
-        if (!req.user) {
+        const organizerId =
+            req.user?._id ||
+            req.user?.id ||
+            req.userId;
 
+        if (!organizerId) {
             return res.status(401).json({
-
                 success: false,
-
-                message:
-                    "Authentication required",
-
+                message: "Organizer authentication required",
             });
-
         }
 
+        const event = await Event.findOne({
+            _id: id,
+            organizerId,
+        });
 
-        const userEmail =
-            String(
-                req.user.email || ""
-            )
-                .trim()
-                .toLowerCase();
-
-
-        if (!userEmail) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Authenticated user email not found",
-
-            });
-
-        }
-
-
-        const organizer =
-            await Organizer.findOne({
-                email:
-                    userEmail,
-            });
-
-
-        if (!organizer) {
-
+        if (!event) {
             return res.status(404).json({
-
                 success: false,
-
                 message:
-                    "Organizer profile not found",
-
+                    "Event not found or you do not have permission to delete it",
             });
-
         }
 
+        // -------------------------------------------------
+        // CHECK REGISTRATIONS
+        // -------------------------------------------------
 
-        if (!organizer.isActive) {
-
-            return res.status(403).json({
-
-                success: false,
-
-                message:
-                    "Organizer account is disabled",
-
+        const registrationCount =
+            await Registration.countDocuments({
+                eventId: id,
             });
 
+        if (registrationCount > 0) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "This event cannot be deleted because participants are already registered",
+                registrationCount,
+            });
         }
 
+        await Event.deleteOne({
+            _id: id,
+        });
 
         return res.status(200).json({
-
             success: true,
-
-            user: {
-
-                id:
-                    req.user._id,
-
-                name:
-                    req.user.name,
-
-                email:
-                    req.user.email,
-
-                role:
-                    req.user.role,
-
-                profileImage:
-                    req.user.profileImage ||
-                    "",
-
-                isActive:
-                    req.user.isActive,
-
-            },
-
-            organizer: {
-
-                id:
-                    organizer._id,
-
-                name:
-                    organizer.name,
-
-                email:
-                    organizer.email,
-
-                otpVerified:
-                    organizer.otpVerified,
-
-                isActive:
-                    organizer.isActive,
-
-                addedByAdminId:
-                    organizer.addedByAdminId,
-
-                verifiedAt:
-                    organizer.verifiedAt,
-
-                createdAt:
-                    organizer.createdAt,
-
-                updatedAt:
-                    organizer.updatedAt,
-
-            },
-
+            message: "Event deleted successfully",
         });
 
     } catch (error) {
-
         console.error(
-            "========== Get Organizer Profile Error =========="
+            "Delete Event Error:",
+            error
         );
 
-        console.error(error);
-
-
         return res.status(500).json({
-
             success: false,
-
-            message:
-                error.message ||
-                "Failed to fetch organizer profile",
-
+            message: "Failed to delete event",
         });
-
     }
-
 };
 
 
-// =====================================================
-// ORGANIZER — GET MY EVENTS
-// =====================================================
+/*
+|--------------------------------------------------------------------------
+| TOGGLE EVENT STATUS
+|--------------------------------------------------------------------------
+| PATCH /api/organizer/events/:id/status
+|--------------------------------------------------------------------------
+*/
 
-const getOrganizerEvents = async (
+const toggleEventStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const organizerId =
+            req.user?._id ||
+            req.user?.id ||
+            req.userId;
+
+        if (!organizerId) {
+            return res.status(401).json({
+                success: false,
+                message: "Organizer authentication required",
+            });
+        }
+
+        const event = await Event.findOne({
+            _id: id,
+            organizerId,
+        });
+
+        if (!event) {
+            return res.status(404).json({
+                success: false,
+                message:
+                    "Event not found or you do not have permission to modify it",
+            });
+        }
+
+        event.status =
+            event.status === "active"
+                ? "closed"
+                : "active";
+
+        await event.save();
+
+        return res.status(200).json({
+            success: true,
+            message: `Event ${
+                event.status === "active"
+                    ? "activated"
+                    : "closed"
+            } successfully`,
+            status: event.status,
+            event,
+        });
+
+    } catch (error) {
+        console.error(
+            "Toggle Event Status Error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                "Failed to update event status",
+        });
+    }
+};
+
+
+/*
+|--------------------------------------------------------------------------
+| GET EVENT REGISTRATIONS
+|--------------------------------------------------------------------------
+| GET /api/organizer/events/:id/registrations
+|--------------------------------------------------------------------------
+*/
+
+const getEventRegistrations = async (
     req,
     res
 ) => {
-
     try {
+        const { id } = req.params;
 
-        if (!req.user) {
+        const organizerId =
+            req.user?._id ||
+            req.user?.id ||
+            req.userId;
 
+        if (!organizerId) {
             return res.status(401).json({
-
                 success: false,
-
-                message:
-                    "Authentication required",
-
+                message: "Organizer authentication required",
             });
-
         }
 
+        // -------------------------------------------------
+        // VERIFY EVENT OWNERSHIP
+        // -------------------------------------------------
 
-        const events =
-            await Event.find({
+        const event = await Event.findOne({
+            _id: id,
+            organizerId,
+        }).lean();
 
-                organizerId:
-                    req.user._id,
+        if (!event) {
+            return res.status(404).json({
+                success: false,
+                message:
+                    "Event not found or you do not have permission to access it",
+            });
+        }
 
+        // -------------------------------------------------
+        // GET REGISTRATIONS
+        // -------------------------------------------------
+
+        const registrations =
+            await Registration.find({
+                eventId: id,
             })
                 .populate(
-                    "organizerId",
-                    "name email profileImage"
+                    "userId",
+                    "name email whatsappNumber instituteName department year age"
                 )
                 .sort({
-                    createdAt: -1,
-                });
+                    registeredAt: -1,
+                })
+                .lean();
 
+        // -------------------------------------------------
+        // PAYMENT INFORMATION
+        // -------------------------------------------------
+
+        const registrationIds =
+            registrations.map(
+                (registration) =>
+                    registration._id
+            );
+
+        const payments =
+            registrationIds.length
+                ? await Payment.find({
+                      registrationId: {
+                          $in: registrationIds,
+                      },
+                  }).lean()
+                : [];
+
+        const paymentMap = new Map();
+
+        payments.forEach((payment) => {
+            paymentMap.set(
+                String(
+                    payment.registrationId
+                ),
+                payment
+            );
+        });
+
+        const formattedRegistrations =
+            registrations.map(
+                (registration) => ({
+                    ...registration,
+
+                    payment:
+                        paymentMap.get(
+                            String(
+                                registration._id
+                            )
+                        ) || null,
+                })
+            );
 
         return res.status(200).json({
-
             success: true,
 
+            event: {
+                _id: event._id,
+                title: event.title,
+                eventDate: event.eventDate,
+                venue: event.venue,
+                registrationFee:
+                    event.registrationFee,
+            },
+
             count:
-                events.length,
+                formattedRegistrations.length,
 
-            events,
-
+            registrations:
+                formattedRegistrations,
         });
 
     } catch (error) {
-
         console.error(
-            "========== Get Organizer Events Error =========="
+            "Get Event Registrations Error:",
+            error
         );
 
-        console.error(error);
-
-
         return res.status(500).json({
-
             success: false,
-
             message:
-                error.message ||
-                "Failed to fetch organizer events",
+                "Failed to fetch event registrations",
+        });
+    }
+};
+// =====================================================
+// VERIFY ORGANIZER OTP
+// =====================================================
+// POST /api/organizer/verify-otp
+// Access: Public
+// =====================================================
 
+const verifyOrganizerOTP = async (req, res) => {
+    try {
+        const Organizer = require("../models/Organizer");
+
+        const { email, otp } = req.body;
+
+        // -------------------------------
+        // VALIDATION
+        // -------------------------------
+
+        if (!email || !otp) {
+            return res.status(400).json({
+                success: false,
+                message: "Email and OTP are required",
+            });
+        }
+
+        // -------------------------------
+        // FIND ORGANIZER
+        // -------------------------------
+
+        const organizer = await Organizer.findOne({
+            email: String(email)
+                .toLowerCase()
+                .trim(),
         });
 
-    }
+        if (!organizer) {
+            return res.status(404).json({
+                success: false,
+                message: "Organizer not found",
+            });
+        }
 
+        // -------------------------------
+        // CHECK OTP
+        // -------------------------------
+
+        if (!organizer.otpCode) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "No OTP found. Please request a new OTP.",
+            });
+        }
+
+        if (
+            String(organizer.otpCode).trim() !==
+            String(otp).trim()
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid OTP",
+            });
+        }
+
+        // -------------------------------
+        // VERIFY ORGANIZER
+        // -------------------------------
+
+        organizer.otpVerified = true;
+        organizer.otpCode = null;
+
+        await organizer.save();
+
+        // -------------------------------
+        // RESPONSE
+        // -------------------------------
+
+        return res.status(200).json({
+            success: true,
+            message:
+                "Organizer OTP verified successfully",
+        });
+
+    } catch (error) {
+        console.error(
+            "Verify Organizer OTP Error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                "Failed to verify organizer OTP",
+
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : undefined,
+        });
+    }
 };
 
 
 // =====================================================
-// EXPORT
+// RESEND ORGANIZER OTP
+// =====================================================
+// POST /api/organizer/resend-otp
+// Access: Public
 // =====================================================
 
+const resendOrganizerOTP = async (req, res) => {
+    try {
+        const Organizer = require("../models/Organizer");
+
+        const { email } = req.body;
+
+        // -------------------------------
+        // VALIDATION
+        // -------------------------------
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Organizer email is required",
+            });
+        }
+
+        const normalizedEmail = String(email)
+            .toLowerCase()
+            .trim();
+
+        // -------------------------------
+        // FIND ORGANIZER
+        // -------------------------------
+
+        const organizer = await Organizer.findOne({
+            email: normalizedEmail,
+        });
+
+        if (!organizer) {
+            return res.status(404).json({
+                success: false,
+                message: "Organizer not found",
+            });
+        }
+
+        // -------------------------------
+        // GENERATE NEW OTP
+        // -------------------------------
+
+        const otp = Math.floor(
+            100000 + Math.random() * 900000
+        ).toString();
+
+        // -------------------------------
+        // SAVE OTP
+        // -------------------------------
+
+        organizer.otpCode = otp;
+        organizer.otpVerified = false;
+
+        await organizer.save();
+
+        // -------------------------------
+        // RESPONSE
+        // -------------------------------
+
+        return res.status(200).json({
+            success: true,
+            message:
+                "New OTP generated successfully",
+        });
+
+    } catch (error) {
+        console.error(
+            "Resend Organizer OTP Error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                "Failed to resend organizer OTP",
+
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : undefined,
+        });
+    }
+};
+
+/*
+|--------------------------------------------------------------------------
+| EXPORT CONTROLLER
+|--------------------------------------------------------------------------
+*/
+
 module.exports = {
-
-    verifyOrganizerOTP,
-
-    resendOrganizerOTP,
-
-    getOrganizerProfile,
-
+    // Event Management
+    createEvent,
     getOrganizerEvents,
+    getEventById,
+    updateEvent,
+    deleteEvent,
+    toggleEventStatus,
+    getEventRegistrations,
 
+    // Organizer OTP
+    verifyOrganizerOTP,
+    resendOrganizerOTP,
 };

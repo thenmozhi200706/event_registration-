@@ -2,7 +2,6 @@
 
 const express = require("express");
 
-
 // =====================================================
 // ORGANIZER CONTROLLERS
 // =====================================================
@@ -10,10 +9,14 @@ const express = require("express");
 const {
     verifyOrganizerOTP,
     resendOrganizerOTP,
-    getOrganizerProfile,
-    getOrganizerEvents,
-} = require("../controllers/organizerController");
 
+    getOrganizerEvents,
+    getEventById,
+    updateEvent,
+    deleteEvent,
+    toggleEventStatus,
+    getEventRegistrations,
+} = require("../controllers/organizerController");
 
 // =====================================================
 // EVENT CONTROLLER
@@ -22,7 +25,6 @@ const {
 const {
     createEvent,
 } = require("../controllers/eventController");
-
 
 // =====================================================
 // MIDDLEWARE
@@ -34,6 +36,8 @@ const protect =
 const authorizeRoles =
     require("../middleware/roleMiddleware");
 
+const upload =
+    require("../middleware/upload");
 
 // =====================================================
 // ROUTER
@@ -50,19 +54,35 @@ const router = express.Router();
 //
 // Access:
 // Organizer
-//
-// Returns all events created by the
-// currently logged-in organizer.
 // =====================================================
 
 router.get(
     "/events",
-
     protect,
-
     authorizeRoles("organizer"),
-
     getOrganizerEvents
+);
+
+
+// =====================================================
+// ORGANIZER — GET SINGLE EVENT
+// =====================================================
+//
+// GET /api/organizer/events/:id
+//
+// Access:
+// Organizer
+//
+// Used by:
+// EditEvent.jsx
+// EventDetails.jsx
+// =====================================================
+
+router.get(
+    "/events/:id",
+    protect,
+    authorizeRoles("organizer"),
+    getEventById
 );
 
 
@@ -75,22 +95,92 @@ router.get(
 // Access:
 // Organizer
 //
-// This route uses the existing
-// createEvent controller.
-//
-// IMPORTANT:
-// Your createEvent controller supports
-// banner upload through req.file.
+// Supports banner image upload.
 // =====================================================
 
 router.post(
     "/events",
-
     protect,
-
     authorizeRoles("organizer"),
-
+    upload.single("bannerImage"),
     createEvent
+);
+
+
+// =====================================================
+// ORGANIZER — UPDATE EVENT
+// =====================================================
+//
+// PUT /api/organizer/events/:id
+//
+// Access:
+// Organizer
+//
+// Supports replacing banner image.
+// =====================================================
+
+router.put(
+    "/events/:id",
+    protect,
+    authorizeRoles("organizer"),
+    upload.single("bannerImage"),
+    updateEvent
+);
+
+
+// =====================================================
+// ORGANIZER — DELETE EVENT
+// =====================================================
+//
+// DELETE /api/organizer/events/:id
+//
+// Access:
+// Organizer
+// =====================================================
+
+router.delete(
+    "/events/:id",
+    protect,
+    authorizeRoles("organizer"),
+    deleteEvent
+);
+
+
+// =====================================================
+// ORGANIZER — TOGGLE EVENT STATUS
+// =====================================================
+//
+// PATCH /api/organizer/events/:id/status
+//
+// Access:
+// Organizer
+//
+// active <-> closed
+// =====================================================
+
+router.patch(
+    "/events/:id/status",
+    protect,
+    authorizeRoles("organizer"),
+    toggleEventStatus
+);
+
+
+// =====================================================
+// ORGANIZER — GET EVENT REGISTRATIONS
+// =====================================================
+//
+// GET /api/organizer/events/:id/registrations
+//
+// Access:
+// Organizer
+// =====================================================
+
+router.get(
+    "/events/:id/registrations",
+    protect,
+    authorizeRoles("organizer"),
+    getEventRegistrations
 );
 
 
@@ -106,7 +196,6 @@ router.post(
 
 router.post(
     "/verify-otp",
-
     verifyOrganizerOTP
 );
 
@@ -123,29 +212,7 @@ router.post(
 
 router.post(
     "/resend-otp",
-
     resendOrganizerOTP
-);
-
-
-// =====================================================
-// ORGANIZER — GET PROFILE
-// =====================================================
-//
-// GET /api/organizer/profile
-//
-// Access:
-// Organizer
-// =====================================================
-
-router.get(
-    "/profile",
-
-    protect,
-
-    authorizeRoles("organizer"),
-
-    getOrganizerProfile
 );
 
 

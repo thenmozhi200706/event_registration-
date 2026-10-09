@@ -1,0 +1,921 @@
+/* =========================================================
+   EVENTSPHERE - ORGANIZER HEADER
+   OrganizerHeader.css
+   ========================================================= */
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.organizer-header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+
+    width: 100%;
+    min-height: 76px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 28px;
+
+    box-sizing: border-box;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-bottom: 1px solid #e9e8ef;
+
+    box-shadow:
+        0 3px 14px rgba(35, 30, 70, 0.035);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+
+/* =========================================================
+   LEFT SIDE
+   ========================================================= */
+
+.organizer-header-left {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+/* =========================================================
+   HEADER TITLE
+   ========================================================= */
+
+.organizer-header-title {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.organizer-header-title h1 {
+    margin: 0;
+
+    color: #171b2d;
+
+    font-size: 24px;
+    font-weight: 850;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.65px;
+}
+
+.organizer-header-title p {
+    margin: 0;
+
+    color: #8a8f9f;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+   ========================================================= */
+
+.organizer-menu-button {
+    display: none;
+
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    gap: 4px;
+
+    padding: 0;
+
+    border: 1px solid #e3e1ea;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.organizer-menu-button span {
+    display: block;
+
+    width: 17px;
+    height: 2px;
+
+    border-radius: 5px;
+
+    background: #5f6475;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.organizer-menu-button:hover {
+    background: #f5f2ff;
+
+    border-color: #d8d0f5;
+}
+
+.organizer-menu-button:hover span {
+    background: #6546dc;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+   ========================================================= */
+
+.organizer-header-right {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   CREATE EVENT BUTTON
+   ========================================================= */
+
+.header-create-event {
+    min-height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 17px;
+
+    border: 1px solid #ddd5ff;
+    border-radius: 10px;
+
+    color: #6041d1;
+
+    background: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.header-create-event > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+.header-create-event:hover {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6546dc,
+            #7959e9
+        );
+
+    border-color: #6546dc;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 16px rgba(101, 70, 220, 0.18);
+}
+
+
+/* =========================================================
+   NOTIFICATION BUTTON
+   ========================================================= */
+
+.organizer-notification-button {
+    position: relative;
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid #e3e0ec;
+    border-radius: 10px;
+
+    color: #6546dc;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.organizer-notification-button:hover {
+    background: #f7f4ff;
+
+    border-color: #d8d0f4;
+
+    transform: translateY(-1px);
+}
+
+.notification-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #6245d5;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+.notification-dot {
+    position: absolute;
+
+    top: 9px;
+    right: 9px;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #6b49df;
+
+    border: 2px solid #ffffff;
+
+    box-sizing: content-box;
+}
+
+
+/* =========================================================
+   PROFILE CONTAINER
+   ========================================================= */
+
+.organizer-header-profile {
+    position: relative;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   PROFILE BUTTON
+   ========================================================= */
+
+.organizer-profile-button {
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 5px 10px 5px 7px;
+
+    border: 1px solid #e4e1ec;
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.organizer-profile-button:hover {
+    background: #faf9ff;
+
+    border-color: #d9d3ee;
+
+    box-shadow:
+        0 5px 14px rgba(40, 30, 90, 0.06);
+}
+
+
+/* =========================================================
+   HEADER AVATAR
+   ========================================================= */
+
+.organizer-header-avatar {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6546dc,
+            #805ff0
+        );
+
+    font-size: 12px;
+    font-weight: 850;
+
+    line-height: 1;
+
+    box-shadow:
+        0 4px 10px rgba(101, 70, 220, 0.2);
+}
+
+.organizer-header-avatar-placeholder {
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HEADER USER INFO
+   ========================================================= */
+
+.organizer-header-user {
+    min-width: 0;
+
+    max-width: 155px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.organizer-header-user strong {
+    display: block;
+
+    color: #282c3d;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+.organizer-header-user span {
+    display: block;
+
+    color: #9296a5;
+
+    font-size: 9px;
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   PROFILE ARROW
+   ========================================================= */
+
+.organizer-profile-arrow {
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 2px;
+
+    color: #6953cc;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   PROFILE DROPDOWN
+   ========================================================= */
+
+.organizer-profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    z-index: 1200;
+
+    width: 270px;
+
+    padding: 10px;
+
+    border: 1px solid #e4e1ed;
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 18px 45px rgba(28, 23, 65, 0.14),
+        0 4px 12px rgba(28, 23, 65, 0.06);
+
+    animation: organizerDropdownIn 0.18s ease-out;
+}
+
+@keyframes organizerDropdownIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   DROPDOWN HEADER
+   ========================================================= */
+
+.profile-dropdown-header {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 8px 12px;
+}
+
+.profile-dropdown-header > div:last-child {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.profile-dropdown-header strong {
+    display: block;
+
+    color: #25293a;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+.profile-dropdown-header span {
+    display: block;
+
+    color: #9297a8;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   DROPDOWN AVATAR
+   ========================================================= */
+
+.dropdown-avatar {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6546dc,
+            #805ff0
+        );
+
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.dropdown-avatar-placeholder {
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.profile-dropdown-divider {
+    width: 100%;
+    height: 1px;
+
+    margin: 5px 0;
+
+    background: #eeeeF4;
+}
+
+
+/* =========================================================
+   DROPDOWN BUTTONS
+   ========================================================= */
+
+.organizer-profile-dropdown > button {
+    width: 100%;
+
+    min-height: 40px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    color: #5f6476;
+
+    background: transparent;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 650;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        color 0.18s ease,
+        background 0.18s ease;
+}
+
+.organizer-profile-dropdown > button > span {
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #6b52d0;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.organizer-profile-dropdown > button:hover {
+    color: #6042d1;
+
+    background: #f5f2ff;
+}
+
+.organizer-profile-dropdown > button:hover > span {
+    color: #6042d1;
+}
+
+
+/* =========================================================
+   LOGOUT BUTTON
+   ========================================================= */
+
+.organizer-profile-dropdown > button.profile-logout {
+    color: #c54253;
+}
+
+.organizer-profile-dropdown > button.profile-logout > span {
+    color: #c54253;
+}
+
+.organizer-profile-dropdown > button.profile-logout:hover {
+    color: #bd3447;
+
+    background: #fff4f5;
+}
+
+.organizer-profile-dropdown > button.profile-logout:hover > span {
+    color: #bd3447;
+}
+
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+   ========================================================= */
+
+.organizer-menu-button:focus-visible,
+.header-create-event:focus-visible,
+.organizer-notification-button:focus-visible,
+.organizer-profile-button:focus-visible,
+.organizer-profile-dropdown button:focus-visible {
+    outline: 3px solid rgba(101, 70, 220, 0.18);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .organizer-header {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .organizer-header-title h1 {
+        font-size: 21px;
+    }
+
+    .organizer-header-user {
+        max-width: 125px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .organizer-header {
+        min-height: 68px;
+
+        padding: 10px 16px;
+    }
+
+    .organizer-menu-button {
+        display: flex;
+    }
+
+    .organizer-header-title h1 {
+        font-size: 19px;
+    }
+
+    .organizer-header-title p {
+        font-size: 10px;
+    }
+
+    .organizer-header-right {
+        gap: 7px;
+    }
+
+    .header-create-event {
+        width: 42px;
+        min-width: 42px;
+        height: 42px;
+
+        padding: 0;
+
+        gap: 0;
+
+        font-size: 0;
+    }
+
+    .header-create-event > span {
+        font-size: 19px;
+    }
+
+    .organizer-notification-button {
+        width: 42px;
+        height: 42px;
+    }
+
+    .organizer-profile-button {
+        min-height: 42px;
+
+        padding: 4px;
+    }
+
+    .organizer-header-avatar {
+        width: 34px;
+        height: 34px;
+
+        flex-basis: 34px;
+    }
+
+    .organizer-header-user {
+        display: none;
+    }
+
+    .organizer-profile-arrow {
+        display: none;
+    }
+
+    .organizer-profile-dropdown {
+        top: calc(100% + 8px);
+
+        width: 260px;
+
+        right: 0;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 500px) {
+
+    .organizer-header {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .organizer-header-left {
+        gap: 9px;
+    }
+
+    .organizer-header-title h1 {
+        font-size: 16px;
+
+        letter-spacing: -0.3px;
+    }
+
+    .organizer-header-title p {
+        display: none;
+    }
+
+    .organizer-header-right {
+        gap: 5px;
+    }
+
+    .organizer-menu-button,
+    .header-create-event,
+    .organizer-notification-button {
+        width: 38px;
+        min-width: 38px;
+        height: 38px;
+    }
+
+    .organizer-profile-button {
+        border-color: transparent;
+
+        background: transparent;
+    }
+
+    .organizer-header-avatar {
+        width: 34px;
+        height: 34px;
+
+        flex-basis: 34px;
+    }
+
+    .organizer-profile-dropdown {
+        position: fixed;
+
+        top: 64px;
+        right: 10px;
+        left: 10px;
+
+        width: auto;
+
+        max-width: none;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .organizer-header-title h1 {
+        font-size: 15px;
+    }
+
+    .organizer-notification-button {
+        display: none;
+    }
+
+    .organizer-profile-dropdown {
+        left: 8px;
+        right: 8px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .organizer-header,
+    .organizer-menu-button,
+    .organizer-menu-button span,
+    .header-create-event,
+    .organizer-notification-button,
+    .organizer-profile-button,
+    .organizer-profile-dropdown,
+    .organizer-profile-dropdown > button {
+        transition: none;
+    }
+
+    .organizer-profile-dropdown {
+        animation: none;
+    }
+}

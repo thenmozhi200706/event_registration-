@@ -1,0 +1,510 @@
+/* =========================================================
+   EventSphere - EventDetails.css
+   Used by: pages/organizer/EventDetails.jsx
+
+   Add this import to EventDetails.jsx:
+   import "./EventDetails.css";
+   ========================================================= */
+
+:root {
+    --event-primary: #5b3fd1;
+    --event-primary-dark: #4c32b5;
+    --event-primary-light: #f1edff;
+    --event-text: #172033;
+    --event-muted: #73788a;
+    --event-border: #e7e8ef;
+    --event-bg: #f7f8fc;
+    --event-white: #ffffff;
+    --event-success: #168447;
+    --event-danger: #c63838;
+    --event-warning: #b7791f;
+    --event-shadow: 0 10px 30px rgba(31, 35, 56, 0.07);
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.organizer-form-page {
+    min-height: 100vh;
+    padding: 32px 40px 60px;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(91, 63, 209, 0.07),
+            transparent 30%
+        ),
+        var(--event-bg);
+    color: var(--event-text);
+    box-sizing: border-box;
+}
+
+.organizer-form-page *,
+.organizer-form-page *::before,
+.organizer-form-page *::after {
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.organizer-form-page .page-header {
+    max-width: 1240px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.organizer-form-page .page-header > div:first-child {
+    min-width: 0;
+}
+
+.organizer-form-page .page-header span {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--event-primary);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.organizer-form-page .page-header h1 {
+    margin: 0;
+    color: var(--event-text);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.7px;
+}
+
+.organizer-form-page .page-header p {
+    margin: 8px 0 0;
+    color: var(--event-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.organizer-form-page .create-event-button,
+.organizer-form-page .secondary-button,
+.organizer-form-page .cancel-button {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 17px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.organizer-form-page .create-event-button {
+    border: 1px solid var(--event-primary);
+    background: linear-gradient(
+        135deg,
+        var(--event-primary),
+        #7655df
+    );
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(91, 63, 209, 0.18);
+}
+
+.organizer-form-page .create-event-button:hover {
+    background: linear-gradient(
+        135deg,
+        var(--event-primary-dark),
+        #6748d0
+    );
+    transform: translateY(-1px);
+    box-shadow: 0 11px 22px rgba(91, 63, 209, 0.22);
+}
+
+.organizer-form-page .secondary-button {
+    border: 1px solid #dfe1e9;
+    background: #ffffff;
+    color: #4b5061;
+}
+
+.organizer-form-page .secondary-button:hover {
+    border-color: #c9c1f4;
+    background: #faf9ff;
+    color: var(--event-primary);
+    transform: translateY(-1px);
+}
+
+.organizer-form-page .cancel-button {
+    border: 1px solid #fecaca;
+    background: #ffffff;
+    color: var(--event-danger);
+}
+
+.organizer-form-page .cancel-button:hover {
+    border-color: #fca5a5;
+    background: #fff5f5;
+    transform: translateY(-1px);
+}
+
+.organizer-form-page button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.organizer-form-page .form-error {
+    max-width: 1240px;
+    margin: 0 auto 20px;
+    padding: 14px 16px;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    background: #fff5f5;
+    color: #b42318;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.organizer-form-page .form-success {
+    max-width: 1240px;
+    margin: 0 auto 20px;
+    padding: 14px 16px;
+    border: 1px solid #b7ebca;
+    border-radius: 10px;
+    background: #e7f8ee;
+    color: var(--event-success);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   EVENT HERO
+   ========================================================= */
+
+.organizer-form-page > div {
+    position: relative;
+}
+
+.organizer-form-page .event-card-placeholder {
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(255,255,255,0.16),
+            transparent 25%
+        ),
+        linear-gradient(
+            135deg,
+            #4c32b5,
+            #7655df
+        );
+    color: #ffffff;
+    letter-spacing: 2px;
+}
+
+.organizer-form-page img {
+    max-width: 100%;
+}
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.organizer-form-page .organizer-stats-grid {
+    max-width: 1240px;
+    margin: 0 auto 24px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.organizer-form-page .organizer-stat-card {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--event-border);
+    border-radius: 16px;
+    background: var(--event-white);
+    box-shadow: var(--event-shadow);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.organizer-form-page .organizer-stat-card:hover {
+    transform: translateY(-2px);
+    border-color: #ddd6fe;
+    box-shadow: 0 14px 32px rgba(31, 35, 56, 0.09);
+}
+
+.organizer-form-page .organizer-stat-card > span {
+    display: block;
+    margin-bottom: 9px;
+    color: var(--event-muted);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.organizer-form-page .organizer-stat-card > strong {
+    display: block;
+    color: var(--event-text);
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.organizer-form-page .organizer-stat-card > small {
+    display: block;
+    margin-top: 7px;
+    color: #989cab;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+/* =========================================================
+   EVENT STATUS
+   ========================================================= */
+
+.organizer-form-page .event-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 72px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #e8f8ef;
+    color: #168447;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: capitalize;
+}
+
+.organizer-form-page .event-status.active {
+    background: #e8f8ef;
+    color: #168447;
+}
+
+.organizer-form-page .event-status.closed,
+.organizer-form-page .event-status.inactive {
+    background: #f1f2f5;
+    color: #666a78;
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.organizer-form-page .organizer-section {
+    min-width: 0;
+}
+
+.organizer-form-page .organizer-section > div {
+    box-shadow: var(--event-shadow);
+}
+
+.organizer-form-page .organizer-section h2 {
+    margin: 0;
+    color: var(--event-text);
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.organizer-form-page .organizer-section p {
+    font-size: 14px;
+}
+
+/* =========================================================
+   DESCRIPTION / INFORMATION
+   ========================================================= */
+
+.organizer-form-page .organizer-section strong {
+    color: #303445;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.organizer-form-page .organizer-section small {
+    color: #858896;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   HASHTAGS
+   ========================================================= */
+
+.organizer-form-page .organizer-section span[style*="borderRadius"] {
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.organizer-form-page .organizer-section span[style*="borderRadius"]:hover {
+    background: #e9e4ff !important;
+    color: var(--event-primary) !important;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.organizer-loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: var(--event-bg);
+}
+
+.organizer-loading > div {
+    width: min(420px, 100%);
+    padding: 38px;
+    border: 1px solid var(--event-border);
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: var(--event-shadow);
+    text-align: center;
+}
+
+.organizer-loading h3 {
+    margin: 0 0 8px;
+    color: var(--event-text);
+    font-size: 20px;
+}
+
+.organizer-loading p {
+    margin: 0;
+    color: var(--event-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   MOBILE / TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+    .organizer-form-page {
+        padding: 28px 24px 50px;
+    }
+
+    .organizer-form-page .organizer-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .organizer-form-page .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 800px) {
+    .organizer-form-page {
+        padding: 24px 18px 45px;
+    }
+
+    .organizer-form-page .organizer-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .organizer-form-page .page-header > div:last-child {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .organizer-form-page .page-header > div:last-child a {
+        flex: 1;
+    }
+
+    .organizer-form-page [style*="gridTemplateColumns"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    .organizer-form-page img,
+    .organizer-form-page .event-card-placeholder {
+        height: 280px !important;
+    }
+}
+
+@media (max-width: 560px) {
+    .organizer-form-page {
+        padding: 20px 14px 40px;
+    }
+
+    .organizer-form-page .page-header h1 {
+        font-size: 27px;
+    }
+
+    .organizer-form-page .page-header > div:last-child {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .organizer-form-page .page-header > div:last-child a {
+        width: 100%;
+        flex: none;
+    }
+
+    .organizer-form-page .organizer-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .organizer-form-page .organizer-stat-card {
+        padding: 18px;
+    }
+
+    .organizer-form-page .organizer-section > div {
+        padding: 20px !important;
+    }
+
+    .organizer-form-page img,
+    .organizer-form-page .event-card-placeholder {
+        height: 210px !important;
+    }
+
+    .organizer-form-page .organizer-section h2 {
+        font-size: 17px;
+    }
+}
+
+/* =========================================================
+   SMALL POLISH
+   ========================================================= */
+
+.organizer-form-page a:focus-visible,
+.organizer-form-page button:focus-visible {
+    outline: 3px solid rgba(91, 63, 209, 0.18);
+    outline-offset: 2px;
+}
+
+.organizer-form-page ::selection {
+    background: #ddd6fe;
+    color: #3b278f;
+}

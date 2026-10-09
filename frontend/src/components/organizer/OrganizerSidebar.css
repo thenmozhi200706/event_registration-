@@ -1,0 +1,833 @@
+/* =========================================================
+   EVENTSPHERE ORGANIZER SIDEBAR
+   OrganizerSidebar.css
+   ========================================================= */
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.organizer-sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    z-index: 1000;
+
+    width: 278px;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border-right: 1px solid #e8e7ef;
+
+    box-shadow:
+        4px 0 18px rgba(30, 25, 70, 0.035);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        width 0.3s ease;
+}
+
+
+/* =========================================================
+   LOGO AREA
+   ========================================================= */
+
+.organizer-sidebar-logo {
+    position: relative;
+
+    min-height: 92px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 22px;
+
+    box-sizing: border-box;
+
+    border-bottom: 1px solid #eeeeF4;
+}
+
+
+/* =========================================================
+   LOGO MARK
+   ========================================================= */
+
+.organizer-logo-mark {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 11px;
+
+    border-radius: 12px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6546dc,
+            #805ff0
+        );
+
+    font-size: 14px;
+    font-weight: 850;
+
+    letter-spacing: -0.4px;
+
+    box-shadow:
+        0 7px 16px rgba(101, 70, 220, 0.22);
+}
+
+
+/* =========================================================
+   LOGO TEXT
+   ========================================================= */
+
+.organizer-logo-text {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.organizer-logo-text strong {
+    color: #202438;
+
+    font-size: 17px;
+    font-weight: 850;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.35px;
+}
+
+.organizer-logo-text span {
+    color: #9297a8;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.organizer-sidebar-close {
+    display: none;
+
+    position: absolute;
+
+    top: 16px;
+    right: 14px;
+
+    width: 32px;
+    height: 32px;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid #e4e2ec;
+    border-radius: 9px;
+
+    color: #606577;
+
+    background: #ffffff;
+
+    font-size: 20px;
+    font-weight: 500;
+
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.organizer-sidebar-close:hover {
+    color: #5f43d0;
+
+    background: #f5f2ff;
+
+    border-color: #d8d0f5;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.organizer-sidebar-nav {
+    width: 100%;
+
+    padding: 22px 14px 12px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   NAV TITLE
+   ========================================================= */
+
+.organizer-nav-title {
+    margin: 0 0 10px;
+
+    padding: 0 12px;
+
+    color: #a0a4b2;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   NAV LINK
+   ========================================================= */
+
+.organizer-nav-link {
+    position: relative;
+
+    width: 100%;
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 4px;
+
+    padding: 0 13px;
+
+    box-sizing: border-box;
+
+    border-radius: 10px;
+
+    color: #73798b;
+
+    background: transparent;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.organizer-nav-link:hover {
+    color: #5f43d0;
+
+    background: #f7f5ff;
+
+    transform: translateX(2px);
+}
+
+
+/* =========================================================
+   ACTIVE NAV LINK
+   ========================================================= */
+
+.organizer-nav-link.active {
+    color: #6244d4;
+
+    background:
+        linear-gradient(
+            90deg,
+            #eee8ff,
+            #f0ebff
+        );
+
+    font-weight: 800;
+}
+
+.organizer-nav-link.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 7px;
+    bottom: 7px;
+
+    width: 3px;
+
+    border-radius: 0 5px 5px 0;
+
+    background: #6546dc;
+}
+
+
+/* =========================================================
+   NAV ICON
+   ========================================================= */
+
+.organizer-nav-icon {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 7px;
+
+    color: #73798a;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    transition: color 0.2s ease;
+}
+
+.organizer-nav-link:hover .organizer-nav-icon,
+.organizer-nav-link.active .organizer-nav-icon {
+    color: #6546dc;
+}
+
+
+/* =========================================================
+   NAV LABEL
+   ========================================================= */
+
+.organizer-nav-label {
+    flex: 1;
+
+    min-width: 0;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   QUICK ACTION AREA
+   ========================================================= */
+
+.organizer-sidebar-quick {
+    padding: 10px 14px 14px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   QUICK CARD
+   ========================================================= */
+
+.quick-card {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 82px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 13px 12px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #e5e0fb;
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f7f4ff,
+            #f0ecff
+        );
+
+    box-shadow:
+        0 5px 15px rgba(91, 65, 184, 0.06);
+}
+
+
+/* =========================================================
+   QUICK ICON
+   ========================================================= */
+
+.quick-card-icon {
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 9px;
+
+    border-radius: 10px;
+
+    color: #6546dc;
+
+    background: #e4dcff;
+
+    font-size: 21px;
+    font-weight: 500;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   QUICK TEXT
+   ========================================================= */
+
+.quick-card > div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    padding-right: 26px;
+}
+
+.quick-card strong {
+    color: #292d3e;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    line-height: 1.25;
+}
+
+.quick-card small {
+    color: #878c9d;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    line-height: 1.35;
+}
+
+
+/* =========================================================
+   QUICK ACTION BUTTON
+   ========================================================= */
+
+.quick-card button {
+    position: absolute;
+
+    top: 50%;
+    right: 10px;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    transform: translateY(-50%);
+
+    border: 1px solid #d9d1f8;
+    border-radius: 8px;
+
+    color: #6546dc;
+
+    background: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.quick-card button:hover {
+    color: #ffffff;
+
+    background: #6546dc;
+
+    border-color: #6546dc;
+
+    transform: translateY(-50%) translateX(1px);
+}
+
+
+/* =========================================================
+   BOTTOM SECTION
+   ========================================================= */
+
+.organizer-sidebar-bottom {
+    width: 100%;
+
+    margin-top: auto;
+
+    padding: 0 14px 16px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.organizer-sidebar-divider {
+    width: 100%;
+    height: 1px;
+
+    margin-bottom: 12px;
+
+    background: #eeeeF4;
+}
+
+
+/* =========================================================
+   PROFILE BUTTON
+   ========================================================= */
+
+.organizer-sidebar-profile {
+    width: 100%;
+
+    min-height: 54px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 8px 9px;
+
+    border: 1px solid transparent;
+    border-radius: 11px;
+
+    background: transparent;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.organizer-sidebar-profile:hover {
+    background: #f7f6fb;
+
+    border-color: #eceaf2;
+}
+
+
+/* =========================================================
+   PROFILE AVATAR
+   ========================================================= */
+
+.organizer-profile-avatar {
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 10px;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6546dc,
+            #805ff0
+        );
+
+    font-size: 13px;
+    font-weight: 850;
+
+    box-shadow:
+        0 4px 10px rgba(101, 70, 220, 0.2);
+}
+
+
+/* =========================================================
+   PROFILE INFO
+   ========================================================= */
+
+.organizer-profile-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.organizer-profile-info strong {
+    color: #2c3041;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+.organizer-profile-info span {
+    color: #9297a7;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    line-height: 1.2;
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.organizer-logout-button {
+    width: 100%;
+
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 9px;
+
+    margin-top: 5px;
+
+    padding: 0 12px;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    color: #73788a;
+
+    background: transparent;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.organizer-logout-button span {
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #777c8d;
+
+    font-size: 17px;
+}
+
+.organizer-logout-button:hover {
+    color: #c83d50;
+
+    background: #fff5f6;
+
+    border-color: #f5dadd;
+}
+
+.organizer-logout-button:hover span {
+    color: #c83d50;
+}
+
+
+/* =========================================================
+   MOBILE OVERLAY
+   ========================================================= */
+
+.organizer-sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999;
+
+    background: rgba(21, 18, 35, 0.38);
+
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+   ========================================================= */
+
+.organizer-nav-link:focus-visible,
+.organizer-sidebar-close:focus-visible,
+.quick-card button:focus-visible,
+.organizer-sidebar-profile:focus-visible,
+.organizer-logout-button:focus-visible {
+    outline: 3px solid rgba(101, 70, 220, 0.18);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .organizer-sidebar {
+        width: 250px;
+    }
+
+    .organizer-sidebar-logo {
+        padding: 0 18px;
+    }
+
+    .organizer-sidebar-nav {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .organizer-sidebar-quick {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .organizer-sidebar-bottom {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .organizer-sidebar {
+        width: 280px;
+
+        transform: translateX(-105%);
+
+        box-shadow:
+            10px 0 35px rgba(20, 15, 50, 0.14);
+    }
+
+    .organizer-sidebar.sidebar-open {
+        transform: translateX(0);
+    }
+
+    .organizer-sidebar-close {
+        display: flex;
+    }
+
+    .organizer-sidebar-logo {
+        min-height: 78px;
+    }
+
+    .organizer-sidebar-nav {
+        padding-top: 18px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .organizer-sidebar {
+        width: min(280px, 88vw);
+    }
+
+    .organizer-sidebar-logo {
+        padding: 0 16px;
+    }
+
+    .organizer-logo-mark {
+        width: 38px;
+        height: 38px;
+
+        flex-basis: 38px;
+
+        margin-right: 9px;
+    }
+
+    .organizer-logo-text strong {
+        font-size: 16px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .organizer-sidebar,
+    .organizer-nav-link,
+    .quick-card button,
+    .organizer-sidebar-profile,
+    .organizer-logout-button {
+        transition: none;
+    }
+}

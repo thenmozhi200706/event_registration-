@@ -1,451 +1,2833 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import useApi from "../../hooks/useApi";
+    import React, {
 
-import "./AdminDashboard.css";
+        useCallback,
 
-const AdminDashboard = () => {
-  const { user, logout } = useAuth();
-  const { get, loading, error } = useApi();
+        useEffect,
 
-  const [dashboard, setDashboard] = useState({
-    totalOrganizers: 0,
-    totalEvents: 0,
-    totalRegistrations: 0,
-    totalRevenue: 0,
-    recentEvents: [],
-    recentOrganizers: [],
-  });
+        useState,
 
-  useEffect(() => {
-    let mounted = true;
+    } from "react";
 
-    const loadDashboard = async () => {
-      try {
-        /*
-         * Backend endpoint:
-         *
-         * GET /api/admin/dashboard
-         *
-         * Expected dashboard data:
-         * {
-         *   totalOrganizers,
-         *   totalEvents,
-         *   totalRegistrations,
-         *   totalRevenue,
-         *   recentEvents,
-         *   recentOrganizers
-         * }
-         */
 
-        const response = await get("/admin/dashboard");
 
-        if (!mounted) return;
+    import axios from "axios";
 
-        /*
-         * Support different response structures:
-         *
-         * 1. response = dashboard
-         * 2. response.data = dashboard
-         * 3. response.data.dashboard = dashboard
-         * 4. response.dashboard = dashboard
-         */
 
-        const responseData = response?.data ?? response;
 
-        const data =
-          responseData?.dashboard ??
-          responseData;
+    import {
 
-        setDashboard({
-          totalOrganizers:
-            Number(data?.totalOrganizers) || 0,
+        Link,
 
-          totalEvents:
-            Number(data?.totalEvents) || 0,
+        useNavigate,
 
-          totalRegistrations:
-            Number(data?.totalRegistrations) || 0,
+    } from "react-router-dom";
 
-          totalRevenue:
-            Number(data?.totalRevenue) || 0,
 
-          recentEvents:
-            Array.isArray(data?.recentEvents)
-              ? data.recentEvents
-              : [],
 
-          recentOrganizers:
-            Array.isArray(data?.recentOrganizers)
-              ? data.recentOrganizers
-              : [],
+    import "./AdminDashboard.css";
+
+
+
+    // ============================================================
+
+    // DASHBOARD COMPONENTS
+
+    // ============================================================
+
+
+
+    import DashboardStats from "../../components/admin/DashboardStats";
+
+    import RegistrationChart from "../../components/admin/RegistrationChart";
+
+    import RevenueChart from "../../components/admin/RevenueChart";
+
+    import PopularEvents from "../../components/admin/PopularEvents";
+
+    import EventStatistics from "../../components/admin/EventStatistics";
+
+    import RecentRegistrations from "../../components/admin/RecentRegistrations";
+
+
+
+    // ============================================================
+
+    // API CONFIGURATION
+
+    // ============================================================
+
+
+
+    const API_BASE_URL =
+
+        import.meta.env.VITE_API_BASE_URL ||
+
+        "http://localhost:5000";
+
+
+
+    // Remove trailing slash
+
+    const BASE_URL = API_BASE_URL.replace(/\/+$/, "");
+
+
+
+    // ============================================================
+
+    // TOKEN KEYS
+
+    // ============================================================
+
+
+
+    const TOKEN_KEYS = [
+
+        "token",
+
+        "accessToken",
+
+        "jwt",
+
+        "authToken",
+
+        "auth_token",
+
+        "access_token",
+
+        "eventSphereToken",
+
+        "eventSphere_token",
+
+    ];
+
+
+
+    // ============================================================
+
+    // USER STORAGE KEYS
+
+    // ============================================================
+
+
+
+    const USER_KEYS = [
+
+        "user",
+
+        "admin",
+
+        "currentUser",
+
+        "authUser",
+
+    ];
+
+
+
+    // ============================================================
+
+    // CLEAN TOKEN
+
+    // ============================================================
+
+
+
+    const cleanToken = (value) => {
+
+        if (!value || typeof value !== "string") {
+
+            return null;
+
+        }
+
+
+
+        const token = value.trim();
+
+
+
+        if (!token) {
+
+            return null;
+
+        }
+
+
+
+        if (token.startsWith("Bearer ")) {
+
+            return token.substring(7).trim();
+
+        }
+
+
+
+        return token;
+
+    };
+
+
+
+    // ============================================================
+
+    // READ STORAGE
+
+    // ============================================================
+
+
+
+    const readStorage = (storage, key) => {
+
+        try {
+
+            return storage.getItem(key);
+
+        } catch (error) {
+
+            console.error(
+
+                "Storage read error:",
+
+                error
+
+            );
+
+
+
+            return null;
+
+        }
+
+    };
+
+
+
+    // ============================================================
+
+    // PARSE JSON
+
+    // ============================================================
+
+
+
+    const parseJSON = (value) => {
+
+        if (!value || typeof value !== "string") {
+
+            return null;
+
+        }
+
+
+
+        try {
+
+            return JSON.parse(value);
+
+        } catch {
+
+            return null;
+
+        }
+
+    };
+
+
+
+    // ============================================================
+
+    // GET TOKEN PAYLOAD
+
+    // ============================================================
+
+
+
+    const getTokenPayload = (token) => {
+
+        try {
+
+            if (!token) {
+
+                return null;
+
+            }
+
+
+
+            const parts = token.split(".");
+
+
+
+            if (parts.length !== 3) {
+
+                return null;
+
+            }
+
+
+
+            const base64 = parts[1]
+
+                .replace(/-/g, "+")
+
+                .replace(/\_/g, "/");
+
+
+
+            const padded =
+
+                base64 +
+
+                "=".repeat(
+
+                    (4 - (base64.length % 4)) % 4
+
+                );
+
+
+
+            const json = decodeURIComponent(
+
+                atob(padded)
+
+                    .split("")
+
+                    .map(
+
+                        (character) =>
+
+                            "%" +
+
+                            (
+
+                                "00" +
+
+                                character
+
+                                    .charCodeAt(0)
+
+                                    .toString(16)
+
+                            ).slice(-2)
+
+                    )
+
+                    .join("")
+
+            );
+
+
+
+            return JSON.parse(json);
+
+        } catch (error) {
+
+            console.warn(
+
+                "Unable to decode JWT:",
+
+                error
+
+            );
+
+
+
+            return null;
+
+        }
+
+    };
+
+
+
+    // ============================================================
+
+    // CHECK TOKEN EXPIRATION
+
+    // ============================================================
+
+
+
+    const isTokenExpired = (token) => {
+
+        if (!token) {
+
+            return true;
+
+        }
+
+
+
+        const payload = getTokenPayload(token);
+
+
+
+        // If token cannot be decoded, allow backend
+
+        // to decide whether it is valid.
+
+        if (!payload) {
+
+            return false;
+
+        }
+
+
+
+        // JWT exp is in seconds.
+
+        if (!payload.exp) {
+
+            return false;
+
+        }
+
+
+
+        const currentTime =
+
+            Math.floor(Date.now() / 1000);
+
+
+
+        return payload.exp <= currentTime;
+
+    };
+
+
+
+    // ============================================================
+
+    // GET AUTH TOKEN
+
+    // ============================================================
+
+
+
+    const getAuthToken = () => {
+
+        // --------------------------------------------------------
+
+        // 1. localStorage
+
+        // --------------------------------------------------------
+
+
+
+        for (const key of TOKEN_KEYS) {
+
+            const value = readStorage(
+
+                localStorage,
+
+                key
+
+            );
+
+
+
+            const token = cleanToken(value);
+
+
+
+            if (token) {
+
+                return token;
+
+            }
+
+        }
+
+
+
+        // --------------------------------------------------------
+
+        // 2. sessionStorage
+
+        // --------------------------------------------------------
+
+
+
+        for (const key of TOKEN_KEYS) {
+
+            const value = readStorage(
+
+                sessionStorage,
+
+                key
+
+            );
+
+
+
+            const token = cleanToken(value);
+
+
+
+            if (token) {
+
+                return token;
+
+            }
+
+        }
+
+
+
+        // --------------------------------------------------------
+
+        // 3. Stored user object
+
+        // --------------------------------------------------------
+
+
+
+        for (const key of USER_KEYS) {
+
+            const localUser = parseJSON(
+
+                readStorage(
+
+                    localStorage,
+
+                    key
+
+                )
+
+            );
+
+
+
+            const sessionUser = parseJSON(
+
+                readStorage(
+
+                    sessionStorage,
+
+                    key
+
+                )
+
+            );
+
+
+
+            const user =
+
+                localUser || sessionUser;
+
+
+
+            if (!user) {
+
+                continue;
+
+            }
+
+
+
+            const possibleToken =
+
+                user.token ||
+
+                user.accessToken ||
+
+                user.jwt ||
+
+                user.authToken ||
+
+                user.auth_token ||
+
+                user.access_token;
+
+
+
+            const token =
+
+                cleanToken(possibleToken);
+
+
+
+            if (token) {
+
+                return token;
+
+            }
+
+        }
+
+
+
+        return null;
+
+    };
+
+
+
+    // ============================================================
+
+    // CLEAR AUTH DATA
+
+    // ============================================================
+
+
+
+    const clearAuthData = () => {
+
+        // --------------------------------------------------------
+
+        // Remove token keys
+
+        // --------------------------------------------------------
+
+
+
+        TOKEN_KEYS.forEach((key) => {
+
+            try {
+
+                localStorage.removeItem(key);
+
+            } catch {
+
+                // Ignore
+
+            }
+
+
+
+            try {
+
+                sessionStorage.removeItem(key);
+
+            } catch {
+
+                // Ignore
+
+            }
+
         });
-      } catch (err) {
-        console.error(
-          "Failed to load admin dashboard:",
-          err?.response?.data || err?.message || err
+
+
+
+        // --------------------------------------------------------
+
+        // Remove user keys
+
+        // --------------------------------------------------------
+
+
+
+        USER_KEYS.forEach((key) => {
+
+            try {
+
+                localStorage.removeItem(key);
+
+            } catch {
+
+                // Ignore
+
+            }
+
+
+
+            try {
+
+                sessionStorage.removeItem(key);
+
+            } catch {
+
+                // Ignore
+
+            }
+
+        });
+
+    };
+
+
+
+    // ============================================================
+
+    // FORMAT NUMBER
+
+    // ============================================================
+
+
+
+    const formatNumber = (value) => {
+
+        return Number(
+
+            value || 0
+
+        ).toLocaleString("en-IN");
+
+    };
+
+
+
+    // ============================================================
+
+    // FORMAT CURRENCY
+
+    // ============================================================
+
+
+
+    const formatCurrency = (value) => {
+
+        return Number(
+
+            value || 0
+
+        ).toLocaleString("en-IN", {
+
+            maximumFractionDigits: 0,
+
+        });
+
+    };
+
+
+
+    // ============================================================
+
+    // ADMIN DASHBOARD
+
+    // ============================================================
+
+
+
+    const AdminDashboard = () => {
+
+        const navigate = useNavigate();
+
+
+
+        // ========================================================
+
+        // STATE
+
+        // ========================================================
+
+
+
+        const [
+
+            dashboardData,
+
+            setDashboardData,
+
+        ] = useState({});
+
+
+
+        const [
+
+            loading,
+
+            setLoading,
+
+        ] = useState(true);
+
+
+
+        const [
+
+            refreshing,
+
+            setRefreshing,
+
+        ] = useState(false);
+
+
+
+        const [
+
+            error,
+
+            setError,
+
+        ] = useState("");
+
+
+
+        // ========================================================
+
+        // GO TO LOGIN
+
+        // ========================================================
+
+
+
+        const goToLogin = useCallback(() => {
+
+            clearAuthData();
+
+
+
+            navigate("/login", {
+
+                replace: true,
+
+                state: {
+
+                    message:
+
+                        "Your login session has expired. Please login again.",
+
+                },
+
+            });
+
+        }, [navigate]);
+
+
+
+        // ========================================================
+
+        // FETCH DASHBOARD
+
+        // ========================================================
+
+
+
+        const fetchDashboard = useCallback(
+
+            async (isRefresh = false) => {
+
+                try {
+
+                    // --------------------------------------------
+
+                    // Loading state
+
+                    // --------------------------------------------
+
+
+
+                    if (isRefresh) {
+
+                        setRefreshing(true);
+
+                    } else {
+
+                        setLoading(true);
+
+                    }
+
+
+
+                    setError("");
+
+
+
+                    // --------------------------------------------
+
+                    // Get token
+
+                    // --------------------------------------------
+
+
+
+                    const token =
+
+                        getAuthToken();
+
+
+
+                    console.log(
+
+                        "EventSphere Admin Dashboard:",
+
+                        {
+
+                            api:
+
+                                `${BASE_URL}/api/admin/dashboard`,
+
+                            token:
+
+                                token
+
+                                    ? "FOUND"
+
+                                    : "NOT FOUND",
+
+                        }
+
+                    );
+
+
+
+                    // --------------------------------------------
+
+                    // No token
+
+                    // --------------------------------------------
+
+
+
+                    if (!token) {
+
+                        goToLogin();
+
+                        return;
+
+                    }
+
+
+
+                    // --------------------------------------------
+
+                    // Check token expiration BEFORE API call
+
+                    // --------------------------------------------
+
+
+
+                    if (isTokenExpired(token)) {
+
+                        console.warn(
+
+                            "EventSphere JWT has expired."
+
+                        );
+
+
+
+                        goToLogin();
+
+                        return;
+
+                    }
+
+
+
+                    // --------------------------------------------
+
+                    // API request
+
+                    // --------------------------------------------
+
+
+
+                    const response =
+
+                        await axios.get(
+
+                            `${BASE_URL}/api/admin/dashboard`,
+
+                            {
+
+                                headers: {
+
+                                    Authorization:
+
+                                        `Bearer ${token}`,
+
+
+
+                                    Accept:
+
+                                        "application/json",
+
+                                },
+
+
+
+                                timeout: 15000,
+
+                            }
+
+                        );
+
+
+
+                    console.log(
+
+                        "EventSphere Admin Dashboard Response:",
+
+                        response.data
+
+                    );
+
+
+
+                    // --------------------------------------------
+
+                    // Successful response
+
+                    // --------------------------------------------
+
+
+
+                    if (
+
+                        response.data?.success === true
+
+                    ) {
+
+                        const data =
+
+                            response.data.dashboard ||
+
+                            response.data.data ||
+
+                            response.data;
+
+
+
+                        setDashboardData(
+
+                            data || {}
+
+                        );
+
+
+
+                        setError("");
+
+
+
+                        return;
+
+                    }
+
+
+
+                    // --------------------------------------------
+
+                    // API returned success false
+
+                    // --------------------------------------------
+
+
+
+                    setError(
+
+                        response.data?.message ||
+
+                        "Unable to load admin dashboard."
+
+                    );
+
+                } catch (err) {
+
+                    console.error(
+
+                        "EventSphere Admin Dashboard Error:",
+
+                        err
+
+                    );
+
+
+
+                    // --------------------------------------------
+
+                    // 401 Unauthorized
+
+                    // --------------------------------------------
+
+
+
+                    if (
+
+                        err.response?.status === 401
+
+                    ) {
+
+                        console.warn(
+
+                            "Admin session expired or invalid."
+
+                        );
+
+
+
+                        goToLogin();
+
+                        return;
+
+                    }
+
+
+
+                    // --------------------------------------------
+
+                    // 403 Forbidden
+
+                    // --------------------------------------------
+
+
+
+                    if (
+
+                        err.response?.status === 403
+
+                    ) {
+
+                        setError(
+
+                            "Access denied. Only administrators can access this dashboard."
+
+                        );
+
+
+
+                        return;
+
+                    }
+
+
+
+                    // --------------------------------------------
+
+                    // Backend unavailable
+
+                    // --------------------------------------------
+
+
+
+                    if (!err.response) {
+
+                        setError(
+
+                            `Unable to connect to the EventSphere backend at ${BASE_URL}. Make sure the backend server is running.`
+
+                        );
+
+
+
+                        return;
+
+                    }
+
+
+
+                    // --------------------------------------------
+
+                    // Other API error
+
+                    // --------------------------------------------
+
+
+
+                    setError(
+
+                        err.response?.data?.message ||
+
+                        "Unable to load admin dashboard."
+
+                    );
+
+                } finally {
+
+                    setLoading(false);
+
+                    setRefreshing(false);
+
+                }
+
+            },
+
+            [goToLogin]
+
         );
-      }
-    };
 
-    loadDashboard();
 
-    return () => {
-      mounted = false;
-    };
-  }, [get]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 2,
-    }).format(Number(amount) || 0);
-  };
+        // ========================================================
 
-  return (
-    <div className="admin-dashboard">
+        // INITIAL LOAD
 
-      {/* =================================================
-          HEADER
-          ================================================= */}
+        // ========================================================
 
-      <header className="dashboard-header">
 
-        <div>
-          <h1>Admin Dashboard</h1>
 
-          <p>
-            Welcome, {user?.name || "Administrator"}!
-          </p>
-        </div>
+        useEffect(() => {
 
-        <button
-          type="button"
-          onClick={logout}
-          className="logout-button"
-        >
-          Logout
-        </button>
+            fetchDashboard(false);
 
-      </header>
+        }, [fetchDashboard]);
 
 
-      {/* =================================================
-          API ERROR
-          ================================================= */}
 
-      {error && (
-        <div className="dashboard-error">
-          <strong>Unable to load dashboard.</strong>
+        // ========================================================
 
-          <span>
-            {" "}
-            Please check the backend server and
-            `/api/admin/dashboard` endpoint.
-          </span>
-        </div>
-      )}
+        // LOGOUT
 
+        // ========================================================
 
-      {/* =================================================
-          LOADING
-          ================================================= */}
 
-      {loading ? (
 
-        <div className="dashboard-loading">
+        const handleLogout = () => {
 
-          <div className="spinner"></div>
+            clearAuthData();
 
-          <p>
-            Loading admin dashboard...
-          </p>
 
-        </div>
 
-      ) : (
+            navigate("/login", {
 
-        <>
+                replace: true,
 
-          {/* =================================================
-              STATISTICS
-              ================================================= */}
+            });
 
-          <section className="admin-statistics">
+        };
 
-            <div className="stat-card">
 
-              <span className="stat-label">
-                Total Organizers
-              </span>
 
-              <strong className="stat-value">
-                {dashboard.totalOrganizers}
-              </strong>
+        // ========================================================
 
-            </div>
+        // DASHBOARD VALUES
 
+        // ========================================================
 
-            <div className="stat-card">
 
-              <span className="stat-label">
-                Total Events
-              </span>
 
-              <strong className="stat-value">
-                {dashboard.totalEvents}
-              </strong>
+        const totalEvents = Number(
 
-            </div>
+            dashboardData?.totalEvents ??
 
+            dashboardData?.eventAnalytics
 
-            <div className="stat-card">
+                ?.totalEvents ??
 
-              <span className="stat-label">
-                Total Registrations
-              </span>
+            dashboardData?.events
 
-              <strong className="stat-value">
-                {dashboard.totalRegistrations}
-              </strong>
+                ?.totalEvents ??
 
-            </div>
+            0
 
+        );
 
-            <div className="stat-card">
 
-              <span className="stat-label">
-                Total Revenue
-              </span>
 
-              <strong className="stat-value">
-                {formatCurrency(
-                  dashboard.totalRevenue
-                )}
-              </strong>
+        const activeEvents = Number(
 
-            </div>
+            dashboardData?.activeEvents ??
 
-          </section>
+            dashboardData?.eventAnalytics
 
+                ?.activeEvents ??
 
-          {/* =================================================
-              ADMIN ACTION
-              ================================================= */}
+            dashboardData?.events
 
-          <section className="admin-actions">
+                ?.activeEvents ??
 
-            <Link
-              to="/admin/organizers"
-              className="dashboard-action-card"
-            >
+            0
 
-              <h3>
-                Manage Organizers
-              </h3>
+        );
 
-              <p>
-                Add, view, enable, or disable
-                event organizers.
-              </p>
 
-              <span className="action-link">
-                Manage Organizers →
-              </span>
 
-            </Link>
+        const closedEvents = Number(
 
-          </section>
+            dashboardData?.closedEvents ??
 
+            dashboardData?.eventAnalytics
 
-          {/* =================================================
-              RECENT EVENTS
-              ================================================= */}
+                ?.closedEvents ??
 
-          <section className="dashboard-section">
+            dashboardData?.events
 
-            <div className="section-header">
+                ?.closedEvents ??
 
-              <div>
-                <h2>
-                  Recent Events
-                </h2>
+            0
 
-                <p className="section-subtitle">
-                  Latest events created on EventSphere
-                </p>
-              </div>
+        );
 
-              <Link
-                to="/events"
-                className="section-link"
-              >
-                View All →
-              </Link>
 
-            </div>
 
+        const totalRegistrations = Number(
 
-            {dashboard.recentEvents.length === 0 ? (
+            dashboardData?.totalRegistrations ??
 
-              <div className="empty-message">
-                No recent events found.
-              </div>
+            dashboardData?.registrationAnalytics
 
-            ) : (
+                ?.totalRegistrations ??
 
-              <div className="recent-list">
+            dashboardData?.registrations
 
-                {dashboard.recentEvents.map(
-                  (event) => (
+                ?.totalRegistrations ??
 
-                    <div
-                      key={
-                        event._id ||
-                        event.id
-                      }
-                      className="recent-item"
-                    >
+            0
 
-                      <div className="recent-item-info">
+        );
 
-                        <h3>
-                          {event.title ||
-                            "Untitled Event"}
-                        </h3>
 
-                        <p>
-                          {event.venue ||
-                            "Venue not available"}
-                        </p>
 
-                      </div>
+        const paidRegistrations = Number(
 
+            dashboardData?.paidRegistrations ??
 
-                      <span
-                        className={
-                          event.status === "closed"
-                            ? "status-inactive"
-                            : "status-active"
-                        }
-                      >
-                        {event.status
-                          ? event.status
-                              .charAt(0)
-                              .toUpperCase() +
-                            event.status.slice(1)
-                          : "Active"}
-                      </span>
+            dashboardData?.registrationAnalytics
+
+                ?.paidRegistrations ??
+
+            dashboardData?.registrations
+
+                ?.paidRegistrations ??
+
+            0
+
+        );
+
+
+
+        const pendingRegistrations = Number(
+
+            dashboardData?.pendingRegistrations ??
+
+            dashboardData?.registrationAnalytics
+
+                ?.pendingRegistrations ??
+
+            dashboardData?.registrations
+
+                ?.pendingRegistrations ??
+
+            0
+
+        );
+
+
+
+        const failedRegistrations = Number(
+
+            dashboardData?.failedRegistrations ??
+
+            dashboardData?.registrationAnalytics
+
+                ?.failedRegistrations ??
+
+            dashboardData?.registrations
+
+                ?.failedRegistrations ??
+
+            0
+
+        );
+
+
+
+        const totalRevenue = Number(
+
+            dashboardData?.totalRevenue ??
+
+            dashboardData?.paymentAnalytics
+
+                ?.totalRevenue ??
+
+            dashboardData?.payments
+
+                ?.totalRevenue ??
+
+            0
+
+        );
+
+
+
+        const totalUsers = Number(
+
+            dashboardData?.totalUsers ??
+
+            dashboardData?.userAnalytics
+
+                ?.totalUsers ??
+
+            dashboardData?.users
+
+                ?.totalUsers ??
+
+            0
+
+        );
+
+
+
+        const totalOrganizers = Number(
+
+            dashboardData?.totalOrganizers ??
+
+            dashboardData?.userAnalytics
+
+                ?.totalOrganizers ??
+
+            dashboardData?.users
+
+                ?.totalOrganizers ??
+
+            0
+
+        );
+
+
+
+        const totalParticipants = Number(
+
+            dashboardData?.totalParticipants ??
+
+            dashboardData?.userAnalytics
+
+                ?.totalParticipants ??
+
+            dashboardData?.users
+
+                ?.totalParticipants ??
+
+            0
+
+        );
+
+
+
+        // ========================================================
+
+        // REGISTRATION TREND
+
+        // ========================================================
+
+
+
+        const registrationTrend =
+
+            dashboardData?.registrationTrend ||
+
+            dashboardData?.registrationAnalytics
+
+                ?.registrationTrend ||
+
+            dashboardData?.registrationTrends ||
+
+            [];
+
+
+
+        // ========================================================
+
+        // REVENUE TREND
+
+        // ========================================================
+
+
+
+        const revenueTrend =
+
+            dashboardData?.revenueTrend ||
+
+            dashboardData?.paymentAnalytics
+
+                ?.revenueTrend ||
+
+            dashboardData?.revenueTrends ||
+
+            [];
+
+
+
+        // ========================================================
+
+        // POPULAR EVENTS
+
+        // ========================================================
+
+
+
+        const popularEvents =
+
+            dashboardData?.popularEvents ||
+
+            dashboardData?.eventAnalytics
+
+                ?.popularEvents ||
+
+            dashboardData?.popular ||
+
+            [];
+
+
+
+        // ========================================================
+
+        // RECENT REGISTRATIONS
+
+        // ========================================================
+
+
+
+        const recentRegistrations =
+
+            dashboardData?.recentRegistrations ||
+
+            dashboardData?.registrationAnalytics
+
+                ?.recentRegistrations ||
+
+            dashboardData?.recentRegistration ||
+
+            [];
+
+
+
+        // ========================================================
+
+        // DASHBOARD STATS
+
+        // ========================================================
+
+
+
+        const stats = {
+
+            totalEvents,
+
+            activeEvents,
+
+            closedEvents,
+
+
+
+            totalRegistrations,
+
+            paidRegistrations,
+
+            pendingRegistrations,
+
+            failedRegistrations,
+
+
+
+            totalRevenue,
+
+
+
+            totalUsers,
+
+            totalOrganizers,
+
+            totalParticipants,
+
+        };
+
+
+
+        // ========================================================
+
+        // EVENT ANALYTICS
+
+        // ========================================================
+
+
+
+        const eventAnalytics = {
+
+            totalEvents,
+
+            activeEvents,
+
+            closedEvents,
+
+
+
+            draftEvents: Number(
+
+                dashboardData?.draftEvents ??
+
+                dashboardData?.eventAnalytics
+
+                    ?.draftEvents ??
+
+                0
+
+            ),
+
+
+
+            upcomingEvents: Number(
+
+                dashboardData?.upcomingEvents ??
+
+                dashboardData?.eventAnalytics
+
+                    ?.upcomingEvents ??
+
+                0
+
+            ),
+
+        };
+
+
+
+        // ========================================================
+
+        // LOADING SCREEN
+
+        // ========================================================
+
+
+
+        if (loading) {
+
+            return (
+
+                <div className="admin-dashboard">
+
+                    <div className="dashboard-loading">
+
+                        <div className="spinner"></div>
+
+
+
+                        <span>
+
+                            Loading admin dashboard...
+
+                        </span>
 
                     </div>
 
-                  )
-                )}
+                </div>
 
-              </div>
+            );
 
-            )}
-
-          </section>
+        }
 
 
-          {/* =================================================
-              RECENT ORGANIZERS
-              ================================================= */}
 
-          <section className="dashboard-section">
+        // ========================================================
 
-            <div className="section-header">
+        // PAGE
 
-              <div>
-
-                <h2>
-                  Recent Organizers
-                </h2>
-
-                <p className="section-subtitle">
-                  Recently added event organizers
-                </p>
-
-              </div>
-
-              <Link
-                to="/admin/organizers"
-                className="section-link"
-              >
-                View All →
-              </Link>
-
-            </div>
+        // ========================================================
 
 
-            {dashboard.recentOrganizers.length === 0 ? (
 
-              <div className="empty-message">
-                No recent organizers found.
-              </div>
+        return (
 
-            ) : (
+            <div className="admin-dashboard">
 
-              <div className="recent-list">
 
-                {dashboard.recentOrganizers.map(
-                  (organizer) => (
 
-                    <div
-                      key={
-                        organizer._id ||
-                        organizer.id
-                      }
-                      className="recent-item"
-                    >
+                {/* ==================================================
 
-                      <div className="recent-item-info">
+                    HEADER
 
-                        <h3>
-                          {organizer.name ||
-                            "Unnamed Organizer"}
-                        </h3>
+                ================================================== */}
+
+
+
+                <div className="dashboard-header">
+
+
+
+                    <div>
+
+                        <h1>
+
+                            Admin Dashboard
+
+                        </h1>
+
+
 
                         <p>
-                          {organizer.email ||
-                            "Email not available"}
+
+                            Monitor events,
+
+                            registrations,
+
+                            participants and
+
+                            revenue across
+
+                            EventSphere.
+
                         </p>
-
-                      </div>
-
-
-                      <span
-                        className={
-                          organizer.isActive
-                            ? "status-active"
-                            : "status-inactive"
-                        }
-                      >
-                        {organizer.isActive
-                          ? "Active"
-                          : "Inactive"}
-                      </span>
 
                     </div>
 
-                  )
+
+
+                    <div
+
+                        style={{
+
+                            display: "flex",
+
+                            gap: "10px",
+
+                            alignItems: "center",
+
+                        }}
+
+                    >
+
+
+
+                        {/* Refresh */}
+
+
+
+                        <button
+
+                            type="button"
+
+                            className="logout-button"
+
+                            onClick={() =>
+
+                                fetchDashboard(true)
+
+                            }
+
+                            disabled={refreshing}
+
+                        >
+
+                            {refreshing
+
+                                ? "Refreshing..."
+
+                                : "Refresh"}
+
+                        </button>
+
+
+
+                        {/* Logout */}
+
+
+
+                        <button
+
+                            type="button"
+
+                            className="logout-button"
+
+                            onClick={handleLogout}
+
+                        >
+
+                            Logout
+
+                        </button>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+                {/* ==================================================
+
+                    ERROR
+
+                ================================================== */}
+
+
+
+                {error ? (
+
+
+
+                    <div className="dashboard-error">
+
+
+
+                        <strong>
+
+                            Dashboard Error
+
+                        </strong>
+
+
+
+                        <p>
+
+                            {error}
+
+                        </p>
+
+
+
+                        <div
+
+                            style={{
+
+                                display: "flex",
+
+                                gap: "10px",
+
+                                marginTop: "14px",
+
+                            }}
+
+                        >
+
+
+
+                            <button
+
+                                type="button"
+
+                                className="logout-button"
+
+                                onClick={() =>
+
+                                    fetchDashboard(false)
+
+                                }
+
+                            >
+
+                                Try Again
+
+                            </button>
+
+
+
+                            <button
+
+                                type="button"
+
+                                className="logout-button"
+
+                                onClick={
+
+                                    handleLogout
+
+                                }
+
+                            >
+
+                                Go to Login
+
+                            </button>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                ) : (
+
+
+
+                    <>
+
+
+
+                        {/* ==================================================
+
+                            MAIN STATISTICS
+
+                        ================================================== */}
+
+
+
+                        <div className="admin-statistics">
+
+
+
+                            <div className="stat-card">
+
+                                <span className="stat-label">
+
+                                    Total Events
+
+                                </span>
+
+
+
+                                <span className="stat-value">
+
+                                    {formatNumber(
+
+                                        totalEvents
+
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+
+
+
+                            <div className="stat-card">
+
+                                <span className="stat-label">
+
+                                    Total Registrations
+
+                                </span>
+
+
+
+                                <span className="stat-value">
+
+                                    {formatNumber(
+
+                                        totalRegistrations
+
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+
+
+
+                            <div className="stat-card">
+
+                                <span className="stat-label">
+
+                                    Total Revenue
+
+                                </span>
+
+
+
+                                <span className="stat-value">
+
+                                    ₹
+
+                                    {formatCurrency(
+
+                                        totalRevenue
+
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+
+
+
+                            <div className="stat-card">
+
+                                <span className="stat-label">
+
+                                    Total Users
+
+                                </span>
+
+
+
+                                <span className="stat-value">
+
+                                    {formatNumber(
+
+                                        totalUsers
+
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+
+
+                        {/* ==================================================
+
+                            ADMIN ACTIONS
+
+                        ================================================== */}
+
+
+
+                        <div className="admin-actions">
+
+
+
+                                                                                    <Link
+
+                                to="/admin/organizers"
+
+                                className="dashboard-action-card"
+
+                            >
+
+                                <h3>
+
+                                    Manage Organizers
+
+                                </h3>
+
+
+
+                                <p>
+
+                                    Monitor organizer
+
+                                    accounts,
+
+                                    OTP verification
+
+                                    and account
+
+                                    status.
+
+                                </p>
+
+
+
+                                <span className="action-link">
+
+                                    View Organizers →
+
+                                </span>
+
+                            </Link>
+
+
+
+
+
+                            <Link
+
+                                to="/admin/analytics"
+
+                                className="dashboard-action-card"
+
+                            >
+
+                                <h3>
+
+                                    Analytics & Reports
+
+                                </h3>
+
+
+
+                                <p>
+
+                                    View detailed
+
+                                    registration,
+
+                                    revenue and
+
+                                    event analytics.
+
+                                </p>
+
+
+
+                                <span className="action-link">
+
+                                    View Analytics →
+
+                                </span>
+
+                            </Link>
+
+
+
+                        </div>
+
+
+
+
+
+                        {/* ==================================================
+
+                            PLATFORM OVERVIEW
+
+                        ================================================== */}
+
+
+
+                        <div className="dashboard-section">
+
+
+
+                            <div className="section-header">
+
+
+
+                                <div>
+
+                                    <h2>
+
+                                        Platform Overview
+
+                                    </h2>
+
+
+
+                                    <p className="section-subtitle">
+
+                                        Current EventSphere
+
+                                        statistics
+
+                                    </p>
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+                            <DashboardStats
+
+                                stats={stats}
+
+                                loading={false}
+
+                            />
+
+
+
+                        </div>
+
+
+
+
+
+                        {/* ==================================================
+
+                            REGISTRATION CHART
+
+                        ================================================== */}
+
+
+
+                        <div className="dashboard-section">
+
+
+
+                            <div className="section-header">
+
+
+
+                                <div>
+
+                                    <h2>
+
+                                        Registration Overview
+
+                                    </h2>
+
+
+
+                                    <p className="section-subtitle">
+
+                                        Registration
+
+                                        activity over
+
+                                        time
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <Link
+
+                                    to="/admin/registrations"
+
+                                    className="section-link"
+
+                                >
+
+                                    View All →
+
+                                </Link>
+
+
+
+                            </div>
+
+
+
+                            <RegistrationChart
+
+                                data={registrationTrend}
+
+                                loading={false}
+
+                            />
+
+
+
+                        </div>
+
+
+
+
+
+                        {/* ==================================================
+
+                            REVENUE CHART
+
+                        ================================================== */}
+
+
+
+                        <div className="dashboard-section">
+
+
+
+                            <div className="section-header">
+
+
+
+                                <div>
+
+                                    <h2>
+
+                                        Revenue Overview
+
+                                    </h2>
+
+
+
+                                    <p className="section-subtitle">
+
+                                        Revenue generated
+
+                                        from event
+
+                                        registrations
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <Link
+
+                                    to="/admin/analytics"
+
+                                    className="section-link"
+
+                                >
+
+                                    Detailed Analytics →
+
+                                </Link>
+
+
+
+                            </div>
+
+
+
+                            <RevenueChart
+
+                                data={revenueTrend}
+
+                                loading={false}
+
+                            />
+
+
+
+                        </div>
+
+
+
+
+
+                        {/* ==================================================
+
+                            EVENT STATISTICS
+
+                        ================================================== */}
+
+
+
+                        <div className="dashboard-section">
+
+
+
+                            <div className="section-header">
+
+
+
+                                <div>
+
+                                    <h2>
+
+                                        Event Statistics
+
+                                    </h2>
+
+
+
+                                    <p className="section-subtitle">
+
+                                        Current event
+
+                                        activity
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <Link
+
+                                    to="/admin/events"
+
+                                    className="section-link"
+
+                                >
+
+                                    View Events →
+
+                                </Link>
+
+
+
+                            </div>
+
+
+
+                            <EventStatistics
+
+                                data={eventAnalytics}
+
+                                loading={false}
+
+                            />
+
+
+
+                        </div>
+
+
+
+
+
+                        {/* ==================================================
+
+                            POPULAR EVENTS
+
+                        ================================================== */}
+
+
+
+                        <div className="dashboard-section">
+
+
+
+                            <div className="section-header">
+
+
+
+                                <div>
+
+                                    <h2>
+
+                                        Popular Events
+
+                                    </h2>
+
+
+
+                                    <p className="section-subtitle">
+
+                                        Events with the
+
+                                        highest
+
+                                        registrations
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <Link
+
+                                    to="/admin/events"
+
+                                    className="section-link"
+
+                                >
+
+                                    All Events →
+
+                                </Link>
+
+
+
+                            </div>
+
+
+
+                            <PopularEvents
+
+                                events={popularEvents}
+
+                                loading={false}
+
+                                limit={5}
+
+                            />
+
+
+
+                        </div>
+
+
+
+
+
+                        {/* ==================================================
+
+                            RECENT REGISTRATIONS
+
+                        ================================================== */}
+
+
+
+                        <div className="dashboard-section">
+
+
+
+                            <div className="section-header">
+
+
+
+                                <div>
+
+                                    <h2>
+
+                                        Recent Registrations
+
+                                    </h2>
+
+
+
+                                    <p className="section-subtitle">
+
+                                        Latest participant
+
+                                        registrations
+
+                                    </p>
+
+                                </div>
+
+
+
+                                <Link
+
+                                    to="/admin/registrations"
+
+                                    className="section-link"
+
+                                >
+
+                                    View All →
+
+                                </Link>
+
+
+
+                            </div>
+
+
+
+                            <RecentRegistrations
+
+                                registrations={
+
+                                    recentRegistrations
+
+                                }
+
+                                loading={false}
+
+                                limit={5}
+
+                                showViewAll={false}
+
+                            />
+
+
+
+                        </div>
+
+
+
+
+
+                        {/* ==================================================
+
+                            REGISTRATION SUMMARY
+
+                        ================================================== */}
+
+
+
+                        <div className="dashboard-section">
+
+
+
+                            <div className="section-header">
+
+
+
+                                <div>
+
+                                    <h2>
+
+                                        Registration Summary
+
+                                    </h2>
+
+
+
+                                    <p className="section-subtitle">
+
+                                        Current
+
+                                        registration
+
+                                        and payment
+
+                                        status
+
+                                    </p>
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+
+                            <div className="recent-list">
+
+
+
+                                {/* PAID */}
+
+
+
+                                <div className="recent-item">
+
+
+
+                                    <div className="recent-item-info">
+
+
+
+                                        <h3>
+
+                                            Paid Registrations
+
+                                        </h3>
+
+
+
+                                        <p>
+
+                                            Successfully
+
+                                            completed
+
+                                            payments
+
+                                        </p>
+
+
+
+                                    </div>
+
+
+
+                                    <span className="status-active">
+
+                                        {formatNumber(
+
+                                            paidRegistrations
+
+                                        )}
+
+                                    </span>
+
+
+
+                                </div>
+
+
+
+
+
+                                {/* PENDING */}
+
+
+
+                                <div className="recent-item">
+
+
+
+                                    <div className="recent-item-info">
+
+
+
+                                        <h3>
+
+                                            Pending Registrations
+
+                                        </h3>
+
+
+
+                                        <p>
+
+                                            Registrations
+
+                                            waiting for
+
+                                            payment
+
+                                        </p>
+
+
+
+                                    </div>
+
+
+
+                                    <span className="status-active">
+
+                                        {formatNumber(
+
+                                            pendingRegistrations
+
+                                        )}
+
+                                    </span>
+
+
+
+                                </div>
+
+
+
+
+
+                                {/* FAILED */}
+
+
+
+                                <div className="recent-item">
+
+
+
+                                    <div className="recent-item-info">
+
+
+
+                                        <h3>
+
+                                            Failed Registrations
+
+                                        </h3>
+
+
+
+                                        <p>
+
+                                            Registrations
+
+                                            with failed
+
+                                            payments
+
+                                        </p>
+
+
+
+                                    </div>
+
+
+
+                                    <span className="status-inactive">
+
+                                        {formatNumber(
+
+                                            failedRegistrations
+
+                                        )}
+
+                                    </span>
+
+
+
+                                </div>
+
+
+
+
+
+                                {/* ORGANIZERS */}
+
+
+
+                                <div className="recent-item">
+
+
+
+                                    <div className="recent-item-info">
+
+
+
+                                        <h3>
+
+                                            Organizers
+
+                                        </h3>
+
+
+
+                                        <p>
+
+                                            Total registered
+
+                                            event organizers
+
+                                        </p>
+
+
+
+                                    </div>
+
+
+
+                                    <span className="status-active">
+
+                                        {formatNumber(
+
+                                            totalOrganizers
+
+                                        )}
+
+                                    </span>
+
+
+
+                                </div>
+
+
+
+
+
+                                {/* PARTICIPANTS */}
+
+
+
+                                <div className="recent-item">
+
+
+
+                                    <div className="recent-item-info">
+
+
+
+                                        <h3>
+
+                                            Participants
+
+                                        </h3>
+
+
+
+                                        <p>
+
+                                            Total participant
+
+                                            accounts
+
+                                        </p>
+
+
+
+                                    </div>
+
+
+
+                                    <span className="status-active">
+
+                                        {formatNumber(
+
+                                            totalParticipants
+
+                                        )}
+
+                                    </span>
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </>
+
                 )}
 
-              </div>
 
-            )}
 
-          </section>
+            </div>
 
-        </>
+        );
 
-      )}
+    };
 
-    </div>
-  );
-};
 
-export default AdminDashboard;
+
+    export default AdminDashboard;

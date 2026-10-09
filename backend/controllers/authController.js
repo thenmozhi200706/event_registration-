@@ -3,83 +3,116 @@
 const User = require("../models/User");
 const Organizer = require("../models/Organizer");
 
-const generateToken =
-    require("../utils/generateToken");
+const generateToken = require("../utils/generateToken");
+
+// =====================================================
+// FRONTEND URL
+// =====================================================
+
+const getClientUrl = () => {
+    const url =
+        process.env.CLIENT_URL ||
+        "http://localhost:5173";
+
+    return url.replace(/\/+$/, "");
+};
+
+
+// =====================================================
+// REDIRECT TO FRONTEND AUTH SUCCESS
+// =====================================================
+
+const redirectWithToken = (res, token) => {
+    const clientUrl = getClientUrl();
+
+    const redirectUrl =
+        `${clientUrl}/auth/success?token=${encodeURIComponent(token)}`;
+
+    console.log("========================================");
+    console.log("EventSphere Google Authentication");
+    console.log("Redirect URL:", redirectUrl);
+    console.log("Token generated:", Boolean(token));
+    console.log("========================================");
+
+    return res.redirect(302, redirectUrl);
+};
 
 
 // =====================================================
 // GOOGLE LOGIN SUCCESS
 // =====================================================
 //
-// Google login flow:
+// Google OAuth callback:
 //
-// ADMIN
-//   -> /auth/success?token=...
+// /api/auth/google/callback
 //
-// PARTICIPANT
-//   -> /auth/success?token=...
+// Successful login:
 //
-// PENDING ORGANIZER
-//   -> /organizer/verify-otp?email=...
+// /auth/success?token=JWT
 //
-// ACTIVE ORGANIZER
-//   -> /auth/success?token=...
+// Pending organizer:
+//
+// /organizer/verify-otp?email=email
 //
 // =====================================================
 
-const googleLoginSuccess = async (
-    req,
-    res
-) => {
+const googleLoginSuccess = async (req, res) => {
 
     try {
 
+        console.log("========================================");
+        console.log("GOOGLE LOGIN CALLBACK");
+        console.log("req.user:", req.user);
+        console.log("========================================");
+
+
         // =================================================
-        // CHECK AUTHENTICATED USER
+        // CHECK PASSPORT USER
         // =================================================
 
         if (!req.user) {
 
-            return res.status(401).json({
+            console.error(
+                "Google authentication failed: req.user is missing"
+            );
 
-                success: false,
-
-                message:
-                    "Google authentication failed",
-
-            });
-
+            return res.redirect(
+                `${getClientUrl()}/login?error=google_auth_failed`
+            );
         }
 
 
         // =================================================
-        // NORMALIZE EMAIL
+        // GET EMAIL
         // =================================================
 
-        const email =
-            String(
-                req.user.email || ""
-            )
-                .trim()
-                .toLowerCase();
+        const email = String(
+            req.user.email || ""
+        )
+            .trim()
+            .toLowerCase();
 
 
         if (!email) {
 
-            return res.status(400).json({
+            console.error(
+                "Google account email was not returned."
+            );
 
-                success: false,
-
-                message:
-                    "Google account email not available",
-
-            });
-
+            return res.redirect(
+                `${getClientUrl()}/login?error=email_missing`
+            );
         }
 
 
+        console.log(
+            "Google authenticated email:",
+            email
+        );
+
+
         // =================================================
-        // CHECK ORGANIZER
+        // FIND ORGANIZER
         // =================================================
 
         const organizer =
@@ -92,11 +125,8 @@ const googleLoginSuccess = async (
         // PENDING ORGANIZER
         // =================================================
         //
-        // Organizer exists but OTP has not been verified.
-        //
-        // DO NOT generate a normal JWT.
-        //
-        // Send organizer directly to OTP page.
+        // Organizer exists but OTP is not verified
+        // or account is not active.
         //
         // =================================================
 
@@ -108,10 +138,11 @@ const googleLoginSuccess = async (
             )
         ) {
 
-            // ---------------------------------------------
-            // Make sure the corresponding User exists.
-            // Passport normally creates this already.
-            // ---------------------------------------------
+            console.log(
+                "Pending organizer detected:",
+                email
+            );
+
 
             let user =
                 await User.findOne({
@@ -119,9 +150,9 @@ const googleLoginSuccess = async (
                 });
 
 
-            // ---------------------------------------------
-            // Create User if missing
-            // ---------------------------------------------
+            // =================================================
+            // CREATE USER IF MISSING
+            // =================================================
 
             if (!user) {
 
@@ -134,14 +165,16 @@ const googleLoginSuccess = async (
                             "Organizer",
 
                         email:
-                            organizer.email,
+                            email,
 
                         googleId:
                             req.user.googleId ||
+                            req.user.id ||
                             null,
 
                         profileImage:
                             req.user.profileImage ||
+                            req.user.picture ||
                             "",
 
                         role:
@@ -154,51 +187,42 @@ const googleLoginSuccess = async (
 
             } else {
 
-                // -----------------------------------------
-                // Never convert admin into organizer
-                // -----------------------------------------
+                // =============================================
+                // NEVER CHANGE ADMIN TO ORGANIZER
+                // =============================================
 
                 if (
-                    user.role ===
-                    "admin"
+                    user.role === "admin"
                 ) {
 
                     const token =
-                        generateToken(
-                            user
-                        );
+                        generateToken(user);
 
-
-                    const redirectUrl =
-                        `${process.env.CLIENT_URL}` +
-                        `/auth/success` +
-                        `?token=${encodeURIComponent(
-                            token
-                        )}`;
-
-
-                    return res.redirect(
-                        redirectUrl
+                    return redirectWithToken(
+                        res,
+                        token
                     );
                 }
 
 
-                // -----------------------------------------
-                // Make sure this user is an organizer
-                // but keep account inactive until OTP.
-                // -----------------------------------------
+                // =============================================
+                // UPDATE ORGANIZER USER
+                // =============================================
 
                 user.name =
                     organizer.name ||
                     user.name ||
-                    req.user.name;
+                    req.user.name ||
+                    "Organizer";
 
                 user.googleId =
                     req.user.googleId ||
+                    req.user.id ||
                     user.googleId;
 
                 user.profileImage =
                     req.user.profileImage ||
+                    req.user.picture ||
                     user.profileImage ||
                     "";
 
@@ -210,37 +234,34 @@ const googleLoginSuccess = async (
 
 
                 await user.save();
-
             }
 
 
-            // ---------------------------------------------
-            // Store email for OTP page
-            // ---------------------------------------------
+            // =================================================
+            // SEND TO OTP VERIFICATION
+            // =================================================
 
-            const redirectUrl =
-                `${process.env.CLIENT_URL}` +
+            const otpUrl =
+                `${getClientUrl()}` +
                 `/organizer/verify-otp` +
-                `?email=${encodeURIComponent(
-                    email
-                )}`;
+                `?email=${encodeURIComponent(email)}`;
+
+
+            console.log(
+                "Pending organizer redirect:",
+                otpUrl
+            );
 
 
             return res.redirect(
-                redirectUrl
+                302,
+                otpUrl
             );
-
         }
 
 
         // =================================================
         // ACTIVE ORGANIZER
-        // =================================================
-        //
-        // OTP already verified.
-        //
-        // Ensure User is active and has organizer role.
-        //
         // =================================================
 
         if (
@@ -249,15 +270,21 @@ const googleLoginSuccess = async (
             organizer.isActive === true
         ) {
 
+            console.log(
+                "Active organizer detected:",
+                email
+            );
+
+
             let user =
                 await User.findOne({
                     email,
                 });
 
 
-            // ---------------------------------------------
-            // Create missing User
-            // ---------------------------------------------
+            // =================================================
+            // CREATE USER IF MISSING
+            // =================================================
 
             if (!user) {
 
@@ -270,14 +297,16 @@ const googleLoginSuccess = async (
                             "Organizer",
 
                         email:
-                            organizer.email,
+                            email,
 
                         googleId:
                             req.user.googleId ||
+                            req.user.id ||
                             null,
 
                         profileImage:
                             req.user.profileImage ||
+                            req.user.picture ||
                             "",
 
                         role:
@@ -290,46 +319,42 @@ const googleLoginSuccess = async (
 
             } else {
 
-                // -----------------------------------------
-                // Never convert admin account
-                // -----------------------------------------
+                // =============================================
+                // NEVER CHANGE ADMIN TO ORGANIZER
+                // =============================================
 
                 if (
-                    user.role ===
-                    "admin"
+                    user.role === "admin"
                 ) {
 
                     const token =
-                        generateToken(
-                            user
-                        );
+                        generateToken(user);
 
-
-                    const redirectUrl =
-                        `${process.env.CLIENT_URL}` +
-                        `/auth/success` +
-                        `?token=${encodeURIComponent(
-                            token
-                        )}`;
-
-
-                    return res.redirect(
-                        redirectUrl
+                    return redirectWithToken(
+                        res,
+                        token
                     );
                 }
 
 
+                // =============================================
+                // UPDATE ORGANIZER
+                // =============================================
+
                 user.name =
                     organizer.name ||
                     user.name ||
-                    req.user.name;
+                    req.user.name ||
+                    "Organizer";
 
                 user.googleId =
                     req.user.googleId ||
+                    req.user.id ||
                     user.googleId;
 
                 user.profileImage =
                     req.user.profileImage ||
+                    req.user.picture ||
                     user.profileImage ||
                     "";
 
@@ -341,54 +366,45 @@ const googleLoginSuccess = async (
 
 
                 await user.save();
-
             }
 
 
-            // ---------------------------------------------
-            // Generate JWT from REAL User document
-            // ---------------------------------------------
+            // =================================================
+            // GENERATE JWT
+            // =================================================
 
             const token =
-                generateToken(
-                    user
+                generateToken(user);
+
+
+            if (!token) {
+
+                throw new Error(
+                    "JWT token generation failed."
                 );
+            }
 
 
-            const redirectUrl =
-                `${process.env.CLIENT_URL}` +
-                `/auth/success` +
-                `?token=${encodeURIComponent(
-                    token
-                )}`;
-
-
-            return res.redirect(
-                redirectUrl
+            return redirectWithToken(
+                res,
+                token
             );
-
         }
 
 
         // =================================================
-        // NORMAL ADMIN / PARTICIPANT LOGIN
-        // =================================================
-        //
-        // If no Organizer record exists, use the User
-        // authenticated by Passport.
-        //
+        // NORMAL USER / ADMIN / PARTICIPANT
         // =================================================
 
         let user =
             await User.findOne({
-                _id:
-                    req.user._id,
+                _id: req.user._id,
             });
 
 
-        // ---------------------------------------------
-        // Fallback: find by email
-        // ---------------------------------------------
+        // =================================================
+        // FALLBACK BY EMAIL
+        // =================================================
 
         if (!user) {
 
@@ -396,25 +412,104 @@ const googleLoginSuccess = async (
                 await User.findOne({
                     email,
                 });
-
         }
 
 
-        // ---------------------------------------------
-        // User must exist
-        // ---------------------------------------------
+        // =================================================
+        // USER NOT FOUND
+        // =================================================
 
         if (!user) {
 
-            return res.status(401).json({
+            console.error(
+                "Authenticated Google user not found:",
+                email
+            );
 
-                success: false,
+            return res.redirect(
+                `${getClientUrl()}/login?error=user_not_found`
+            );
+        }
 
-                message:
-                    "Authenticated user account was not found",
 
-            });
+        // =================================================
+        // UPDATE GOOGLE INFORMATION
+        // =================================================
 
+        let changed = false;
+
+
+        if (
+            req.user.googleId &&
+            user.googleId !== req.user.googleId
+        ) {
+
+            user.googleId =
+                req.user.googleId;
+
+            changed = true;
+        }
+
+
+        if (
+            req.user.profileImage &&
+            user.profileImage !== req.user.profileImage
+        ) {
+
+            user.profileImage =
+                req.user.profileImage;
+
+            changed = true;
+        }
+
+
+        if (
+            req.user.picture &&
+            user.profileImage !== req.user.picture
+        ) {
+
+            user.profileImage =
+                req.user.picture;
+
+            changed = true;
+        }
+
+
+        if (
+            !user.name &&
+            req.user.name
+        ) {
+
+            user.name =
+                req.user.name;
+
+            changed = true;
+        }
+
+
+        if (changed) {
+            await user.save();
+        }
+
+
+        // =================================================
+        // CHECK ACCOUNT STATUS
+        // =================================================
+
+        if (
+            user.isActive === false &&
+            user.role !== "participant" &&
+            user.role !== "user"
+        ) {
+
+            console.log(
+                "Inactive account:",
+                email
+            );
+
+            return res.redirect(
+                `${getClientUrl()}/login?error=account_inactive`
+            );
         }
 
 
@@ -423,53 +518,53 @@ const googleLoginSuccess = async (
         // =================================================
 
         const token =
-            generateToken(
-                user
+            generateToken(user);
+
+
+        if (!token) {
+
+            throw new Error(
+                "JWT token generation failed."
             );
+        }
 
 
-        // =================================================
-        // FRONTEND SUCCESS PAGE
-        // =================================================
-
-        const redirectUrl =
-            `${process.env.CLIENT_URL}` +
-            `/auth/success` +
-            `?token=${encodeURIComponent(
-                token
-            )}`;
-
-
-        return res.redirect(
-            redirectUrl
+        console.log(
+            "JWT generated successfully for:",
+            email
         );
 
+
+        // =================================================
+        // REDIRECT FRONTEND
+        // =================================================
+
+        return redirectWithToken(
+            res,
+            token
+        );
 
     } catch (error) {
 
         console.error(
-            "========== Google Login Error =========="
+            "========================================"
+        );
+
+        console.error(
+            "GOOGLE LOGIN ERROR"
         );
 
         console.error(error);
 
         console.error(
-            "========================================="
+            "========================================"
         );
 
 
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                error.message ||
-                "Google login failed",
-
-        });
-
+        return res.redirect(
+            `${getClientUrl()}/login?error=google_login_failed`
+        );
     }
-
 };
 
 
@@ -479,7 +574,8 @@ const googleLoginSuccess = async (
 //
 // GET /api/auth/me
 //
-// Requires JWT.
+// Authorization:
+// Bearer JWT
 //
 // =====================================================
 
@@ -500,7 +596,6 @@ const getCurrentUser = async (
                     "User authentication required",
 
             });
-
         }
 
 
@@ -573,14 +668,16 @@ const getCurrentUser = async (
                 "Failed to fetch current user",
 
         });
-
     }
-
 };
 
 
 // =====================================================
 // LOGOUT
+// =====================================================
+//
+// POST /api/auth/logout
+//
 // =====================================================
 
 const logout = async (
@@ -616,19 +713,18 @@ const logout = async (
                 "Logout failed",
 
         });
-
     }
-
 };
 
 
 // =====================================================
-// DEVELOPMENT — ADMIN JWT
+// DEVELOPMENT ADMIN JWT
 // =====================================================
 //
 // POST /api/auth/dev/admin-token
 //
 // Development only.
+//
 // =====================================================
 
 const devAdminToken = async (
@@ -654,20 +750,18 @@ const devAdminToken = async (
                     "ADMIN_EMAIL is not configured in .env",
 
             });
-
         }
 
 
         let user =
             await User.findOne({
-                email:
-                    adminEmail,
+                email: adminEmail,
             });
 
 
-        // ---------------------------------------------
-        // Create admin if missing
-        // ---------------------------------------------
+        // =================================================
+        // CREATE ADMIN
+        // =================================================
 
         if (!user) {
 
@@ -697,18 +791,15 @@ const devAdminToken = async (
                 true;
 
             await user.save();
-
         }
 
 
-        // ---------------------------------------------
-        // Generate token
-        // ---------------------------------------------
+        // =================================================
+        // GENERATE TOKEN
+        // =================================================
 
         const token =
-            generateToken(
-                user
-            );
+            generateToken(user);
 
 
         return res.status(200).json({
@@ -758,9 +849,7 @@ const devAdminToken = async (
                 "Failed to generate admin JWT",
 
         });
-
     }
-
 };
 
 

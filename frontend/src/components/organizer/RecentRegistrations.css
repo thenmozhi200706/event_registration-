@@ -1,0 +1,590 @@
+/* =========================================================
+   EventSphere
+   RecentRegistrations.css
+
+   Used by:
+   components/organizer/RecentRegistrations.jsx
+   ========================================================= */
+
+.recent-registrations-section,
+.organizer-section {
+    width: 100%;
+    min-width: 0;
+}
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.organizer-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 18px;
+}
+
+.organizer-section-header > div {
+    min-width: 0;
+}
+
+.organizer-section-header h2 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 19px;
+    font-weight: 800;
+
+    line-height: 1.3;
+    letter-spacing: -0.2px;
+}
+
+.organizer-section-header p {
+    margin: 5px 0 0;
+
+    color: #8a8e9c;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    line-height: 1.5;
+}
+
+.section-link {
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 36px;
+
+    padding: 0 13px;
+
+    border: 1px solid #ddd6fe;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #5b3fd1;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.section-link:hover {
+    background: #f5f2ff;
+    border-color: #c4b5fd;
+    color: #4d32b8;
+
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   REGISTRATION LIST
+   ========================================================= */
+
+.recent-registrations-list {
+    width: 100%;
+
+    overflow: hidden;
+
+    border: 1px solid #e8e9ef;
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 8px 24px rgba(31, 35, 56, 0.05);
+}
+
+/* =========================================================
+   REGISTRATION ITEM
+   ========================================================= */
+
+.recent-registration-item {
+    min-height: 78px;
+
+    display: grid;
+
+    grid-template-columns:
+        42px
+        minmax(160px, 1.3fr)
+        minmax(130px, 1fr)
+        minmax(105px, 0.8fr)
+        85px;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 14px 18px;
+
+    border-bottom: 1px solid #eef0f4;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.recent-registration-item:last-child {
+    border-bottom: none;
+}
+
+.recent-registration-item:hover {
+    background: #faf9ff;
+}
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.recent-registration-avatar {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5b3fd1,
+            #8062e8
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    box-shadow:
+        0 5px 12px rgba(91, 63, 209, 0.16);
+}
+
+/* =========================================================
+   PARTICIPANT
+   ========================================================= */
+
+.recent-registration-participant {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.recent-registration-participant strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: #252936;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    line-height: 1.4;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.recent-registration-participant span {
+    display: block;
+
+    overflow: hidden;
+
+    color: #969aa8;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    line-height: 1.4;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* =========================================================
+   EVENT
+   ========================================================= */
+
+.recent-registration-event {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.recent-registration-event > span {
+    color: #a0a3ae;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.recent-registration-event a,
+.recent-registration-event strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: #4d32b8;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    text-decoration: none;
+}
+
+.recent-registration-event a:hover {
+    color: #35228f;
+    text-decoration: underline;
+}
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.recent-registration-date {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.recent-registration-date strong {
+    color: #454958;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    white-space: nowrap;
+}
+
+.recent-registration-date span {
+    color: #9a9daa;
+
+    font-size: 9px;
+    font-weight: 500;
+
+    line-height: 1.4;
+}
+
+/* =========================================================
+   PAYMENT STATUS
+   ========================================================= */
+
+.recent-registration-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.payment-status {
+    min-width: 65px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px 9px;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    text-transform: capitalize;
+}
+
+/* Paid */
+
+.payment-status-paid {
+    background: #e8f8ef;
+    color: #168447;
+}
+
+/* Pending */
+
+.payment-status-pending {
+    background: #fff6df;
+    color: #b7791f;
+}
+
+/* Failed */
+
+.payment-status-failed {
+    background: #fff0f0;
+    color: #c63838;
+}
+
+/* Other */
+
+.payment-status-processing,
+.payment-status-created {
+    background: #edf3ff;
+    color: #3567b8;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.recent-registrations-empty {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    border: 1px solid #e8e9ef;
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    text-align: center;
+}
+
+.recent-registration-empty-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 15px;
+
+    background: #f0ebff;
+
+    color: #5b3fd1;
+
+    font-size: 22px;
+}
+
+.recent-registrations-empty h3 {
+    margin: 0 0 6px;
+
+    color: #303442;
+
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.recent-registrations-empty p {
+    max-width: 300px;
+
+    margin: 0;
+
+    color: #969aa8;
+
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.recent-registrations-loading {
+    min-height: 180px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    border: 1px solid #e8e9ef;
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    color: #858896;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.recent-registration-spinner {
+    width: 30px;
+    height: 30px;
+
+    border: 3px solid #e9e5fb;
+    border-top-color: #5b3fd1;
+
+    border-radius: 50%;
+
+    animation: recentRegistrationSpin 0.8s linear infinite;
+}
+
+@keyframes recentRegistrationSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .recent-registration-item {
+        grid-template-columns:
+            42px
+            minmax(150px, 1.3fr)
+            minmax(120px, 1fr)
+            85px;
+
+        gap: 13px;
+    }
+
+    .recent-registration-date {
+        display: none;
+    }
+
+    .recent-registration-status {
+        justify-content: flex-start;
+    }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .organizer-section-header {
+        align-items: flex-start;
+    }
+
+    .organizer-section-header h2 {
+        font-size: 17px;
+    }
+
+    .section-link {
+        min-height: 34px;
+        padding: 0 10px;
+        font-size: 10px;
+    }
+
+    .recent-registration-item {
+        grid-template-columns: 40px minmax(0, 1fr) auto;
+
+        gap: 11px;
+
+        padding: 13px 14px;
+    }
+
+    .recent-registration-event {
+        display: none;
+    }
+
+    .recent-registration-avatar {
+        width: 38px;
+        height: 38px;
+    }
+
+    .recent-registration-participant strong {
+        font-size: 11px;
+    }
+
+    .recent-registration-participant span {
+        font-size: 9px;
+    }
+
+    .payment-status {
+        min-width: 58px;
+        padding: 6px 7px;
+        font-size: 8px;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 450px) {
+
+    .organizer-section-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .section-link {
+        width: 100%;
+    }
+
+    .recent-registration-item {
+        grid-template-columns: 36px minmax(0, 1fr) auto;
+
+        gap: 9px;
+
+        padding: 12px;
+    }
+
+    .recent-registration-avatar {
+        width: 34px;
+        height: 34px;
+
+        font-size: 11px;
+    }
+
+    .recent-registration-participant strong {
+        font-size: 10px;
+    }
+
+    .recent-registration-participant span {
+        max-width: 130px;
+    }
+
+    .payment-status {
+        min-width: 52px;
+        padding: 5px 6px;
+        font-size: 7px;
+    }
+}

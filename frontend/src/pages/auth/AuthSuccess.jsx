@@ -1,173 +1,452 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { saveAuthData, getCurrentUser } from "../../services/authService";
-import { getToken } from "../../utils/storage";
+// frontend/src/pages/auth/AuthSuccess.jsx
+
+import React, {
+    useEffect,
+    useState,
+} from "react";
+
+import {
+    useNavigate,
+} from "react-router-dom";
+
+import {
+    saveAuthData,
+    getCurrentUser,
+} from "../../services/authService";
+
+import {
+    getToken,
+} from "../../utils/storage";
+
 import useAuth from "../../hooks/useAuth";
+
 import "./AuthSuccess.css";
 
+
 const AuthSuccess = () => {
-  const navigate = useNavigate();
 
-  const { user, setUser } = useAuth();
+    const navigate = useNavigate();
 
-  const [status, setStatus] = useState("Completing login...");
-  const [error, setError] = useState("");
+    const {
+        setUser,
+    } = useAuth();
 
-  useEffect(() => {
-    const completeAuthentication = async () => {
-      try {
-        setStatus("Checking authentication...");
 
-        /*
-         * The backend should redirect to this page after
-         * successful Google authentication.
-         *
-         * Example:
-         * http://localhost:5173/auth/success?token=YOUR_JWT
-         */
+    const [
+        status,
+        setStatus,
+    ] = useState(
+        "Completing login..."
+    );
 
-        const params = new URLSearchParams(window.location.search);
 
-        const token = params.get("token");
+    const [
+        error,
+        setError,
+    ] = useState("");
 
-        if (token) {
-          saveAuthData({
-            token,
-          });
-        }
 
-        const storedToken = getToken();
+    useEffect(() => {
 
-        if (!storedToken) {
-          throw new Error(
-            "Authentication token was not received from the server."
-          );
-        }
+        let mounted = true;
 
-        setStatus("Loading your account...");
 
-        const currentUser = await getCurrentUser();
+        const completeAuthentication =
+            async () => {
 
-        if (!currentUser) {
-          throw new Error("Unable to load user information.");
-        }
+                try {
 
-        setUser(currentUser);
+                    // =====================================================
+                    // STEP 1 — CHECK AUTHENTICATION CALLBACK
+                    // =====================================================
 
-        // ----------------------------------
-        // Role-based redirect
-        // ----------------------------------
+                    setStatus(
+                        "Checking authentication..."
+                    );
 
-        if (currentUser.role === "admin") {
-          navigate("/admin/dashboard", {
-            replace: true,
-          });
 
-          return;
-        }
+                    const url =
+                        new URL(
+                            window.location.href
+                        );
 
-        if (currentUser.role === "organizer") {
-          navigate("/organizer/dashboard", {
-            replace: true,
-          });
 
-          return;
-        }
+                    const token =
+                        url.searchParams.get(
+                            "token"
+                        );
 
-        if (
-          currentUser.role === "participant" ||
-          currentUser.role === "user"
-        ) {
-          navigate("/dashboard", {
-            replace: true,
-          });
 
-          return;
-        }
+                    console.log(
+                        "========================================"
+                    );
 
-        throw new Error(
-          "Your account has an invalid or unsupported role."
-        );
-      } catch (err) {
-        console.error("Authentication failed:", err);
+                    console.log(
+                        "EventSphere Auth"
+                    );
 
-        setError(
-          err.response?.data?.message ||
-            err.message ||
-            "Authentication failed. Please try again."
-        );
+                    console.log(
+                        "Current URL:",
+                        window.location.href
+                    );
 
-        setStatus("");
-      }
-    };
+                    console.log(
+                        "Token from URL:",
+                        token
+                            ? "FOUND"
+                            : "NOT FOUND"
+                    );
 
-    completeAuthentication();
-  }, [navigate, setUser]);
+                    console.log(
+                        "Token length:",
+                        token
+                            ? token.length
+                            : 0
+                    );
 
-  // ----------------------------------
-  // Already authenticated
-  // ----------------------------------
+                    console.log(
+                        "Token from storage BEFORE:",
+                        getToken()
+                            ? "FOUND"
+                            : "NOT FOUND"
+                    );
 
-  if (user && !error) {
-    if (user.role === "admin") {
-      return <Navigate to="/admin/dashboard" replace />;
-    }
+                    console.log(
+                        "========================================"
+                    );
 
-    if (user.role === "organizer") {
-      return <Navigate to="/organizer/dashboard" replace />;
-    }
 
-    if (
-      user.role === "participant" ||
-      user.role === "user"
-    ) {
-      return <Navigate to="/dashboard" replace />;
-    }
-  }
+                    // =====================================================
+                    // STEP 2 — SAVE TOKEN RECEIVED FROM BACKEND
+                    // =====================================================
 
-  // ----------------------------------
-  // Authentication screen
-  // ----------------------------------
+                    if (token) {
 
-  return (
-    <div className="auth-success-page">
-      <div className="auth-success-container">
+                        console.log(
+                            "Saving authentication token..."
+                        );
 
-        {!error ? (
-          <>
-            <div className="auth-loader">
-              <div className="spinner"></div>
+
+                        saveAuthData({
+                            token,
+                        });
+
+
+                        console.log(
+                            "Authentication token saved."
+                        );
+                    }
+
+
+                    // =====================================================
+                    // STEP 3 — GET TOKEN FROM STORAGE
+                    // =====================================================
+
+                    const storedToken =
+                        getToken();
+
+
+                    console.log(
+                        "Token from storage AFTER:",
+                        storedToken
+                            ? "FOUND"
+                            : "NOT FOUND"
+                    );
+
+
+                    if (!storedToken) {
+
+                        throw new Error(
+                            "Authentication token was not received from the server. Please try Google login again."
+                        );
+                    }
+
+
+                    // =====================================================
+                    // STEP 4 — LOAD USER
+                    // =====================================================
+
+                    setStatus(
+                        "Loading your account..."
+                    );
+
+
+                    console.log(
+                        "Requesting current user from backend..."
+                    );
+
+
+                    const currentUser =
+                        await getCurrentUser();
+
+
+                    // =====================================================
+                    // STEP 5 — CHECK USER RESPONSE
+                    // =====================================================
+
+                    if (!currentUser) {
+
+                        throw new Error(
+                            "Unable to load user information from the server."
+                        );
+                    }
+
+
+                    if (!mounted) {
+                        return;
+                    }
+
+
+                    console.log(
+                        "========================================"
+                    );
+
+                    console.log(
+                        "Authenticated User:",
+                        currentUser
+                    );
+
+                    console.log(
+                        "User Role:",
+                        currentUser.role
+                    );
+
+                    console.log(
+                        "========================================"
+                    );
+
+
+                    // =====================================================
+                    // STEP 6 — UPDATE AUTH CONTEXT
+                    // =====================================================
+
+                    setUser(
+                        currentUser
+                    );
+
+
+                    // =====================================================
+                    // STEP 7 — NORMALIZE ROLE
+                    // =====================================================
+
+                    const role =
+                        String(
+                            currentUser.role ||
+                            ""
+                        )
+                            .trim()
+                            .toLowerCase();
+
+
+                    console.log(
+                        "Normalized Role:",
+                        role
+                    );
+
+
+                    // =====================================================
+                    // STEP 8 — ROLE BASED REDIRECT
+                    // =====================================================
+
+                    if (
+                        role === "admin"
+                    ) {
+
+                        console.log(
+                            "Redirecting to Admin Dashboard..."
+                        );
+
+
+                        navigate(
+                            "/admin/dashboard",
+                            {
+                                replace: true,
+                            }
+                        );
+
+
+                        return;
+                    }
+
+
+                    if (
+                        role === "organizer"
+                    ) {
+
+                        console.log(
+                            "Redirecting to Organizer Dashboard..."
+                        );
+
+
+                        navigate(
+                            "/organizer/dashboard",
+                            {
+                                replace: true,
+                            }
+                        );
+
+
+                        return;
+                    }
+
+
+                    if (
+                        role === "participant" ||
+                        role === "user"
+                    ) {
+
+                        console.log(
+                            "Redirecting to Participant Dashboard..."
+                        );
+
+
+                        navigate(
+                            "/dashboard",
+                            {
+                                replace: true,
+                            }
+                        );
+
+
+                        return;
+                    }
+
+
+                    // =====================================================
+                    // INVALID ROLE
+                    // =====================================================
+
+                    throw new Error(
+                        `Unsupported account role: ${
+                            currentUser.role
+                        }`
+                    );
+
+                } catch (err) {
+
+                    console.error(
+                        "========================================"
+                    );
+
+                    console.error(
+                        "Authentication failed:",
+                        err
+                    );
+
+                    console.error(
+                        "========================================"
+                    );
+
+
+                    if (!mounted) {
+                        return;
+                    }
+
+
+                    setError(
+                        err?.response?.data?.message ||
+                        err?.message ||
+                        "Authentication failed. Please try again."
+                    );
+
+
+                    setStatus("");
+                }
+            };
+
+
+        completeAuthentication();
+
+
+        return () => {
+
+            mounted = false;
+
+        };
+
+    }, [
+        navigate,
+        setUser,
+    ]);
+
+
+    // =====================================================
+    // AUTHENTICATION SCREEN
+    // =====================================================
+
+    return (
+
+        <div className="auth-success-page">
+
+            <div className="auth-success-container">
+
+                {!error ? (
+
+                    <>
+
+                        <div className="auth-loader">
+
+                            <div className="spinner"></div>
+
+                        </div>
+
+
+                        <h2>
+                            Signing you in...
+                        </h2>
+
+
+                        <p>
+                            {status}
+                        </p>
+
+                    </>
+
+                ) : (
+
+                    <>
+
+                        <div className="auth-error-icon">
+                            ✕
+                        </div>
+
+
+                        <h2>
+                            Authentication Failed
+                        </h2>
+
+
+                        <p className="auth-error-message">
+                            {error}
+                        </p>
+
+
+                        <button
+                            type="button"
+                            className="auth-back-button"
+                            onClick={() => {
+
+                                navigate(
+                                    "/login",
+                                    {
+                                        replace: true,
+                                    }
+                                );
+
+                            }}
+                        >
+                            Back to Login
+                        </button>
+
+                    </>
+
+                )}
+
             </div>
 
-            <h2>Signing you in...</h2>
-
-            <p>{status}</p>
-          </>
-        ) : (
-          <>
-            <div className="auth-error-icon">
-              ✕
-            </div>
-
-            <h2>Authentication Failed</h2>
-
-            <p className="auth-error-message">
-              {error}
-            </p>
-
-            <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="auth-back-button"
-            >
-              Back to Login
-            </button>
-          </>
-        )}
-
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
+
 
 export default AuthSuccess;

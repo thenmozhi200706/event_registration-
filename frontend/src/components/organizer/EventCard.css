@@ -1,0 +1,976 @@
+/* =========================================================
+   EVENTSPHERE - ORGANIZER EVENT CARD
+   EventCard.css
+   ========================================================= */
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.organizer-event-card {
+    width: 100%;
+    min-width: 0;
+
+    background: #ffffff;
+    border: 1px solid #e8e7f0;
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow:
+        0 4px 16px rgba(30, 25, 70, 0.05),
+        0 1px 3px rgba(30, 25, 70, 0.03);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.organizer-event-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #ddd5ff;
+
+    box-shadow:
+        0 16px 36px rgba(86, 58, 180, 0.12),
+        0 4px 10px rgba(30, 25, 70, 0.05);
+}
+
+
+/* =========================================================
+   EVENT IMAGE
+   ========================================================= */
+
+.event-card-image-wrapper {
+    position: relative;
+
+    width: 100%;
+    height: 210px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eee9ff 0%,
+            #f7f5ff 45%,
+            #e9e4ff 100%
+        );
+}
+
+.event-card-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform 0.45s ease;
+}
+
+.organizer-event-card:hover .event-card-image {
+    transform: scale(1.045);
+}
+
+
+/* =========================================================
+   IMAGE FALLBACK
+   ========================================================= */
+
+.event-card-image-fallback {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(124, 92, 255, 0.25),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #eee9ff,
+            #dcd3ff
+        );
+
+    color: #6246d8;
+
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.event-card-image-fallback span {
+    width: 76px;
+    height: 76px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+
+    background: rgba(255, 255, 255, 0.75);
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+
+    box-shadow:
+        0 8px 24px rgba(74, 51, 160, 0.12);
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   STATUS BADGE
+   ========================================================= */
+
+.event-status {
+    position: absolute;
+
+    top: 16px;
+    left: 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 30px;
+
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    text-transform: capitalize;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.event-status::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    margin-right: 7px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+}
+
+
+/* Active */
+
+.event-status-active {
+    color: #116b45;
+
+    background: rgba(220, 252, 235, 0.94);
+}
+
+
+/* Closed */
+
+.event-status-closed {
+    color: #9a2735;
+
+    background: rgba(255, 229, 232, 0.95);
+}
+
+
+/* Draft */
+
+.event-status-draft {
+    color: #735b00;
+
+    background: rgba(255, 247, 200, 0.96);
+}
+
+
+/* Upcoming */
+
+.event-status-upcoming {
+    color: #4f36b8;
+
+    background: rgba(237, 231, 255, 0.95);
+}
+
+
+/* Other statuses */
+
+.event-status-pending {
+    color: #805500;
+
+    background: rgba(255, 243, 205, 0.96);
+}
+
+.event-status-inactive {
+    color: #5e6472;
+
+    background: rgba(238, 240, 244, 0.96);
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.event-card-content {
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px 20px 0;
+
+    flex: 1;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.event-card-title {
+    margin: 0;
+
+    color: #171b2d;
+
+    font-size: 20px;
+    font-weight: 800;
+
+    line-height: 1.3;
+
+    letter-spacing: -0.3px;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.event-card-title:hover {
+    color: #6546dc;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.event-card-description {
+    margin: 9px 0 0;
+
+    color: #70778a;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    line-height: 1.65;
+
+    min-height: 42px;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+
+/* =========================================================
+   HASHTAGS
+   ========================================================= */
+
+.event-card-tags {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-top: 14px;
+}
+
+.event-card-tags span {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    color: #6042ce;
+
+    background: #f1edff;
+
+    border: 1px solid #e6e0ff;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.event-card-tags span:hover {
+    color: #ffffff;
+
+    background: #6847df;
+
+    border-color: #6847df;
+}
+
+
+/* =========================================================
+   EVENT DETAILS
+   ========================================================= */
+
+.event-card-details {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+
+    margin-top: 20px;
+
+    padding: 14px 0;
+
+    border-top: 1px solid #eeeef4;
+    border-bottom: 1px solid #eeeef4;
+}
+
+
+/* =========================================================
+   DETAIL ITEM
+   ========================================================= */
+
+.event-card-detail {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    padding: 9px 0;
+}
+
+.event-detail-icon {
+    flex: 0 0 auto;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    color: #6245d5;
+
+    background: #f1edff;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.event-card-detail > div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.event-card-detail small {
+    color: #969bad;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.event-card-detail strong {
+    display: block;
+
+    max-width: 100%;
+
+    color: #2b3042;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1.45;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   EVENT STATISTICS
+   ========================================================= */
+
+.event-card-stats {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    margin-top: 16px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid #eeeef4;
+}
+
+.event-card-stats > div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 0 8px;
+
+    border-right: 1px solid #eeeeF4;
+}
+
+.event-card-stats > div:last-child {
+    border-right: none;
+}
+
+.event-card-stats span {
+    color: #9298aa;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.45px;
+
+    text-align: center;
+}
+
+.event-card-stats strong {
+    color: #202538;
+
+    font-size: 17px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.event-card-footer {
+    display: grid;
+
+    grid-template-columns: 0.8fr 0.8fr 1.5fr;
+
+    gap: 8px;
+
+    padding: 16px 20px;
+
+    background: #fafaff;
+}
+
+
+/* =========================================================
+   COMMON BUTTON
+   ========================================================= */
+
+.secondary-button,
+.submit-button {
+    min-height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 12px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    line-height: 1.2;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+
+    box-sizing: border-box;
+}
+
+.secondary-button:hover,
+.submit-button:hover {
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   VIEW BUTTON
+   ========================================================= */
+
+.event-view-button {
+    color: #5e43d0;
+
+    background: #ffffff;
+
+    border: 1px solid #ddd7f8;
+}
+
+.event-view-button:hover {
+    color: #4e34bd;
+
+    background: #f4f1ff;
+
+    border-color: #cfc5fa;
+
+    box-shadow: 0 5px 12px rgba(90, 65, 190, 0.08);
+}
+
+
+/* =========================================================
+   EDIT BUTTON
+   ========================================================= */
+
+.event-edit-button {
+    color: #4d596e;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe2e9;
+}
+
+.event-edit-button:hover {
+    color: #30394c;
+
+    background: #f5f6f8;
+
+    border-color: #cbd0db;
+}
+
+
+/* =========================================================
+   REGISTRATION BUTTON
+   ========================================================= */
+
+.event-registration-button {
+    color: #ffffff;
+
+    background: linear-gradient(
+        135deg,
+        #6546dc,
+        #7959e9
+    );
+
+    border: 1px solid transparent;
+
+    box-shadow:
+        0 5px 12px rgba(101, 70, 220, 0.18);
+}
+
+.event-registration-button:hover {
+    background: linear-gradient(
+        135deg,
+        #5637ca,
+        #6c4bdc
+    );
+
+    box-shadow:
+        0 8px 18px rgba(101, 70, 220, 0.26);
+}
+
+
+/* =========================================================
+   MANAGEMENT ACTIONS
+   ========================================================= */
+
+.event-card-management {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+    padding: 0 20px 18px;
+
+    background: #fafaff;
+}
+
+
+/* =========================================================
+   STATUS TOGGLE
+   ========================================================= */
+
+.event-status-toggle {
+    min-height: 36px;
+
+    padding: 8px 12px;
+
+    border: 1px solid #dcd8f5;
+
+    border-radius: 9px;
+
+    color: #6245d5;
+
+    background: #f5f2ff;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.event-status-toggle:hover {
+    color: #ffffff;
+
+    background: #6546dc;
+
+    border-color: #6546dc;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DELETE BUTTON
+   ========================================================= */
+
+.event-delete-button {
+    min-height: 36px;
+
+    padding: 8px 12px;
+
+    border: 1px solid #f0cfd3;
+
+    border-radius: 9px;
+
+    color: #c53c4d;
+
+    background: #fff7f8;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.event-delete-button:hover {
+    color: #ffffff;
+
+    background: #d9485b;
+
+    border-color: #d9485b;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(217, 72, 91, 0.18);
+}
+
+
+/* =========================================================
+   FOCUS STATES
+   ========================================================= */
+
+.secondary-button:focus-visible,
+.submit-button:focus-visible,
+.event-status-toggle:focus-visible,
+.event-delete-button:focus-visible {
+    outline: 3px solid rgba(101, 70, 220, 0.18);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   ACTIVE / PRESS
+   ========================================================= */
+
+.secondary-button:active,
+.submit-button:active,
+.event-status-toggle:active,
+.event-delete-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .event-card-image-wrapper {
+        height: 190px;
+    }
+
+    .event-card-content {
+        padding: 18px 18px 0;
+    }
+
+    .event-card-footer {
+        padding: 14px 18px;
+    }
+
+    .event-card-management {
+        padding: 0 18px 16px;
+    }
+
+    .event-card-title {
+        font-size: 18px;
+    }
+
+    .event-card-description {
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .organizer-event-card {
+        border-radius: 16px;
+    }
+
+    .event-card-image-wrapper {
+        height: 185px;
+    }
+
+    .event-status {
+        top: 12px;
+        left: 12px;
+
+        min-height: 28px;
+
+        padding: 6px 10px;
+
+        font-size: 10px;
+    }
+
+    .event-card-content {
+        padding: 16px 16px 0;
+    }
+
+    .event-card-title {
+        font-size: 17px;
+    }
+
+    .event-card-description {
+        min-height: auto;
+
+        font-size: 12px;
+    }
+
+    .event-card-details {
+        margin-top: 16px;
+
+        padding: 10px 0;
+    }
+
+    .event-card-detail {
+        gap: 9px;
+
+        padding: 8px 0;
+    }
+
+    .event-detail-icon {
+        width: 30px;
+        height: 30px;
+
+        border-radius: 8px;
+
+        font-size: 15px;
+    }
+
+    .event-card-detail strong {
+        font-size: 11px;
+    }
+
+    .event-card-stats {
+        margin-top: 12px;
+
+        padding: 12px 0;
+    }
+
+    .event-card-stats span {
+        font-size: 9px;
+    }
+
+    .event-card-stats strong {
+        font-size: 15px;
+    }
+
+    .event-card-footer {
+        grid-template-columns: 1fr 1fr;
+
+        padding: 13px 16px;
+    }
+
+    .event-registration-button {
+        grid-column: 1 / -1;
+    }
+
+    .event-card-management {
+        padding: 0 16px 15px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .event-card-image-wrapper {
+        height: 165px;
+    }
+
+    .event-card-content {
+        padding: 14px 14px 0;
+    }
+
+    .event-card-tags {
+        gap: 5px;
+    }
+
+    .event-card-tags span {
+        padding: 4px 7px;
+
+        font-size: 10px;
+    }
+
+    .event-card-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .event-card-stats > div {
+        padding: 0 4px;
+    }
+
+    .event-card-footer {
+        padding: 12px 14px;
+
+        gap: 6px;
+    }
+
+    .event-card-management {
+        padding: 0 14px 14px;
+
+        gap: 6px;
+    }
+
+    .secondary-button,
+    .submit-button {
+        min-height: 36px;
+
+        padding: 7px 8px;
+
+        font-size: 10px;
+    }
+
+    .event-status-toggle,
+    .event-delete-button {
+        min-height: 34px;
+
+        padding: 7px 8px;
+
+        font-size: 10px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .organizer-event-card,
+    .event-card-image,
+    .secondary-button,
+    .submit-button,
+    .event-status-toggle,
+    .event-delete-button {
+        transition: none;
+    }
+
+    .organizer-event-card:hover {
+        transform: none;
+    }
+
+    .organizer-event-card:hover .event-card-image {
+        transform: none;
+    }
+}

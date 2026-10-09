@@ -1,6 +1,9 @@
 // frontend/src/hooks/usePayment.js
 
-import { useCallback, useState } from "react";
+import {
+    useCallback,
+    useState,
+} from "react";
 
 import paymentService from "../services/paymentService";
 
@@ -24,6 +27,11 @@ import {
  * 5. Returning payment result to component
  *
  * IMPORTANT:
+ *
+ * This hook is ONLY for Razorpay gateway payments.
+ *
+ * UPI / QR payments must use the separate QR
+ * payment confirmation flow.
  *
  * The frontend does NOT verify the Razorpay signature.
  *
@@ -56,6 +64,7 @@ const loadRazorpayScript = () => {
          */
 
         if (
+            typeof window !== "undefined" &&
             window.Razorpay
         ) {
             resolve(true);
@@ -76,14 +85,34 @@ const loadRazorpayScript = () => {
 
         if (existingScript) {
 
+            /*
+             * Script has already loaded.
+             */
+
+            if (
+                typeof window !== "undefined" &&
+                window.Razorpay
+            ) {
+                resolve(true);
+                return;
+            }
+
+
             existingScript.addEventListener(
                 "load",
-                () => resolve(true)
+                () => resolve(true),
+                {
+                    once: true,
+                }
             );
+
 
             existingScript.addEventListener(
                 "error",
-                () => resolve(false)
+                () => resolve(false),
+                {
+                    once: true,
+                }
             );
 
             return;
@@ -106,11 +135,16 @@ const loadRazorpayScript = () => {
 
 
         script.onload = () => {
-            resolve(true);
+
+            resolve(
+                typeof window !== "undefined" &&
+                !!window.Razorpay
+            );
         };
 
 
         script.onerror = () => {
+
             resolve(false);
         };
 
@@ -124,20 +158,99 @@ const loadRazorpayScript = () => {
 
 /*
  * ============================================================
+ * NORMALIZE PAYMENT METHOD
+ * ============================================================
+ *
+ * Event model:
+ *
+ * free
+ * razorpay
+ * upi
+ *
+ * Registration model:
+ *
+ * free
+ * gateway
+ * qr
+ *
+ * This hook works with the Event model.
+ */
+
+const normalizePaymentMethod = (
+    paymentMethod
+) => {
+
+    const method =
+        String(
+            paymentMethod || ""
+        )
+            .trim()
+            .toLowerCase();
+
+
+    if (
+        method === "gateway"
+    ) {
+        return "razorpay";
+    }
+
+
+    if (
+        method === "qr"
+    ) {
+        return "upi";
+    }
+
+
+    if (
+        method === "razorpay"
+    ) {
+        return "razorpay";
+    }
+
+
+    if (
+        method === "upi"
+    ) {
+        return "upi";
+    }
+
+
+    if (
+        method === "free"
+    ) {
+        return "free";
+    }
+
+
+    return "";
+};
+
+
+/*
+ * ============================================================
  * PAYMENT HOOK
  * ============================================================
  */
 
 const usePayment = () => {
 
-    const [loading, setLoading] =
-        useState(false);
+    const [
+        loading,
+        setLoading,
+    ] = useState(false);
 
-    const [error, setError] =
-        useState("");
 
-    const [paymentResult, setPaymentResult] =
-        useState(null);
+    const [
+        error,
+        setError,
+    ] = useState("");
+
+
+    const [
+        paymentResult,
+        setPaymentResult,
+    ] = useState(null);
 
 
     /*
@@ -146,401 +259,558 @@ const usePayment = () => {
      * ========================================================
      */
 
-    const resetPayment = useCallback(() => {
+    const resetPayment =
+        useCallback(() => {
 
-        setLoading(false);
+            setLoading(false);
 
-        setError("");
+            setError("");
 
-        setPaymentResult(null);
+            setPaymentResult(null);
 
-    }, []);
+        }, []);
 
 
     /*
      * ========================================================
      * START PAYMENT
      * ========================================================
-     *
-     * Usage:
-     *
-     * const {
-     *     startPayment,
-     *     loading,
-     *     error
-     * } = usePayment();
-     *
-     *
-     * await startPayment({
-     *
-     *     registrationId,
-     *     eventId,
-     *     amount,
-     *
-     *     event,
-     *
-     *     user,
-     *
-     *     onSuccess,
-     *     onFailure
-     *
-     * });
-     *
-     * ========================================================
      */
 
-    const startPayment = useCallback(
-        async ({
-            registrationId,
-            eventId,
-            amount,
-            event = {},
-            user = {},
-            onSuccess,
-            onFailure,
-        }) => {
+    const startPayment =
+        useCallback(
+            async ({
+                registrationId,
+                eventId,
+                amount,
+                event = {},
+                user = {},
+                onSuccess,
+                onFailure,
+            }) => {
 
-            setLoading(true);
+                setLoading(true);
 
-            setError("");
+                setError("");
 
-            setPaymentResult(null);
-
-
-            try {
-
-                /*
-                 * ------------------------------------------------
-                 * Validate payment data
-                 * ------------------------------------------------
-                 */
-
-                const validation =
-                    validatePaymentOrderData({
-                        registrationId,
-                        eventId,
-                        amount,
-                    });
+                setPaymentResult(null);
 
 
-                if (!validation.isValid) {
+                try {
 
-                    const message =
-                        Object.values(
-                            validation.errors
-                        )[0] ||
-                        "Invalid payment information.";
+                    /*
+                     * ------------------------------------------------
+                     * Validate required IDs
+                     * ------------------------------------------------
+                     */
 
-                    throw new Error(
-                        message
-                    );
-                }
+                    if (!registrationId) {
 
-
-                /*
-                 * ------------------------------------------------
-                 * Load Razorpay
-                 * ------------------------------------------------
-                 */
-
-                const razorpayLoaded =
-                    await loadRazorpayScript();
+                        throw new Error(
+                            "Registration ID is missing."
+                        );
+                    }
 
 
-                if (!razorpayLoaded) {
+                    if (!eventId) {
 
-                    throw new Error(
-                        "Unable to load Razorpay Checkout. Please check your internet connection and try again."
-                    );
-                }
-
-
-                /*
-                 * ------------------------------------------------
-                 * Create order on backend
-                 * ------------------------------------------------
-                 *
-                 * IMPORTANT:
-                 *
-                 * Backend should calculate/verify the
-                 * final event amount.
-                 *
-                 * Do not trust frontend amount.
-                 */
-
-                const orderResponse =
-                    await paymentService.createPaymentOrder({
-                        registrationId,
-                        eventId,
-                        amount,
-                    });
-
-
-                const orderData =
-                    orderResponse?.data ||
-                    orderResponse;
-
-
-                /*
-                 * Some APIs return:
-                 *
-                 * {
-                 *     success: true,
-                 *     order: {...}
-                 * }
-                 *
-                 * Others return the order directly.
-                 */
-
-                const order =
-                    orderData?.order ||
-                    orderData?.paymentOrder ||
-                    orderData;
-
-
-                if (
-                    !order ||
-                    !order.id
-                ) {
-
-                    throw new Error(
-                        orderData?.message ||
-                        "Payment order was not created."
-                    );
-                }
-
-
-                /*
-                 * ------------------------------------------------
-                 * Razorpay configuration
-                 * ------------------------------------------------
-                 *
-                 * VITE_RAZORPAY_KEY_ID must be placed
-                 * in frontend .env:
-                 *
-                 * VITE_RAZORPAY_KEY_ID=rzp_test_xxxxx
-                 *
-                 */
-
-                const razorpayKey =
-                    import.meta.env
-                        .VITE_RAZORPAY_KEY_ID;
-
-
-                if (!razorpayKey) {
-
-                    throw new Error(
-                        "Razorpay key is not configured. Add VITE_RAZORPAY_KEY_ID to the frontend .env file."
-                    );
-                }
-
-
-                /*
-                 * ------------------------------------------------
-                 * Razorpay options
-                 * ------------------------------------------------
-                 */
-
-                const options = {
-
-                    key:
-                        razorpayKey,
-
-                    amount:
-                        order.amount,
-
-                    currency:
-                        order.currency ||
-                        "INR",
-
-                    name:
-                        "EventSphere",
-
-                    description:
-                        event?.title ||
-                        "Event Registration",
-
-                    order_id:
-                        order.id,
+                        throw new Error(
+                            "Event ID is missing."
+                        );
+                    }
 
 
                     /*
-                     * Participant information
+                     * ------------------------------------------------
+                     * Validate amount
+                     * ------------------------------------------------
                      */
 
-                    prefill: {
+                    const numericAmount =
+                        Number(amount);
+
+
+                    if (
+                        !Number.isFinite(
+                            numericAmount
+                        ) ||
+                        numericAmount <= 0
+                    ) {
+
+                        throw new Error(
+                            "Invalid payment amount."
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Check event payment method
+                     * ------------------------------------------------
+                     */
+
+                    const paymentMethod =
+                        normalizePaymentMethod(
+                            event?.paymentMethod
+                        );
+
+
+                    /*
+                     * ------------------------------------------------
+                     * FREE EVENT
+                     * ------------------------------------------------
+                     */
+
+                    if (
+                        paymentMethod ===
+                        "free"
+                    ) {
+
+                        throw new Error(
+                            "This is a free event. No payment is required."
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * UPI / QR EVENT
+                     * ------------------------------------------------
+                     *
+                     * Razorpay must NOT be opened for a QR event.
+                     */
+
+                    if (
+                        paymentMethod ===
+                        "upi"
+                    ) {
+
+                        throw new Error(
+                            "This event uses UPI / QR payment. Please use the QR payment option instead of Razorpay."
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Unknown payment method
+                     * ------------------------------------------------
+                     */
+
+                    if (
+                        paymentMethod !==
+                        "razorpay"
+                    ) {
+
+                        throw new Error(
+                            "Payment method is not configured correctly for this event."
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Validate Razorpay payment data
+                     * ------------------------------------------------
+                     */
+
+                    const validation =
+                        validatePaymentOrderData({
+                            registrationId,
+                            eventId,
+                            amount:
+                                numericAmount,
+                        });
+
+
+                    if (
+                        !validation.isValid
+                    ) {
+
+                        const message =
+                            Object.values(
+                                validation.errors ||
+                                {}
+                            )[0] ||
+                            "Invalid payment information.";
+
+                        throw new Error(
+                            message
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Load Razorpay
+                     * ------------------------------------------------
+                     */
+
+                    const razorpayLoaded =
+                        await loadRazorpayScript();
+
+
+                    if (
+                        !razorpayLoaded
+                    ) {
+
+                        throw new Error(
+                            "Unable to load Razorpay Checkout. Please check your internet connection and try again."
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Razorpay key
+                     * ------------------------------------------------
+                     *
+                     * frontend/.env
+                     *
+                     * VITE_RAZORPAY_KEY_ID=rzp_test_xxxxx
+                     */
+
+                    const razorpayKey =
+                        import.meta.env
+                            .VITE_RAZORPAY_KEY_ID;
+
+
+                    if (
+                        !razorpayKey
+                    ) {
+
+                        throw new Error(
+                            "Razorpay key is not configured. Add VITE_RAZORPAY_KEY_ID to the frontend .env file."
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Create order on backend
+                     * ------------------------------------------------
+                     */
+
+                    const orderResponse =
+                        await paymentService.createPaymentOrder(
+                            {
+                                registrationId,
+
+                                eventId,
+
+                                amount:
+                                    numericAmount,
+                            }
+                        );
+
+
+                    const orderData =
+                        orderResponse?.data ||
+                        orderResponse;
+
+
+                    /*
+                     * Some APIs return:
+                     *
+                     * {
+                     *     success: true,
+                     *     order: {...}
+                     * }
+                     *
+                     * Others return the order directly.
+                     */
+
+                    const order =
+                        orderData?.order ||
+                        orderData?.paymentOrder ||
+                        orderData;
+
+
+                    if (
+                        !order ||
+                        !order.id
+                    ) {
+
+                        throw new Error(
+                            orderData?.message ||
+                            "Payment order was not created."
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Validate order amount
+                     * ------------------------------------------------
+                     *
+                     * Razorpay uses paise.
+                     *
+                     * Example:
+                     *
+                     * ₹1 = 100 paise
+                     */
+
+                    if (
+                        order.amount &&
+                        Number(order.amount) <= 0
+                    ) {
+
+                        throw new Error(
+                            "Invalid Razorpay order amount."
+                        );
+                    }
+
+
+                    /*
+                     * ------------------------------------------------
+                     * Razorpay options
+                     * ------------------------------------------------
+                     */
+
+                    const options = {
+
+                        key:
+                            razorpayKey,
+
+                        amount:
+                            order.amount,
+
+                        currency:
+                            order.currency ||
+                            "INR",
 
                         name:
-                            user?.name ||
-                            [
-                                user?.firstName,
-                                user?.lastName,
-                            ]
-                                .filter(Boolean)
-                                .join(" "),
+                            "EventSphere",
 
-                        email:
-                            user?.email ||
-                            "",
+                        description:
+                            event?.title ||
+                            "Event Registration",
 
-                        contact:
-                            user?.whatsappNumber ||
-                            "",
-                    },
+                        order_id:
+                            order.id,
 
 
-                    /*
-                     * Theme
-                     */
+                        /*
+                         * Participant information
+                         */
 
-                    theme: {
-                        color:
-                            "#6246d8",
-                    },
+                        prefill: {
 
+                            name:
+                                user?.name ||
+                                [
+                                    user?.firstName,
+                                    user?.lastName,
+                                ]
+                                    .filter(Boolean)
+                                    .join(" "),
 
-                    /*
-                     * Handler executes after
-                     * successful Razorpay payment.
-                     */
+                            email:
+                                user?.email ||
+                                "",
 
-                    handler:
-                        async (
-                            response
-                        ) => {
-
-                            try {
-
-                                /*
-                                 * Validate Razorpay response.
-                                 */
-
-                                const result =
-                                    validateRazorpayResponse(
-                                        response
-                                    );
+                            contact:
+                                user?.whatsappNumber ||
+                                user?.phone ||
+                                "",
+                        },
 
 
-                                if (
-                                    !result.isValid
-                                ) {
+                        /*
+                         * Theme
+                         */
 
-                                    throw new Error(
-                                        "Razorpay returned an incomplete payment response."
-                                    );
-                                }
-
-
-                                /*
-                                 * ------------------------------------------------
-                                 * Send response to backend.
-                                 * ------------------------------------------------
-                                 *
-                                 * Backend verifies the
-                                 * Razorpay signature.
-                                 */
-
-                                const verifyResponse =
-                                    await paymentService.verifyPayment(
-                                        {
-                                            registrationId,
-
-                                            razorpayOrderId:
-                                                response.razorpay_order_id,
-
-                                            razorpayPaymentId:
-                                                response.razorpay_payment_id,
-
-                                            razorpaySignature:
-                                                response.razorpay_signature,
-                                        }
-                                    );
+                        theme: {
+                            color:
+                                "#6246d8",
+                        },
 
 
-                                const verifyData =
-                                    verifyResponse?.data ||
-                                    verifyResponse;
+                        /*
+                         * Handler executes after
+                         * successful Razorpay payment.
+                         */
+
+                        handler:
+                            async (
+                                response
+                            ) => {
+
+                                try {
+
+                                    /*
+                                     * Validate Razorpay response.
+                                     */
+
+                                    const result =
+                                        validateRazorpayResponse(
+                                            response
+                                        );
 
 
-                                /*
-                                 * Backend can return:
-                                 *
-                                 * {
-                                 *   success: true,
-                                 *   payment: {...},
-                                 *   registration: {...}
-                                 * }
-                                 */
+                                    if (
+                                        !result.isValid
+                                    ) {
 
-                                if (
-                                    verifyData?.success ===
-                                    false
-                                ) {
-
-                                    throw new Error(
-                                        verifyData?.message ||
-                                        "Payment verification failed."
-                                    );
-                                }
+                                        throw new Error(
+                                            "Razorpay returned an incomplete payment response."
+                                        );
+                                    }
 
 
-                                const finalResult = {
+                                    /*
+                                     * ------------------------------------------------
+                                     * Send response to backend.
+                                     * ------------------------------------------------
+                                     *
+                                     * Backend verifies the
+                                     * Razorpay signature.
+                                     */
 
-                                    success: true,
+                                    const verifyResponse =
+                                        await paymentService.verifyPayment(
+                                            {
+                                                registrationId,
 
-                                    order,
+                                                razorpayOrderId:
+                                                    response
+                                                        .razorpay_order_id,
 
-                                    razorpayResponse:
-                                        response,
+                                                razorpayPaymentId:
+                                                    response
+                                                        .razorpay_payment_id,
 
-                                    verification:
-                                        verifyData,
-                                };
-
-
-                                setPaymentResult(
-                                    finalResult
-                                );
-
-
-                                setLoading(false);
+                                                razorpaySignature:
+                                                    response
+                                                        .razorpay_signature,
+                                            }
+                                        );
 
 
-                                /*
-                                 * Notify parent.
-                                 */
+                                    const verifyData =
+                                        verifyResponse?.data ||
+                                        verifyResponse;
 
-                                if (
-                                    typeof onSuccess ===
-                                    "function"
-                                ) {
 
-                                    await onSuccess(
+                                    /*
+                                     * Backend can return:
+                                     *
+                                     * {
+                                     *   success: true,
+                                     *   payment: {...},
+                                     *   registration: {...}
+                                     * }
+                                     */
+
+                                    if (
+                                        verifyData?.success ===
+                                        false
+                                    ) {
+
+                                        throw new Error(
+                                            verifyData?.message ||
+                                            "Payment verification failed."
+                                        );
+                                    }
+
+
+                                    const finalResult = {
+
+                                        success:
+                                            true,
+
+                                        order,
+
+                                        razorpayResponse:
+                                            response,
+
+                                        verification:
+                                            verifyData,
+                                    };
+
+
+                                    setPaymentResult(
                                         finalResult
                                     );
-                                }
 
-                            } catch (
-                                verificationError
-                            ) {
 
-                                console.error(
-                                    "Payment verification error:",
+                                    setLoading(
+                                        false
+                                    );
+
+
+                                    /*
+                                     * Notify parent.
+                                     */
+
+                                    if (
+                                        typeof onSuccess ===
+                                        "function"
+                                    ) {
+
+                                        await onSuccess(
+                                            finalResult
+                                        );
+                                    }
+
+                                } catch (
                                     verificationError
+                                ) {
+
+                                    console.error(
+                                        "Payment verification error:",
+                                        verificationError
+                                    );
+
+
+                                    const message =
+                                        verificationError
+                                            ?.response
+                                            ?.data
+                                            ?.message ||
+                                        verificationError
+                                            ?.message ||
+                                        "Payment verification failed.";
+
+
+                                    setError(
+                                        message
+                                    );
+
+
+                                    setLoading(
+                                        false
+                                    );
+
+
+                                    if (
+                                        typeof onFailure ===
+                                        "function"
+                                    ) {
+
+                                        onFailure(
+                                            verificationError
+                                        );
+                                    }
+                                }
+                            },
+
+
+                        /*
+                         * Checkout dismissed.
+                         */
+
+                        modal: {
+
+                            ondismiss: () => {
+
+                                setLoading(
+                                    false
                                 );
-
-
-                                const message =
-                                    verificationError?.response?.data?.message ||
-                                    verificationError?.message ||
-                                    "Payment verification failed.";
-
 
                                 setError(
-                                    message
+                                    "Payment was cancelled."
                                 );
-
-                                setLoading(false);
 
 
                                 if (
@@ -549,27 +819,58 @@ const usePayment = () => {
                                 ) {
 
                                     onFailure(
-                                        verificationError
+                                        new Error(
+                                            "Payment was cancelled."
+                                        )
                                     );
                                 }
-                            }
+                            },
                         },
+                    };
 
 
                     /*
-                     * Checkout dismissed.
+                     * ------------------------------------------------
+                     * Create Razorpay instance
+                     * ------------------------------------------------
                      */
 
-                    modal: {
+                    const razorpay =
+                        new window.Razorpay(
+                            options
+                        );
 
-                        ondismiss: () => {
+
+                    /*
+                     * Razorpay payment failure.
+                     */
+
+                    razorpay.on(
+                        "payment.failed",
+                        (
+                            response
+                        ) => {
+
+                            console.error(
+                                "Razorpay payment failed:",
+                                response
+                            );
+
+
+                            const message =
+                                response
+                                    ?.error
+                                    ?.description ||
+                                "Payment failed. Please try again.";
+
+
+                            setError(
+                                message
+                            );
+
 
                             setLoading(
                                 false
-                            );
-
-                            setError(
-                                "Payment was cancelled."
                             );
 
 
@@ -579,136 +880,90 @@ const usePayment = () => {
                             ) {
 
                                 onFailure(
-                                    new Error(
-                                        "Payment was cancelled."
-                                    )
+                                    response
                                 );
                             }
-                        },
-                    },
-                };
-
-
-                /*
-                 * ------------------------------------------------
-                 * Create Razorpay instance
-                 * ------------------------------------------------
-                 */
-
-                const razorpay =
-                    new window.Razorpay(
-                        options
+                        }
                     );
 
 
-                /*
-                 * Razorpay payment failure.
-                 */
+                    /*
+                     * ------------------------------------------------
+                     * Open Checkout
+                     * ------------------------------------------------
+                     */
 
-                razorpay.on(
-                    "payment.failed",
-                    (response) => {
-
-                        console.error(
-                            "Razorpay payment failed:",
-                            response
-                        );
+                    razorpay.open();
 
 
-                        const message =
-                            response?.error?.description ||
-                            "Payment failed. Please try again.";
+                    /*
+                     * Return order information
+                     * immediately.
+                     *
+                     * Actual payment result will
+                     * arrive through handler().
+                     */
 
+                    return {
 
-                        setError(
-                            message
-                        );
+                        success:
+                            true,
 
-                        setLoading(
-                            false
-                        );
+                        order,
+                    };
 
-
-                        if (
-                            typeof onFailure ===
-                            "function"
-                        ) {
-
-                            onFailure(
-                                response
-                            );
-                        }
-                    }
-                );
-
-
-                /*
-                 * ------------------------------------------------
-                 * Open Checkout
-                 * ------------------------------------------------
-                 */
-
-                razorpay.open();
-
-
-                /*
-                 * Return order information
-                 * immediately.
-                 *
-                 * Actual payment result will
-                 * arrive through handler().
-                 */
-
-                return {
-                    success: true,
-
-                    order,
-                };
-
-            } catch (paymentError) {
-
-                console.error(
-                    "Start payment error:",
+                } catch (
                     paymentError
-                );
-
-
-                const message =
-                    paymentError?.response?.data?.message ||
-                    paymentError?.message ||
-                    "Unable to start payment.";
-
-
-                setError(
-                    message
-                );
-
-                setLoading(
-                    false
-                );
-
-
-                if (
-                    typeof onFailure ===
-                    "function"
                 ) {
 
-                    onFailure(
+                    console.error(
+                        "Start payment error:",
                         paymentError
                     );
+
+
+                    const message =
+                        paymentError
+                            ?.response
+                            ?.data
+                            ?.message ||
+                        paymentError?.message ||
+                        "Unable to start payment.";
+
+
+                    setError(
+                        message
+                    );
+
+
+                    setLoading(
+                        false
+                    );
+
+
+                    if (
+                        typeof onFailure ===
+                        "function"
+                    ) {
+
+                        onFailure(
+                            paymentError
+                        );
+                    }
+
+
+                    return {
+
+                        success:
+                            false,
+
+                        message,
+                    };
                 }
 
-
-                return {
-                    success: false,
-
-                    message,
-                };
-            }
-
-        },
-        []
-    );
+            },
+            []
+        );
 
 
     /*

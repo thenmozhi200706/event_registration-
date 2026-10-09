@@ -1,0 +1,1193 @@
+/* ============================================================
+   EVENTSPHERE — RECENT REGISTRATIONS
+   ============================================================ */
+
+.recent-registrations-card {
+  width: 100%;
+  padding: 26px;
+
+  background: #ffffff;
+
+  border: 1px solid #e8e9f1;
+  border-radius: 20px;
+
+  box-shadow:
+    0 5px 20px rgba(30, 30, 70, 0.045),
+    0 1px 3px rgba(30, 30, 70, 0.025);
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.recent-registrations-card:hover {
+  border-color: #dedff0;
+
+  box-shadow:
+    0 12px 30px rgba(40, 35, 100, 0.07),
+    0 3px 8px rgba(40, 35, 100, 0.035);
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.recent-registrations-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-bottom: 21px;
+
+  border-bottom: 1px solid #eeeeF4;
+}
+
+.recent-registrations-eyebrow {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #6356d9;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+}
+
+.recent-registrations-header h2 {
+  margin: 0;
+
+  color: #202231;
+
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 750;
+
+  letter-spacing: -0.35px;
+}
+
+.recent-registrations-header p {
+  margin: 7px 0 0;
+
+  color: #85889a;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   VIEW ALL BUTTON
+   ============================================================ */
+
+.recent-view-all-btn {
+  flex-shrink: 0;
+
+  padding: 9px 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dedbf7;
+  border-radius: 9px;
+
+  background: #f7f5ff;
+
+  color: #5b4dd4;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.recent-view-all-btn:hover {
+  background: #5b4be7;
+  border-color: #5b4be7;
+  color: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+.recent-view-all-btn:active {
+  transform: translateY(0);
+}
+
+/* ============================================================
+   REGISTRATION LIST
+   ============================================================ */
+
+.recent-registrations-list {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 5px;
+}
+
+/* ============================================================
+   REGISTRATION ROW
+   ============================================================ */
+
+.recent-registration-row {
+  display: grid;
+
+  grid-template-columns:
+    44px
+    minmax(170px, 1.3fr)
+    minmax(150px, 1fr)
+    105px
+    100px
+    34px;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 16px 5px;
+
+  border-bottom: 1px solid #eeeeF4;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.recent-registration-row:last-child {
+  border-bottom: none;
+}
+
+.recent-registration-row:hover {
+  background: #fafaff;
+
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+
+.recent-registration-avatar {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  color: #5748d7;
+
+  background: linear-gradient(
+    135deg,
+    #efedff,
+    #e4e0ff
+  );
+
+  border: 1px solid #e0dcff;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.recent-registration-row:hover
+  .recent-registration-avatar {
+  transform: scale(1.06);
+
+  box-shadow:
+    0 5px 12px rgba(91, 75, 231, 0.13);
+}
+
+/* ============================================================
+   PARTICIPANT
+   ============================================================ */
+
+.recent-registration-participant {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.recent-registration-participant strong {
+  overflow: hidden;
+
+  color: #292b3b;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.recent-registration-participant span {
+  overflow: hidden;
+
+  color: #9294a5;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ============================================================
+   EVENT
+   ============================================================ */
+
+.recent-registration-event {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.recent-registration-event span,
+.recent-registration-date span {
+  color: #999baa;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.recent-registration-event strong {
+  overflow: hidden;
+
+  color: #55586a;
+
+  font-size: 11px;
+  font-weight: 650;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ============================================================
+   DATE
+   ============================================================ */
+
+.recent-registration-date {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.recent-registration-date strong {
+  color: #55586a;
+
+  font-size: 10px;
+  font-weight: 650;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   PAYMENT STATUS
+   ============================================================ */
+
+.recent-registration-payment {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.recent-payment-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  min-width: 68px;
+
+  padding: 5px 8px;
+
+  border-radius: 999px;
+
+  font-size: 9px;
+  font-weight: 750;
+
+  white-space: nowrap;
+}
+
+.recent-payment-status.paid {
+  color: #168b68;
+
+  background: #e7f8f1;
+
+  border: 1px solid #d3f1e6;
+}
+
+.recent-payment-status.pending {
+  color: #c48617;
+
+  background: #fff5df;
+
+  border: 1px solid #f6e7bd;
+}
+
+.recent-payment-status.failed {
+  color: #c85560;
+
+  background: #ffeaed;
+
+  border: 1px solid #f8d8dc;
+}
+
+/* ============================================================
+   STATUS DOT
+   ============================================================ */
+
+.recent-status-dot {
+  width: 6px;
+  height: 6px;
+
+  min-width: 6px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+/* ============================================================
+   ACTION BUTTON
+   ============================================================ */
+
+.recent-registration-action {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e4e4ed;
+  border-radius: 9px;
+
+  background: #fafaff;
+
+  color: #7065d7;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.recent-registration-action:hover {
+  background: #5b4be7;
+  border-color: #5b4be7;
+  color: #ffffff;
+
+  transform: translateX(2px);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.recent-registrations-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding-top: 17px;
+
+  border-top: 1px solid #eeeeF4;
+
+  color: #9698a8;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.recent-registrations-footer span:last-child {
+  color: #6256d6;
+
+  font-weight: 700;
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.recent-registrations-empty {
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 35px;
+
+  text-align: center;
+
+  border: 1px dashed #dfe0ea;
+  border-radius: 14px;
+
+  background: #fcfcfe;
+}
+
+.recent-empty-icon {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 13px;
+
+  color: #7669d9;
+
+  background: #f0eeff;
+
+  border-radius: 14px;
+
+  font-size: 21px;
+}
+
+.recent-registrations-empty h3 {
+  margin: 0;
+
+  color: #3a3c4d;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.recent-registrations-empty p {
+  max-width: 330px;
+
+  margin: 7px 0 0;
+
+  color: #9698a8;
+
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.recent-registrations-loading {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 5px;
+}
+
+.recent-registration-skeleton {
+  display: grid;
+
+  grid-template-columns:
+    44px
+    minmax(170px, 1.3fr)
+    minmax(150px, 1fr)
+    105px
+    100px;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 16px 5px;
+
+  border-bottom: 1px solid #eeeeF4;
+}
+
+.recent-registration-skeleton:last-child {
+  border-bottom: none;
+}
+
+.recent-skeleton-avatar {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    90deg,
+    #eeeeF4 25%,
+    #f7f7fa 50%,
+    #eeeeF4 75%
+  );
+
+  background-size: 200% 100%;
+
+  animation: recentSkeleton 1.4s infinite;
+}
+
+.recent-skeleton-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.recent-skeleton-info .skeleton-line {
+  width: 65%;
+  height: 11px;
+
+  border-radius: 6px;
+
+  background: linear-gradient(
+    90deg,
+    #eeeeF4 25%,
+    #f7f7fa 50%,
+    #eeeeF4 75%
+  );
+
+  background-size: 200% 100%;
+
+  animation: recentSkeleton 1.4s infinite;
+}
+
+.recent-skeleton-info .skeleton-line.small {
+  width: 42%;
+  height: 8px;
+}
+
+.recent-skeleton-event {
+  width: 75%;
+  height: 11px;
+
+  border-radius: 6px;
+
+  background: linear-gradient(
+    90deg,
+    #eeeeF4 25%,
+    #f7f7fa 50%,
+    #eeeeF4 75%
+  );
+
+  background-size: 200% 100%;
+
+  animation: recentSkeleton 1.4s infinite;
+}
+
+.recent-skeleton-status {
+  width: 65px;
+  height: 24px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    #eeeeF4 25%,
+    #f7f7fa 50%,
+    #eeeeF4 75%
+  );
+
+  background-size: 200% 100%;
+
+  animation: recentSkeleton 1.4s infinite;
+}
+
+.recent-skeleton-title {
+  width: 190px;
+  height: 22px;
+
+  margin-bottom: 9px;
+
+  border-radius: 6px;
+
+  background: linear-gradient(
+    90deg,
+    #eeeeF4 25%,
+    #f7f7fa 50%,
+    #eeeeF4 75%
+  );
+
+  background-size: 200% 100%;
+
+  animation: recentSkeleton 1.4s infinite;
+}
+
+.recent-skeleton-subtitle {
+  width: 275px;
+  height: 11px;
+
+  border-radius: 6px;
+
+  background: linear-gradient(
+    90deg,
+    #eeeeF4 25%,
+    #f7f7fa 50%,
+    #eeeeF4 75%
+  );
+
+  background-size: 200% 100%;
+
+  animation: recentSkeleton 1.4s infinite;
+}
+
+@keyframes recentSkeleton {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================================
+   REGISTRATION DETAILS MODAL
+   ============================================================ */
+
+.recent-registration-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(20, 21, 40, 0.58);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  animation: recentModalOverlay 0.2s ease;
+}
+
+@keyframes recentModalOverlay {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.recent-registration-modal {
+  width: min(760px, 100%);
+  max-height: min(90vh, 850px);
+
+  overflow-y: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #e6e6ef;
+  border-radius: 20px;
+
+  box-shadow:
+    0 25px 70px rgba(20, 20, 50, 0.2),
+    0 5px 20px rgba(20, 20, 50, 0.08);
+
+  animation: recentModalOpen 0.25s ease;
+}
+
+@keyframes recentModalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================================
+   MODAL HEADER
+   ============================================================ */
+
+.recent-modal-header {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 22px 24px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid #eeeeF4;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.recent-modal-header > div {
+  min-width: 0;
+}
+
+.recent-modal-header span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #6356d9;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+.recent-modal-header h2 {
+  margin: 0;
+
+  color: #242636;
+
+  font-size: 20px;
+  font-weight: 750;
+}
+
+.recent-modal-close {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e5e5ed;
+  border-radius: 9px;
+
+  background: #f8f8fb;
+
+  color: #6d6f80;
+
+  font-size: 22px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.recent-modal-close:hover {
+  background: #ffeaed;
+
+  color: #c85560;
+
+  transform: rotate(4deg);
+}
+
+/* ============================================================
+   MODAL SECTION
+   ============================================================ */
+
+.recent-modal-section {
+  margin: 20px 24px;
+
+  padding: 18px;
+
+  background: #fafaff;
+
+  border: 1px solid #ececf4;
+  border-radius: 14px;
+}
+
+.recent-modal-section h3 {
+  margin: 0 0 14px;
+
+  color: #343647;
+
+  font-size: 13px;
+  font-weight: 750;
+}
+
+/* ============================================================
+   MODAL GRID
+   ============================================================ */
+
+.recent-modal-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 13px;
+}
+
+.recent-modal-field {
+  min-width: 0;
+
+  padding: 12px 13px;
+
+  background: #ffffff;
+
+  border: 1px solid #eeeeF4;
+  border-radius: 10px;
+}
+
+.recent-modal-field.full {
+  grid-column: 1 / -1;
+}
+
+.recent-modal-field > span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #9294a5;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.recent-modal-field > strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #363848;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  word-break: break-word;
+}
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.recent-modal-footer {
+  position: sticky;
+
+  bottom: 0;
+
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 16px 24px;
+
+  background: #ffffff;
+
+  border-top: 1px solid #eeeeF4;
+}
+
+.recent-modal-footer button {
+  min-width: 85px;
+
+  padding: 9px 17px;
+
+  border: 1px solid #5b4be7;
+  border-radius: 9px;
+
+  background: #5b4be7;
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.recent-modal-footer button:hover {
+  background: #493bd0;
+
+  box-shadow:
+    0 5px 12px rgba(91, 75, 231, 0.2);
+
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  .recent-registration-row {
+    grid-template-columns:
+      42px
+      minmax(150px, 1.2fr)
+      minmax(130px, 1fr)
+      95px
+      90px
+      32px;
+
+    gap: 11px;
+  }
+
+  .recent-registration-skeleton {
+    grid-template-columns:
+      42px
+      minmax(150px, 1.2fr)
+      minmax(130px, 1fr)
+      95px
+      90px;
+
+    gap: 11px;
+  }
+
+  .recent-registration-date {
+    display: none;
+  }
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 760px) {
+  .recent-registrations-card {
+    padding: 19px;
+
+    border-radius: 16px;
+  }
+
+  .recent-registrations-header {
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  .recent-registrations-header h2 {
+    font-size: 19px;
+  }
+
+  .recent-registrations-header p {
+    font-size: 12px;
+  }
+
+  .recent-view-all-btn {
+    align-self: flex-start;
+  }
+
+  /* Registration row becomes card */
+
+  .recent-registration-row {
+    grid-template-columns: 40px 1fr auto;
+
+    gap: 11px;
+
+    padding: 15px 3px;
+
+    align-items: start;
+  }
+
+  .recent-registration-avatar {
+    width: 37px;
+    height: 37px;
+  }
+
+  .recent-registration-participant {
+    padding-top: 1px;
+  }
+
+  .recent-registration-event {
+    grid-column: 2;
+
+    margin-top: 2px;
+  }
+
+  .recent-registration-date {
+    display: flex;
+
+    grid-column: 2;
+
+    margin-top: 2px;
+  }
+
+  .recent-registration-payment {
+    grid-column: 3;
+    grid-row: 1;
+
+    justify-self: end;
+  }
+
+  .recent-registration-action {
+    grid-column: 3;
+    grid-row: 2;
+
+    justify-self: end;
+
+    margin-top: 5px;
+  }
+
+  .recent-registration-skeleton {
+    grid-template-columns: 40px 1fr 70px;
+
+    gap: 11px;
+  }
+
+  .recent-skeleton-event {
+    display: none;
+  }
+
+  /* Footer */
+
+  .recent-registrations-footer {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 7px;
+  }
+
+  /* Modal */
+
+  .recent-registration-modal-overlay {
+    padding: 12px;
+  }
+
+  .recent-registration-modal {
+    max-height: 94vh;
+
+    border-radius: 17px;
+  }
+
+  .recent-modal-header {
+    padding: 18px;
+  }
+
+  .recent-modal-header h2 {
+    font-size: 18px;
+  }
+
+  .recent-modal-section {
+    margin: 15px;
+
+    padding: 15px;
+  }
+
+  .recent-modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recent-modal-field.full {
+    grid-column: auto;
+  }
+
+  .recent-modal-footer {
+    padding: 14px 18px;
+  }
+}
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 420px) {
+  .recent-registrations-card {
+    padding: 16px;
+  }
+
+  .recent-registration-row {
+    grid-template-columns: 36px 1fr auto;
+
+    gap: 9px;
+  }
+
+  .recent-registration-avatar {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+  }
+
+  .recent-registration-participant strong {
+    font-size: 12px;
+  }
+
+  .recent-registration-participant span {
+    font-size: 9px;
+  }
+
+  .recent-registration-event strong {
+    font-size: 10px;
+  }
+
+  .recent-payment-status {
+    min-width: 60px;
+
+    padding: 4px 6px;
+
+    font-size: 8px;
+  }
+
+  .recent-registration-action {
+    width: 27px;
+    height: 27px;
+  }
+
+  .recent-modal-header {
+    padding: 15px;
+  }
+
+  .recent-modal-section {
+    margin: 12px;
+
+    padding: 13px;
+  }
+
+  .recent-modal-field {
+    padding: 10px;
+  }
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+.recent-view-all-btn:focus-visible,
+.recent-registration-action:focus-visible,
+.recent-modal-close:focus-visible,
+.recent-modal-footer button:focus-visible {
+  outline: 3px solid rgba(91, 75, 231, 0.22);
+
+  outline-offset: 2px;
+}

@@ -491,30 +491,8 @@ const ManageOrganizers = () => {
             );
 
 
-            // =================================================
-            // GET ORGANIZER ID
-            // =================================================
-
-            const organizerId =
-                response?.organizerId ||
-                response?.organizer?._id ||
-                response?.organizer?.id ||
-                response?.data?.organizerId ||
-                response?.data?.organizer?._id ||
-                response?.data?.organizer?.id ||
-                null;
 
 
-            // =================================================
-            // GET EMAIL
-            // =================================================
-
-            const organizerEmail =
-                response?.email ||
-                response?.organizer?.email ||
-                response?.data?.email ||
-                response?.data?.organizer?.email ||
-                email;
 
 
             // =================================================
@@ -530,45 +508,18 @@ const ManageOrganizers = () => {
                 email: "",
             });
 
-
             // =================================================
-            // GO TO OTP VERIFICATION
-            // =================================================
-            //
-            // Email is passed through:
-            //
-            // 1. React Router state
-            // 2. URL query parameter
-            //
-            // This makes the OTP page more reliable after
-            // refresh/navigation.
+            // ORGANIZER ADDED SUCCESSFULLY
             // =================================================
 
-            const query =
-                new URLSearchParams({
-                    email: organizerEmail,
-                });
-
-
-            navigate(
-                `/organizer/verify-otp?${query.toString()}`,
-                {
-                    state: {
-                        email:
-                            organizerEmail,
-
-                        organizerId,
-
-                        fromAdmin: true,
-
-                        organizerVerification:
-                            true,
-                    },
-
-                    replace: true,
-                }
+            // Keep the Admin on the Manage Organizers page.
+            // The backend sends the OTP to the organizer's Gmail.
+            setSuccess(
+                "Organizer added successfully. OTP has been sent to the organizer's Gmail."
             );
 
+            // Refresh the organizer table immediately.
+            await loadOrganizers(true);
 
         } catch (err) {
 

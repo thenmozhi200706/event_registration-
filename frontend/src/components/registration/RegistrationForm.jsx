@@ -1,3 +1,5 @@
+// frontend/src/components/registration/RegistrationForm.jsx
+
 import React, { useMemo, useState } from "react";
 import {
     AlertCircle,
@@ -9,19 +11,35 @@ import {
     School,
     Send,
     User,
+    CreditCard,
+    QrCode,
 } from "lucide-react";
 
 import registrationService from "../../services/registrationService";
 
 import "./RegistrationForm.css";
 
+const normalizePaymentMethod = (method) => {
+    const value = String(method || "")
+        .trim()
+        .toLowerCase();
+
+    if (value === "gateway") return "gateway";
+    if (value === "razorpay") return "gateway";
+
+    if (value === "qr") return "qr";
+    if (value === "upi") return "qr";
+
+    if (value === "free") return "free";
+
+    return "";
+};
 
 const RegistrationForm = ({
     event,
     onSuccess,
     onCancel,
 }) => {
-
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -34,40 +52,52 @@ const RegistrationForm = ({
     });
 
     const [errors, setErrors] = useState({});
-
     const [loading, setLoading] = useState(false);
-
     const [serverError, setServerError] = useState("");
-
     const [successMessage, setSuccessMessage] = useState("");
 
-
-    /*
-     * ---------------------------------------------------------
-     * EVENT FEE
-     * ---------------------------------------------------------
-     */
-
     const registrationFee = useMemo(() => {
-        return Number(
-            event?.registrationFee ||
-            event?.fee ||
+        const fee = Number(
+            event?.registrationFee ??
+            event?.fee ??
             0
         );
-    }, [event]);
 
+        return Number.isFinite(fee) && fee >= 0
+            ? fee
+            : 0;
+    }, [event]);
 
     const isFreeEvent = registrationFee <= 0;
 
+    const paymentMethod = useMemo(() => {
+        if (isFreeEvent) {
+            return "free";
+        }
 
-    /*
-     * ---------------------------------------------------------
-     * HANDLE INPUT
-     * ---------------------------------------------------------
-     */
+        const normalized =
+            normalizePaymentMethod(
+                event?.paymentMethod
+            );
+
+        if (normalized) {
+            return normalized;
+        }
+
+        // Backward compatibility for old events.
+        return "gateway";
+    }, [
+        event?.paymentMethod,
+        isFreeEvent,
+    ]);
+
+    const paymentMethodLabel = {
+        gateway: "Razorpay",
+        qr: "UPI / QR",
+        free: "Free",
+    }[paymentMethod];
 
     const handleChange = (e) => {
-
         const {
             name,
             value,
@@ -78,38 +108,19 @@ const RegistrationForm = ({
             [name]: value,
         }));
 
-        /*
-         * Remove field error
-         * when user starts correcting it.
-         */
-
         if (errors[name]) {
-
             setErrors((previous) => ({
                 ...previous,
                 [name]: "",
             }));
         }
 
-        /*
-         * Remove server error
-         * when user changes form.
-         */
-
         if (serverError) {
             setServerError("");
         }
     };
 
-
-    /*
-     * ---------------------------------------------------------
-     * VALIDATE FORM
-     * ---------------------------------------------------------
-     */
-
     const validate = () => {
-
         const nextErrors = {};
 
         const firstName =
@@ -136,7 +147,6 @@ const RegistrationForm = ({
         const age =
             Number(formData.age);
 
-
         if (!firstName) {
             nextErrors.firstName =
                 "First name is required.";
@@ -147,72 +157,56 @@ const RegistrationForm = ({
                 "Last name is required.";
         }
 
-
         if (!formData.age) {
-
             nextErrors.age =
                 "Age is required.";
-
         } else if (
             !Number.isInteger(age) ||
             age < 1 ||
             age > 120
         ) {
-
             nextErrors.age =
                 "Enter a valid age between 1 and 120.";
         }
 
-
         if (!whatsapp) {
-
             nextErrors.whatsappNumber =
                 "WhatsApp number is required.";
-
         } else if (
             !/^[0-9+\-\s()]{7,20}$/.test(
                 whatsapp
             )
         ) {
-
             nextErrors.whatsappNumber =
                 "Enter a valid WhatsApp number.";
         }
 
-
         if (!email) {
-
             nextErrors.email =
                 "Email address is required.";
-
         } else if (
             !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
                 email
             )
         ) {
-
             nextErrors.email =
                 "Enter a valid email address.";
         }
-
 
         if (!institute) {
             nextErrors.instituteName =
                 "Institute name is required.";
         }
 
-
         if (!department) {
             nextErrors.department =
                 "Department is required.";
         }
 
-
         if (!year) {
             nextErrors.year =
                 "Academic year is required.";
         }
-
 
         setErrors(nextErrors);
 
@@ -221,55 +215,41 @@ const RegistrationForm = ({
         );
     };
 
-
-    /*
-     * ---------------------------------------------------------
-     * SUBMIT REGISTRATION
-     * ---------------------------------------------------------
-     */
-
     const handleSubmit = async (e) => {
-
         e.preventDefault();
 
         setServerError("");
         setSuccessMessage("");
 
-
-        const isValid = validate();
-
-        if (!isValid) {
+        if (!validate()) {
             return;
         }
-
-
-        /*
-         * Event ID is required.
-         */
 
         const eventId =
             event?._id ||
             event?.id;
 
-
         if (!eventId) {
-
             setServerError(
                 "Event information is missing. Please reopen the event and try again."
             );
-
             return;
         }
 
+        if (
+            !isFreeEvent &&
+            !["gateway", "qr"].includes(
+                paymentMethod
+            )
+        ) {
+            setServerError(
+                "This event has an invalid payment configuration. Please contact the organizer."
+            );
+            return;
+        }
 
         try {
-
             setLoading(true);
-
-
-            /*
-             * Prepare registration payload.
-             */
 
             const payload = {
                 eventId,
@@ -298,110 +278,81 @@ const RegistrationForm = ({
                 year:
                     formData.year.trim(),
 
-                /*
-                 * Backend determines the actual
-                 * payment flow based on event fee.
-                 */
-
-                paymentMethod:
-                    isFreeEvent
-                        ? "free"
-                        : "gateway",
+                // IMPORTANT:
+                // Use the event's actual payment method.
+                paymentMethod,
 
                 amount:
                     registrationFee,
             };
 
-
-            /*
-             * Create registration.
-             */
+            console.log(
+                "Creating registration:",
+                payload
+            );
 
             const response =
                 await registrationService.createRegistration(
                     payload
                 );
 
-
-            /*
-             * API may return:
-             *
-             * response.data
-             * OR
-             * response
-             */
-
             const data =
                 response?.data ||
                 response;
 
-
             if (
                 data?.success === false
             ) {
-
                 throw new Error(
                     data?.message ||
                     "Registration failed."
                 );
             }
 
+            const createdRegistration =
+                data?.registration ||
+                data?.data?.registration ||
+                data;
 
             /*
-             * Registration successful.
+             * For free events, registration is already complete.
+             *
+             * For paid events, continue to PaymentPage.
              */
-
-            setSuccessMessage(
-                data?.message ||
-                "Registration created successfully."
-            );
-
-
-            /*
-             * Send response to parent.
-             */
-
             if (onSuccess) {
+                onSuccess({
+                    ...data,
 
-                onSuccess(data);
+                    registration:
+                        createdRegistration,
+
+                    event,
+
+                    paymentMethod,
+                });
             }
 
-
         } catch (error) {
-
             console.error(
                 "Registration failed:",
                 error
             );
 
-
             const message =
                 error?.response?.data?.message ||
-                error?.response?.data?.error ||
                 error?.message ||
                 "Unable to complete registration. Please try again.";
-
 
             setServerError(message);
 
         } finally {
-
             setLoading(false);
         }
     };
 
-
-    /*
-     * ---------------------------------------------------------
-     * SUCCESS STATE
-     * ---------------------------------------------------------
-     */
-
     if (successMessage) {
-
         return (
             <div className="registration-form">
-
                 <div
                     style={{
                         minHeight: "320px",
@@ -413,7 +364,6 @@ const RegistrationForm = ({
                         padding: "20px",
                     }}
                 >
-
                     <div
                         style={{
                             width: "64px",
@@ -427,11 +377,8 @@ const RegistrationForm = ({
                             borderRadius: "50%",
                         }}
                     >
-                        <CheckCircle2
-                            size={34}
-                        />
+                        <CheckCircle2 size={34} />
                     </div>
-
 
                     <h2
                         style={{
@@ -441,7 +388,6 @@ const RegistrationForm = ({
                     >
                         Registration Successful
                     </h2>
-
 
                     <p
                         style={{
@@ -454,35 +400,22 @@ const RegistrationForm = ({
                         {successMessage}
                     </p>
 
-
                     <button
                         type="button"
                         className="registration-submit-button"
                         onClick={() => {
-
                             if (onSuccess) {
                                 onSuccess();
                             }
                         }}
                     >
                         Continue
-                        <CheckCircle2
-                            size={17}
-                        />
+                        <CheckCircle2 size={17} />
                     </button>
-
                 </div>
-
             </div>
         );
     }
-
-
-    /*
-     * ---------------------------------------------------------
-     * FORM
-     * ---------------------------------------------------------
-     */
 
     return (
         <form
@@ -490,15 +423,8 @@ const RegistrationForm = ({
             onSubmit={handleSubmit}
             noValidate
         >
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
             <div className="registration-form-header">
-
                 <div>
-
                     <span className="registration-form-eyebrow">
                         EVENT REGISTRATION
                     </span>
@@ -512,35 +438,18 @@ const RegistrationForm = ({
                         complete your EventSphere
                         registration.
                     </p>
-
                 </div>
-
 
                 <div className="registration-form-status-icon">
-
-                    <CalendarDays
-                        size={22}
-                    />
-
+                    <CalendarDays size={22} />
                 </div>
-
             </div>
 
-
-            {/* =================================================
-                SERVER ERROR
-            ================================================= */}
-
             {serverError && (
-
                 <div className="registration-form-server-error">
-
-                    <AlertCircle
-                        size={18}
-                    />
+                    <AlertCircle size={18} />
 
                     <div>
-
                         <strong>
                             Registration failed
                         </strong>
@@ -548,49 +457,28 @@ const RegistrationForm = ({
                         <span>
                             {serverError}
                         </span>
-
                     </div>
-
                 </div>
             )}
 
-
-            {/* =================================================
-                EVENT INFORMATION
-            ================================================= */}
-
             <div className="registration-form-section">
-
                 <div className="registration-section-heading">
-
-                    <CalendarDays
-                        size={19}
-                    />
+                    <CalendarDays size={19} />
 
                     <div>
-
-                        <h3>
-                            Event
-                        </h3>
+                        <h3>Event</h3>
 
                         <p>
                             You are registering for
                             the following event.
                         </p>
-
                     </div>
-
                 </div>
 
-
                 <div className="registration-form-note">
-
-                    <CalendarDays
-                        size={17}
-                    />
+                    <CalendarDays size={17} />
 
                     <p>
-
                         <strong>
                             {event?.title ||
                                 "Selected Event"}
@@ -604,29 +492,18 @@ const RegistrationForm = ({
 
                         {isFreeEvent
                             ? "Free registration"
-                            : `Registration fee: ₹${registrationFee.toFixed(2)}`}
-
+                            : `Registration fee: ₹${registrationFee.toFixed(
+                                  2
+                              )}`}
                     </p>
-
                 </div>
-
             </div>
 
-
-            {/* =================================================
-                PERSONAL INFORMATION
-            ================================================= */}
-
             <div className="registration-form-section">
-
                 <div className="registration-section-heading">
-
-                    <User
-                        size={19}
-                    />
+                    <User size={19} />
 
                     <div>
-
                         <h3>
                             Personal Information
                         </h3>
@@ -635,28 +512,17 @@ const RegistrationForm = ({
                             Provide your basic
                             participant details.
                         </p>
-
                     </div>
-
                 </div>
 
-
                 <div className="registration-form-grid">
-
-                    {/* First Name */}
-
                     <div className="registration-field">
-
                         <label htmlFor="firstName">
-                            First Name
-                            <span>*</span>
+                            First Name <span>*</span>
                         </label>
 
                         <div className="registration-input-wrapper">
-
-                            <User
-                                size={17}
-                            />
+                            <User size={17} />
 
                             <input
                                 id="firstName"
@@ -665,9 +531,7 @@ const RegistrationForm = ({
                                 value={
                                     formData.firstName
                                 }
-                                onChange={
-                                    handleChange
-                                }
+                                onChange={handleChange}
                                 placeholder="Enter first name"
                                 className={`registration-input ${
                                     errors.firstName
@@ -676,7 +540,6 @@ const RegistrationForm = ({
                                 }`}
                                 autoComplete="given-name"
                             />
-
                         </div>
 
                         {errors.firstName && (
@@ -684,24 +547,15 @@ const RegistrationForm = ({
                                 {errors.firstName}
                             </span>
                         )}
-
                     </div>
 
-
-                    {/* Last Name */}
-
                     <div className="registration-field">
-
                         <label htmlFor="lastName">
-                            Last Name
-                            <span>*</span>
+                            Last Name <span>*</span>
                         </label>
 
                         <div className="registration-input-wrapper">
-
-                            <User
-                                size={17}
-                            />
+                            <User size={17} />
 
                             <input
                                 id="lastName"
@@ -710,9 +564,7 @@ const RegistrationForm = ({
                                 value={
                                     formData.lastName
                                 }
-                                onChange={
-                                    handleChange
-                                }
+                                onChange={handleChange}
                                 placeholder="Enter last name"
                                 className={`registration-input ${
                                     errors.lastName
@@ -721,7 +573,6 @@ const RegistrationForm = ({
                                 }`}
                                 autoComplete="family-name"
                             />
-
                         </div>
 
                         {errors.lastName && (
@@ -729,24 +580,15 @@ const RegistrationForm = ({
                                 {errors.lastName}
                             </span>
                         )}
-
                     </div>
 
-
-                    {/* Age */}
-
                     <div className="registration-field">
-
                         <label htmlFor="age">
-                            Age
-                            <span>*</span>
+                            Age <span>*</span>
                         </label>
 
                         <div className="registration-input-wrapper">
-
-                            <User
-                                size={17}
-                            />
+                            <User size={17} />
 
                             <input
                                 id="age"
@@ -754,12 +596,8 @@ const RegistrationForm = ({
                                 type="number"
                                 min="1"
                                 max="120"
-                                value={
-                                    formData.age
-                                }
-                                onChange={
-                                    handleChange
-                                }
+                                value={formData.age}
+                                onChange={handleChange}
                                 placeholder="Enter age"
                                 className={`registration-input ${
                                     errors.age
@@ -767,7 +605,6 @@ const RegistrationForm = ({
                                         : ""
                                 }`}
                             />
-
                         </div>
 
                         {errors.age && (
@@ -775,24 +612,15 @@ const RegistrationForm = ({
                                 {errors.age}
                             </span>
                         )}
-
                     </div>
 
-
-                    {/* WhatsApp */}
-
                     <div className="registration-field">
-
                         <label htmlFor="whatsappNumber">
-                            WhatsApp Number
-                            <span>*</span>
+                            WhatsApp Number <span>*</span>
                         </label>
 
                         <div className="registration-input-wrapper">
-
-                            <Phone
-                                size={17}
-                            />
+                            <Phone size={17} />
 
                             <input
                                 id="whatsappNumber"
@@ -801,9 +629,7 @@ const RegistrationForm = ({
                                 value={
                                     formData.whatsappNumber
                                 }
-                                onChange={
-                                    handleChange
-                                }
+                                onChange={handleChange}
                                 placeholder="+91 9876543210"
                                 className={`registration-input ${
                                     errors.whatsappNumber
@@ -812,7 +638,6 @@ const RegistrationForm = ({
                                 }`}
                                 autoComplete="tel"
                             />
-
                         </div>
 
                         {errors.whatsappNumber && (
@@ -820,35 +645,22 @@ const RegistrationForm = ({
                                 {errors.whatsappNumber}
                             </span>
                         )}
-
                     </div>
 
-
-                    {/* Email */}
-
                     <div className="registration-field full-width">
-
                         <label htmlFor="email">
-                            Email Address
-                            <span>*</span>
+                            Email Address <span>*</span>
                         </label>
 
                         <div className="registration-input-wrapper">
-
-                            <Mail
-                                size={17}
-                            />
+                            <Mail size={17} />
 
                             <input
                                 id="email"
                                 name="email"
                                 type="email"
-                                value={
-                                    formData.email
-                                }
-                                onChange={
-                                    handleChange
-                                }
+                                value={formData.email}
+                                onChange={handleChange}
                                 placeholder="you@example.com"
                                 className={`registration-input ${
                                     errors.email
@@ -857,7 +669,6 @@ const RegistrationForm = ({
                                 }`}
                                 autoComplete="email"
                             />
-
                         </div>
 
                         {errors.email && (
@@ -865,28 +676,15 @@ const RegistrationForm = ({
                                 {errors.email}
                             </span>
                         )}
-
                     </div>
-
                 </div>
-
             </div>
 
-
-            {/* =================================================
-                ACADEMIC INFORMATION
-            ================================================= */}
-
             <div className="registration-form-section">
-
                 <div className="registration-section-heading">
-
-                    <School
-                        size={19}
-                    />
+                    <School size={19} />
 
                     <div>
-
                         <h3>
                             Academic Information
                         </h3>
@@ -895,28 +693,17 @@ const RegistrationForm = ({
                             Enter your institute and
                             academic details.
                         </p>
-
                     </div>
-
                 </div>
 
-
                 <div className="registration-form-grid">
-
-                    {/* Institute */}
-
                     <div className="registration-field full-width">
-
                         <label htmlFor="instituteName">
-                            Institute / College
-                            <span>*</span>
+                            Institute / College <span>*</span>
                         </label>
 
                         <div className="registration-input-wrapper">
-
-                            <School
-                                size={17}
-                            />
+                            <School size={17} />
 
                             <input
                                 id="instituteName"
@@ -925,9 +712,7 @@ const RegistrationForm = ({
                                 value={
                                     formData.instituteName
                                 }
-                                onChange={
-                                    handleChange
-                                }
+                                onChange={handleChange}
                                 placeholder="Enter institute or college name"
                                 className={`registration-input ${
                                     errors.instituteName
@@ -935,7 +720,6 @@ const RegistrationForm = ({
                                         : ""
                                 }`}
                             />
-
                         </div>
 
                         {errors.instituteName && (
@@ -943,24 +727,15 @@ const RegistrationForm = ({
                                 {errors.instituteName}
                             </span>
                         )}
-
                     </div>
 
-
-                    {/* Department */}
-
                     <div className="registration-field">
-
                         <label htmlFor="department">
-                            Department
-                            <span>*</span>
+                            Department <span>*</span>
                         </label>
 
                         <div className="registration-input-wrapper">
-
-                            <School
-                                size={17}
-                            />
+                            <School size={17} />
 
                             <input
                                 id="department"
@@ -969,17 +744,14 @@ const RegistrationForm = ({
                                 value={
                                     formData.department
                                 }
-                                onChange={
-                                    handleChange
-                                }
-                                placeholder="e.g. CSE"
+                                onChange={handleChange}
+                                placeholder="e.g. AI&DS"
                                 className={`registration-input ${
                                     errors.department
                                         ? "has-error"
                                         : ""
                                 }`}
                             />
-
                         </div>
 
                         {errors.department && (
@@ -987,41 +759,27 @@ const RegistrationForm = ({
                                 {errors.department}
                             </span>
                         )}
-
                     </div>
 
-
-                    {/* Academic Year */}
-
                     <div className="registration-field">
-
                         <label htmlFor="year">
-                            Academic Year
-                            <span>*</span>
+                            Academic Year <span>*</span>
                         </label>
 
                         <div className="registration-input-wrapper">
-
-                            <CalendarDays
-                                size={17}
-                            />
+                            <CalendarDays size={17} />
 
                             <select
                                 id="year"
                                 name="year"
-                                value={
-                                    formData.year
-                                }
-                                onChange={
-                                    handleChange
-                                }
+                                value={formData.year}
+                                onChange={handleChange}
                                 className={`registration-input ${
                                     errors.year
                                         ? "has-error"
                                         : ""
                                 }`}
                             >
-
                                 <option value="">
                                     Select academic year
                                 </option>
@@ -1049,9 +807,7 @@ const RegistrationForm = ({
                                 <option value="Other">
                                     Other
                                 </option>
-
                             </select>
-
                         </div>
 
                         {errors.year && (
@@ -1059,52 +815,41 @@ const RegistrationForm = ({
                                 {errors.year}
                             </span>
                         )}
-
                     </div>
-
                 </div>
-
             </div>
 
-
-            {/* =================================================
-                PAYMENT INFORMATION
-            ================================================= */}
-
             <div className="registration-form-section">
-
                 <div className="registration-section-heading">
-
-                    <IndianRupee
-                        size={19}
-                    />
+                    <IndianRupee size={19} />
 
                     <div>
-
                         <h3>
                             Registration & Payment
                         </h3>
 
                         <p>
                             Review the registration
-                            amount before submitting.
+                            amount and payment method.
                         </p>
-
                     </div>
-
                 </div>
 
-
                 <div className="registration-form-note">
+                    {paymentMethod === "gateway" && (
+                        <CreditCard size={17} />
+                    )}
 
-                    <IndianRupee
-                        size={17}
-                    />
+                    {paymentMethod === "qr" && (
+                        <QrCode size={17} />
+                    )}
+
+                    {paymentMethod === "free" && (
+                        <CheckCircle2 size={17} />
+                    )}
 
                     <p>
-
                         {isFreeEvent ? (
-
                             <>
                                 This is a
                                 <strong>
@@ -1113,9 +858,7 @@ const RegistrationForm = ({
                                 . No payment is
                                 required.
                             </>
-
                         ) : (
-
                             <>
                                 Registration fee:
                                 <strong>
@@ -1124,28 +867,20 @@ const RegistrationForm = ({
                                         2
                                     )}
                                 </strong>
-                                . You will continue to
-                                the payment process
-                                after registration.
+                                {" • "}
+                                Payment method:
+                                <strong>
+                                    {" "}
+                                    {paymentMethodLabel}
+                                </strong>
                             </>
                         )}
-
                     </p>
-
                 </div>
-
             </div>
 
-
-            {/* =================================================
-                GENERAL NOTE
-            ================================================= */}
-
             <div className="registration-form-note">
-
-                <AlertCircle
-                    size={17}
-                />
+                <AlertCircle size={17} />
 
                 <p>
                     Please make sure all information
@@ -1153,18 +888,10 @@ const RegistrationForm = ({
                     details will be associated with
                     your EventSphere account.
                 </p>
-
             </div>
 
-
-            {/* =================================================
-                ACTIONS
-            ================================================= */}
-
             <div className="registration-form-actions">
-
                 {onCancel && (
-
                     <button
                         type="button"
                         onClick={onCancel}
@@ -1189,41 +916,32 @@ const RegistrationForm = ({
                     </button>
                 )}
 
-
                 <button
                     type="submit"
                     className="registration-submit-button"
                     disabled={loading}
                 >
-
                     {loading ? (
-
                         <>
-                            <span className="registration-spinner"></span>
-
+                            <span className="registration-spinner" />
                             Processing...
                         </>
-
                     ) : (
-
                         <>
                             {isFreeEvent
                                 ? "Complete Registration"
+                                : paymentMethod ===
+                                  "qr"
+                                ? "Continue to UPI Payment"
                                 : "Continue to Payment"}
 
-                            <Send
-                                size={17}
-                            />
+                            <Send size={17} />
                         </>
                     )}
-
                 </button>
-
             </div>
-
         </form>
     );
 };
-
 
 export default RegistrationForm;

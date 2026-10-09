@@ -1,0 +1,332 @@
+/* =========================================================
+   EVENTSPHERE - ORGANIZER STATS
+   File:
+   components/organizer/OrganizerStats.css
+   ========================================================= */
+
+.organizer-stats-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+/* =========================================================
+   STAT CARD
+   ========================================================= */
+
+.organizer-stat-card {
+    position: relative;
+    min-width: 0;
+    min-height: 145px;
+
+    padding: 22px;
+
+    background: #ffffff;
+    border: 1px solid #e7e8ef;
+    border-radius: 16px;
+
+    box-shadow: 0 8px 24px rgba(31, 35, 56, 0.06);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.organizer-stat-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 90px;
+    height: 90px;
+
+    right: -35px;
+    bottom: -40px;
+
+    border-radius: 50%;
+
+    background: rgba(91, 63, 209, 0.05);
+
+    pointer-events: none;
+}
+
+.organizer-stat-card:hover {
+    transform: translateY(-4px);
+
+    border-color: #ddd6fe;
+
+    box-shadow:
+        0 14px 32px rgba(31, 35, 56, 0.10);
+}
+
+/* =========================================================
+   CARD TOP
+   ========================================================= */
+
+.organizer-stat-card-top {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    margin-bottom: 15px;
+}
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.organizer-stat-icon {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #f0ebff;
+
+    color: #5b3fd1;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.organizer-stat-label {
+    min-width: 0;
+
+    color: #626779;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+/* =========================================================
+   VALUE
+   ========================================================= */
+
+.organizer-stat-value {
+    margin-bottom: 5px;
+
+    color: #172033;
+
+    font-size: 26px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.4px;
+}
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.organizer-stat-description {
+    color: #9296a5;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    line-height: 1.5;
+}
+
+/* =========================================================
+   STAT COLOR VARIANTS
+   ========================================================= */
+
+/* Total Events */
+
+.organizer-stat-events {
+    border-top: 3px solid #5b3fd1;
+}
+
+.organizer-stat-events .organizer-stat-icon {
+    background: #f0ebff;
+    color: #5b3fd1;
+}
+
+/* Active Events */
+
+.organizer-stat-active {
+    border-top: 3px solid #14b8a6;
+}
+
+.organizer-stat-active .organizer-stat-icon {
+    background: #e8faf7;
+    color: #0d9488;
+}
+
+/* Registrations */
+
+.organizer-stat-registrations {
+    border-top: 3px solid #3b82f6;
+}
+
+.organizer-stat-registrations .organizer-stat-icon {
+    background: #eaf2ff;
+    color: #2563eb;
+}
+
+/* Revenue */
+
+.organizer-stat-revenue {
+    border-top: 3px solid #f59e0b;
+}
+
+.organizer-stat-revenue .organizer-stat-icon {
+    background: #fff6df;
+    color: #d97706;
+}
+
+/* Paid */
+
+.organizer-stat-paid {
+    border-top: 3px solid #22c55e;
+}
+
+.organizer-stat-paid .organizer-stat-icon {
+    background: #eaf9ef;
+    color: #16a34a;
+}
+
+/* Pending */
+
+.organizer-stat-pending {
+    border-top: 3px solid #f59e0b;
+}
+
+.organizer-stat-pending .organizer-stat-icon {
+    background: #fff6df;
+    color: #d97706;
+}
+
+/* Failed */
+
+.organizer-stat-failed {
+    border-top: 3px solid #ef4444;
+}
+
+.organizer-stat-failed .organizer-stat-icon {
+    background: #fff0f0;
+    color: #dc2626;
+}
+
+/* Closed */
+
+.organizer-stat-closed {
+    border-top: 3px solid #64748b;
+}
+
+.organizer-stat-closed .organizer-stat-icon {
+    background: #f1f3f5;
+    color: #475569;
+}
+
+/* =========================================================
+   VALUE COLOR VARIANTS
+   ========================================================= */
+
+.organizer-stat-revenue .organizer-stat-value {
+    color: #b45309;
+}
+
+.organizer-stat-active .organizer-stat-value {
+    color: #0f766e;
+}
+
+.organizer-stat-paid .organizer-stat-value {
+    color: #15803d;
+}
+
+.organizer-stat-failed .organizer-stat-value {
+    color: #dc2626;
+}
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .organizer-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .organizer-stat-card {
+        min-height: 140px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .organizer-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .organizer-stat-card {
+        min-height: 125px;
+
+        padding: 18px;
+    }
+
+    .organizer-stat-icon {
+        width: 35px;
+        height: 35px;
+
+        font-size: 14px;
+    }
+
+    .organizer-stat-label {
+        font-size: 11px;
+    }
+
+    .organizer-stat-value {
+        font-size: 23px;
+    }
+
+    .organizer-stat-description {
+        font-size: 10px;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .organizer-stat-card {
+        padding: 16px;
+    }
+
+    .organizer-stat-card-top {
+        margin-bottom: 12px;
+    }
+
+    .organizer-stat-value {
+        font-size: 21px;
+    }
+}

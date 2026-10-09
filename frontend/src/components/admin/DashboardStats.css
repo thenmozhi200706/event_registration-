@@ -1,0 +1,648 @@
+/* ============================================================
+   EVENTSPHERE — DASHBOARD STATS
+   ============================================================ */
+
+.dashboard-stats-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-bottom: 24px;
+}
+
+/* ============================================================
+   MAIN STAT CARDS
+   ============================================================ */
+
+.dashboard-stats-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.dashboard-stat-card {
+  position: relative;
+  min-height: 145px;
+  padding: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+
+  background: #ffffff;
+  border: 1px solid #e8eaf3;
+  border-radius: 18px;
+
+  box-shadow:
+    0 4px 15px rgba(25, 25, 60, 0.04),
+    0 1px 3px rgba(25, 25, 60, 0.03);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.dashboard-stat-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20px;
+  bottom: 20px;
+  width: 3px;
+
+  border-radius: 0 5px 5px 0;
+  background: transparent;
+  transition: background 0.25s ease;
+}
+
+.dashboard-stat-card:hover {
+  transform: translateY(-4px);
+
+  border-color: #dddff0;
+
+  box-shadow:
+    0 12px 30px rgba(43, 38, 110, 0.09),
+    0 4px 10px rgba(43, 38, 110, 0.04);
+}
+
+.dashboard-stat-card:hover::before {
+  background: #5b4be7;
+}
+
+/* ============================================================
+   STAT ICON
+   ============================================================ */
+
+.dashboard-stat-icon {
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  font-size: 25px;
+  font-weight: 700;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.dashboard-stat-card:hover .dashboard-stat-icon {
+  transform: scale(1.06);
+}
+
+/* Events */
+
+.dashboard-stat-icon.events {
+  color: #5144d9;
+  background: linear-gradient(
+    135deg,
+    #efedff,
+    #e6e2ff
+  );
+}
+
+/* Registrations */
+
+.dashboard-stat-icon.registrations {
+  color: #168c67;
+  background: linear-gradient(
+    135deg,
+    #e8fbf4,
+    #d9f7ed
+  );
+}
+
+/* Revenue */
+
+.dashboard-stat-icon.revenue {
+  color: #c47a00;
+  background: linear-gradient(
+    135deg,
+    #fff6df,
+    #ffedc4
+  );
+}
+
+/* Users */
+
+.dashboard-stat-icon.users {
+  color: #2374c8;
+  background: linear-gradient(
+    135deg,
+    #eaf4ff,
+    #dcecff
+  );
+}
+
+/* ============================================================
+   STAT CONTENT
+   ============================================================ */
+
+.dashboard-stat-content {
+  min-width: 0;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dashboard-stat-title {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #72758a;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.15px;
+}
+
+.dashboard-stat-value {
+  margin: 0;
+
+  color: #1e2030;
+
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 750;
+
+  letter-spacing: -0.7px;
+
+  word-break: break-word;
+}
+
+.dashboard-stat-subtitle {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #8b8ea0;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ============================================================
+   SECONDARY STATISTICS
+   ============================================================ */
+
+.dashboard-secondary-stats {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.secondary-stat-card {
+  padding: 18px 19px;
+
+  background: #ffffff;
+  border: 1px solid #e9eaf2;
+  border-radius: 16px;
+
+  box-shadow: 0 3px 12px rgba(30, 30, 70, 0.035);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.secondary-stat-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 22px rgba(30, 30, 70, 0.07);
+}
+
+/* ============================================================
+   SECONDARY INFO
+   ============================================================ */
+
+.secondary-stat-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 13px;
+}
+
+.secondary-stat-info span {
+  color: #74778b;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.secondary-stat-info strong {
+  color: #252739;
+
+  font-size: 20px;
+  font-weight: 750;
+}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+
+.secondary-stat-progress {
+  width: 100%;
+  height: 7px;
+
+  overflow: hidden;
+
+  background: #eeeef5;
+  border-radius: 999px;
+
+  margin-bottom: 9px;
+}
+
+.secondary-stat-progress-fill {
+  height: 100%;
+  min-width: 0;
+
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    #5b4be7,
+    #7a6af2
+  );
+
+  transition: width 0.6s ease;
+}
+
+/* Different progress card colors */
+
+.secondary-stat-card:nth-child(2)
+  .secondary-stat-progress-fill {
+  background: linear-gradient(
+    90deg,
+    #f05b68,
+    #ff8790
+  );
+}
+
+.secondary-stat-card:nth-child(3)
+  .secondary-stat-progress-fill {
+  background: linear-gradient(
+    90deg,
+    #1a9d73,
+    #47c99d
+  );
+}
+
+.secondary-stat-card:nth-child(4)
+  .secondary-stat-progress-fill {
+  background: linear-gradient(
+    90deg,
+    #3288d7,
+    #62a9eb
+  );
+}
+
+.secondary-stat-card small {
+  display: block;
+
+  color: #9295a6;
+
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* ============================================================
+   PAYMENT SUMMARY
+   ============================================================ */
+
+.dashboard-payment-summary {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  background: #ffffff;
+
+  border: 1px solid #e8e9f1;
+  border-radius: 17px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 4px 15px rgba(25, 25, 60, 0.035);
+}
+
+.payment-summary-item {
+  position: relative;
+
+  min-height: 82px;
+
+  padding: 17px 22px;
+
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  transition: background 0.2s ease;
+}
+
+.payment-summary-item:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+  right: 0;
+  top: 20px;
+  bottom: 20px;
+
+  width: 1px;
+
+  background: #ececf3;
+}
+
+.payment-summary-item:hover {
+  background: #fafaff;
+}
+
+/* ============================================================
+   SUMMARY DOT
+   ============================================================ */
+
+.summary-dot {
+  width: 10px;
+  height: 10px;
+
+  min-width: 10px;
+
+  border-radius: 50%;
+
+  box-shadow: 0 0 0 4px rgba(91, 75, 231, 0.08);
+}
+
+.summary-dot.paid {
+  background: #20a879;
+  box-shadow: 0 0 0 4px rgba(32, 168, 121, 0.11);
+}
+
+.summary-dot.pending {
+  background: #f1a329;
+  box-shadow: 0 0 0 4px rgba(241, 163, 41, 0.11);
+}
+
+.summary-dot.revenue {
+  background: #5b4be7;
+  box-shadow: 0 0 0 4px rgba(91, 75, 231, 0.11);
+}
+
+.summary-dot.organizers {
+  background: #348bd5;
+  box-shadow: 0 0 0 4px rgba(52, 139, 213, 0.11);
+}
+
+/* ============================================================
+   SUMMARY TEXT
+   ============================================================ */
+
+.payment-summary-item > div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.payment-summary-item small {
+  color: #85889b;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.payment-summary-item strong {
+  color: #252739;
+
+  font-size: 17px;
+  font-weight: 750;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   LOADING / SKELETON
+   ============================================================ */
+
+.loading-card {
+  overflow: hidden;
+}
+
+.loading-card:hover {
+  transform: none;
+}
+
+.skeleton-icon {
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
+
+  border-radius: 15px;
+
+  background: linear-gradient(
+    90deg,
+    #eeeeF4 25%,
+    #f7f7fa 50%,
+    #eeeeF4 75%
+  );
+
+  background-size: 200% 100%;
+
+  animation: dashboardSkeleton 1.4s infinite;
+}
+
+.skeleton-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding-top: 3px;
+}
+
+.skeleton-line {
+  border-radius: 6px;
+
+  background: linear-gradient(
+    90deg,
+    #eeeeF4 25%,
+    #f7f7fa 50%,
+    #eeeeF4 75%
+  );
+
+  background-size: 200% 100%;
+
+  animation: dashboardSkeleton 1.4s infinite;
+}
+
+.skeleton-small {
+  width: 42%;
+  height: 11px;
+}
+
+.skeleton-large {
+  width: 65%;
+  height: 27px;
+}
+
+.skeleton-medium {
+  width: 50%;
+  height: 10px;
+}
+
+@keyframes dashboardSkeleton {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-secondary-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-payment-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .payment-summary-item:nth-child(2)::after {
+    display: none;
+  }
+
+  .payment-summary-item:nth-child(1),
+  .payment-summary-item:nth-child(2) {
+    border-bottom: 1px solid #ececf3;
+  }
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+  .dashboard-stats-wrapper {
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .dashboard-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .dashboard-stat-card {
+    min-height: 125px;
+    padding: 18px;
+    border-radius: 15px;
+  }
+
+  .dashboard-stat-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+
+    border-radius: 13px;
+
+    font-size: 22px;
+  }
+
+  .dashboard-stat-value {
+    font-size: 24px;
+  }
+
+  .dashboard-stat-title {
+    font-size: 12px;
+  }
+
+  .dashboard-stat-subtitle {
+    font-size: 11px;
+  }
+
+  .dashboard-secondary-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .secondary-stat-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .dashboard-payment-summary {
+    grid-template-columns: 1fr;
+    border-radius: 14px;
+  }
+
+  .payment-summary-item {
+    min-height: 70px;
+    padding: 15px 18px;
+  }
+
+  .payment-summary-item:not(:last-child)::after {
+    display: none;
+  }
+
+  .payment-summary-item:not(:last-child) {
+    border-bottom: 1px solid #ececf3;
+  }
+}
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 420px) {
+  .dashboard-stat-card {
+    padding: 15px;
+    gap: 13px;
+  }
+
+  .dashboard-stat-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+
+    font-size: 20px;
+  }
+
+  .dashboard-stat-value {
+    font-size: 22px;
+  }
+
+  .secondary-stat-info strong {
+    font-size: 18px;
+  }
+
+  .payment-summary-item strong {
+    font-size: 15px;
+  }
+}
